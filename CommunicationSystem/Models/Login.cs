@@ -9,10 +9,10 @@ namespace CommunicationSystem.Models
 {
     public class Login
     {
-        [Required]
-        [Email]
+        [Required(ErrorMessage ="Это поле обязательное")]
+        [Email(ErrorMessage = "Некорректный формат почты")]
         public string  Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Это поле обязательное")]
         public string Password { get; set; }
     }
 }

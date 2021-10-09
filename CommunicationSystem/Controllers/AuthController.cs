@@ -25,10 +25,15 @@ namespace CommunicationSystem.Controllers
             db = context;
             this.options = options;
         }
+        [HttpGet]
+        public void Get()
+        {
+            var rnd = new Random();
+        }
         [HttpPost]
         public IActionResult Post(Login login)
         {
-            var user = db.Users.SingleOrDefault(u => u.Email == login.Email && u.Password == login.Password);
+            var user = db.Users.SingleOrDefault(u => u.Email == login.Email && u.Password == login.Password && u.IsConfirmed == "true");
             if(user != null)
             {
                 var token = GenerateJWT(user);

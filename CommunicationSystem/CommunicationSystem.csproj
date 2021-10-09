@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="DataAnnotationsExtensions" Version="5.0.1.27" />
+    <PackageReference Include="MailKit" Version="2.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.19" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.18" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
@@ -36,12 +37,22 @@
     <None Remove="ClientApp\src\app\auth\auth.data.service.ts" />
     <None Remove="ClientApp\src\app\auth\login.ts" />
     <None Remove="ClientApp\src\app\auth\token.ts" />
+    <None Remove="ClientApp\src\app\registration\registration.data.service.ts" />
+    <None Remove="ClientApp\src\app\registration\registration.ts" />
+    <None Remove="ClientApp\src\app\toast.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\auth\auth.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth\login.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth\token.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\registration\registration.data.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\registration\registration.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\toast.service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\pipes\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
