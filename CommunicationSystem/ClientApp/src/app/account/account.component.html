@@ -1,0 +1,41 @@
+<div class="container rounded bg-white mt-5 mb-5 vh-100">
+  <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-md-3">
+      <div class="d-flex flex-column align-items-center text-center p-3 pb-5">
+        <div (mouseenter)="enterImage()" (mouseleave)="leaveImage()" [ngClass]="{'darker':isOnImage}" (click) ="openFileInput()">
+          <img *ngIf="dataService.currentAccount.accountImage" class="rounded-circle" src="{{dataService.currentAccount.accountImage}}" style="width:150px;max-height:150px">
+          <svg *ngIf="!dataService.currentAccount.accountImage" width="150" height="150" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+          </svg>
+          <i class="bi bi-pencil text-white" [ngClass]="{'icon-mask':isOnImage}" style="font-size:20px;position:absolute"></i>
+          <input type="file" style="display:none" (change)="fileSelected($event)" #fileInput/>
+        </div>
+        <span class="font-weight-bold">{{dataService.currentAccount.nickName}}</span>
+        <span class="text-black-50">{{dataService.currentAccount.email}}</span>
+        <span> </span>
+      </div>
+    </div>
+    <div class="col-md-5 border-right">
+      <div class="p-3 py-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="text-right">Настройки профиля</h4>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-6"><label class="labels">Имя</label><input type="text" class="form-control" [error]="{Error:errors?.FirstName,PlaceHolder:'Имя'}" [(ngModel)]="dataService.currentAccount.firstName"></div>
+          <div class="col-md-6"><label class="labels">Фамилия</label><input type="text" class="form-control" [error]="{Error:errors?.LastName,PlaceHolder:'Фамилия'}" [(ngModel)]="dataService.currentAccount.lastName"></div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12"><label class="labels">Отчество</label><input type="text" class="form-control" [error]="{Error:errors?.MiddleName,PlaceHolder:'Отчество'}" [(ngModel)]="dataService.currentAccount.middleName"></div>
+          <div class="col-md-12"><label class="labels">Никнейм</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'Никнейм'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
+          <div class="col-md-12"><label class="labels">Почта</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'Почта'}" [(ngModel)]="dataService.currentAccount.email"></div>
+          <div class="col-md-12"><label class="labels">Номер телефона</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'Номер телефона'}" [(ngModel)]="dataService.currentAccount.phone"></div>
+          <div class="col-md-12"><label class="labels">Пароль</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'Пароль'}" [(ngModel)]="dataService.currentAccount.password"></div>
+        </div>
+        <div class="row mt-3">
+        </div>
+        <div class="mt-5 text-center"><button class="btn btn-primary" type="button" (click) ="saveAccount()">Сохранить</button></div>
+      </div>
+    </div>
+  </div>
+</div>

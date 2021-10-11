@@ -1,0 +1,29 @@
+.labels {
+  font-size: 14px
+}
+
+.darker {
+  display: block;
+  position: relative;
+}
+.icon-mask{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -8px;
+  margin-left: -8px;
+  opacity: 1;
+  z-index: 9999;
+}
+
+.darker:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.5);
+  opacity: 1;
+  border-radius: 50%;
+}

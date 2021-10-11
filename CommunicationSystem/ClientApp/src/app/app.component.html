@@ -1,9 +1,9 @@
 <div class="position-fixed start-50 translate-middle-x" style="z-index: 2000;top:10%;">
-  <div id="systemToast" class="toast" [ngClass]="{'show':toastService.errorShow,'hide':!toastService.errorShow}" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <i class="bi bi-exclamation-triangle text-danger" style="font-size:20px"></i>
-      <strong class="me-auto" style="color: #FF1515;padding-left: 8px;">Ошибка</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+  <div class="toast" [ngClass]="{'show':toastService.errorShow,'hide':!toastService.errorShow}" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-danger text-white">
+      <i class="bi bi-exclamation-triangle" style="font-size:20px"></i>
+      <strong class="me-auto" style ="padding-left: 8px;font-size: 16px">Ошибка</strong>
+      <button type="button" class="btn-close" (click)="toastService.errorShow = false" data-bs-dismiss="toast" aria-label="Закрыть"></button>
     </div>
     <div class="toast-body" style="font-weight: bold;">
       {{toastService.errorMessage}}
@@ -11,12 +11,46 @@
   </div>
 </div>
 
+<div class="position-fixed start-50 translate-middle-x" style="z-index: 2000;top:10%;">
+  <div class="toast" [ngClass]="{'show':toastService.successShow,'hide':!toastService.successShow}" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-success text-white">
+      <i class="bi bi-check-lg" style="font-size:20px"></i>
+      <strong class="me-auto" style="padding-left: 8px;">Успех</strong>
+      <button type="button" class="btn-close" (click)="toastService.successShow = false" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+    </div>
+    <div class="toast-body" style="font-weight: bold;">
+      {{toastService.successMessage}}
+    </div>
+  </div>
+</div>
+
+<div class="position-fixed start-50 translate-middle-x" style="z-index: 2000;top:10%;">
+  <div class="toast" [ngClass]="{'show':toastService.alertShow,'hide':!toastService.alertShow}" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-warning text-white">
+      <i class="bi bi-exclamation-lg" style="font-size:20px"></i>
+      <strong class="me-auto" style="padding-left: 8px;">Предупреждение</strong>
+      <button type="button" class="btn-close" (click)="toastService.alertShow = false" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+    </div>
+    <div class="toast-body" style="font-weight: bold;">
+      {{toastService.alertMessage}}
+    </div>
+  </div>
+</div>
 
 
-<header class="header border" id="header" [ngClass]="{'head-pb':isNavOpen}" *ngIf ="checkAuth()">
-  <div class="header-toggle" (click) ="openNav()"> <i class="bi bi-list" [ngClass] ="{'bi-x-lg':isNavOpen,'bi-grid-3x3-gap':!isNavOpen}"></i> </div>
+
+<header class="header border" id="header" [ngClass]="{'head-pb':isNavOpen}" *ngIf="checkAuth()">
+  <div class="header-toggle" (click)="openNav()"> <i class="bi bi-list" [ngClass]="{'bi-x-lg':isNavOpen,'bi-grid-3x3-gap':!isNavOpen}"></i> </div>
+  <a routerLink="/account" class="header_img text-dark" style="margin-right: 20px;cursor:pointer">
+    <span class="align-middle" style="line-height:40px;margin-right:10px;font-size:18px">{{accountDataService.currentAccount.nickName}}</span>
+    <img *ngIf="accountDataService.currentAccount.accountImage" src="{{accountDataService.currentAccount.accountImage }}" alt="" />
+    <i *ngIf ="!accountDataService.currentAccount.accountImage" class="bi bi-person-circle" style="font-size: 30px;"></i>
+  </a>
+
+
+
 </header>
-<div class="l-navbar" id="nav-bar" [ngClass]="{'show':isNavOpen}" *ngIf ="checkAuth()">
+<div class="l-navbar" id="nav-bar" [ngClass]="{'show':isNavOpen}" *ngIf="checkAuth()">
   <nav class="nav">
     <div>
       <a href="#" class="nav_logo">
@@ -52,6 +86,6 @@
   </nav>
 </div>
 <div class="height-100 main-body" [ngClass]="{'body-pd':isNavOpen,'login-form':!checkAuth()}">
- 
+
   <router-outlet></router-outlet>
 </div>

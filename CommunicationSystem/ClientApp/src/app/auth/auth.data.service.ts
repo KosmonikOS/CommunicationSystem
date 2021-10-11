@@ -8,11 +8,14 @@ import { Router } from "@angular/router";
 @Injectable()
 export class AuthDataService {
   url: string = "/api/auth";
+  currentUserEmail = ""
   constructor(public http: HttpClient, public jwtHelper: JwtHelperService, public router: Router) { }
   getToken(email: string, password: string) {
     return this.http.post<any>(this.url, { email, password }).pipe(
       tap(token => {
-        localStorage.setItem("COMMUNICATION_ACCESS_TOKEN_KEY", token.access_token)
+        localStorage.setItem("COMMUNICATION_ACCESS_TOKEN_KEY", token.access_token);
+        localStorage.setItem("CURRENT_COMMUNICATION_EMAIL", email);
+        this.currentUserEmail = email;
       })
     );
   }
