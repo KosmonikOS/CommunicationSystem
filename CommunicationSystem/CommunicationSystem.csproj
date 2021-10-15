@@ -39,6 +39,10 @@
     <None Remove="ClientApp\src\app\auth\auth.data.service.ts" />
     <None Remove="ClientApp\src\app\auth\login.ts" />
     <None Remove="ClientApp\src\app\auth\token.ts" />
+    <None Remove="ClientApp\src\app\guards\auth.guard.ts" />
+    <None Remove="ClientApp\src\app\messenger\messagebetweenusers.ts" />
+    <None Remove="ClientApp\src\app\messenger\messenge.data.service.ts" />
+    <None Remove="ClientApp\src\app\messenger\userlastmessage.ts" />
     <None Remove="ClientApp\src\app\registration\registration.data.service.ts" />
     <None Remove="ClientApp\src\app\registration\registration.ts" />
     <None Remove="ClientApp\src\app\toast.service.ts" />
@@ -50,6 +54,10 @@
     <TypeScriptCompile Include="ClientApp\src\app\auth\auth.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth\login.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth\token.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\guards\auth.guard.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\messenger\messagebetweenusers.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\messenger\messenge.data.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\messenger\userlastmessage.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\registration\registration.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\registration\registration.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\toast.service.ts" />

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Account } from './account';
 import { AccountDataService } from './account.data.service';
 import { ToastService } from "../toast.service"
@@ -8,16 +8,12 @@ import { ToastService } from "../toast.service"
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent {
   errors: any = {};
   isOnImage: boolean = false;
   @ViewChild("fileInput") fileInput: ElementRef = new ElementRef("");
 
   constructor(public dataService: AccountDataService, private toastService: ToastService) { }
-
-  ngOnInit(): void {
-   this.dataService.getAccount(localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") || "");
-  }
   enterImage() {
     this.isOnImage = true;
   }

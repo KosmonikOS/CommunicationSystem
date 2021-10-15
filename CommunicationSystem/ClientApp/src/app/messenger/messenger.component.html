@@ -1,0 +1,77 @@
+<div class="container-fluide pt-3 px-4 vh-100">  
+
+  <div class="row rounded-lg overflow-hidden shadow">
+    <!-- Users box-->
+    <div class="col-3 vh-100" style="overflow-y:auto">
+      <div class="input-group rounded mb-1">
+        <input type="search" class="form-control rounded" placeholder="Поиск по Никнейму" [(ngModel)]="search" />
+        <span class="input-group-text border-0" id="search-addon">
+          <i class="bi bi-search" style="cursor:pointer" (click)="searchUsers()"></i>
+        </span>
+      </div>
+      <div class="bg-white pb-2">
+
+        <div class="messages-box">
+          <div class="list-group rounded-0">
+
+
+            <a *ngFor="let user of usersList; let i = index" class="list-group-item list-group-item-action text-white rounded-0 text-dark" style="max-height: 130px" (click)="selectUser(i,user.id)" [ngClass]="{'active':selectedUser == i,'text-white':selectedUser == i}">
+              <div class="media">
+                <img src="{{user.accountImage}}" alt="user" width="30" class="rounded-circle text">
+                <i *ngIf="!user.accountImage" class="bi bi-person-circle" style="font-size: 25px;"></i>
+                <div class="media-body ml-4">
+                  <div class="d-flex align-items-center justify-content-between mb-1">
+                    <h6 class="mb-0">{{user.nickName}}</h6><small class="small font-weight-bold">{{user.date | date:'shortTime'}}</small>
+                  </div>
+                  <p class="font-italic mb-0 text-small" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{user.content}}</p>
+                </div>
+              </div>
+            </a>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-9 vh-100">
+      <div class="px-4 py-5 chat-box bg-white" style="overflow-y:auto">
+
+        <div *ngFor="let message of messagesList">
+          <!-- Sender Message-->
+          <div class="media w-50 mb-3" *ngIf="message.nickName">
+            <img src="{{message.accountImage}}" alt="user" width="30" class="rounded-circle">
+            <div class="media-body ml-3">
+              <div class="bg-light rounded py-2 px-3 mb-2">
+                <p class="text-small mb-0 text-break">{{message.content}}</p>
+              </div>
+              <p class="small text-muted">{{message.date | date:'shortTime'}}</p>
+            </div>
+          </div>
+
+          <!-- Reciever Message-->
+          <div class="media ml-auto mb-3" *ngIf="!message.nickName">
+            <div class="media-body" style="padding-left:50%">
+              <div class="bg-primary rounded py-2 px-3 mb-2">
+                <p class="text-small mb-0 text-white text-break">{{message.content}}</p>
+              </div>
+              <p class="small text-muted">{{message.date | date:'shortTime'}}</p>
+            </div>
+          </div>
+        </div>
+        
+
+      </div>
+
+      <!-- Typing area -->
+      <form action="#" class="bg-light">
+        <div class="input-group">
+          <input type="text" placeholder="Введите сообшение" aria-describedby="button-addon2" class="form-control form-control-sm rounded-0 border-0 py-4 bg-light" name="content" [(ngModel)]="currentMessage.content" (keyup.enter)="sendMessage()">
+          <div class="input-group-append">
+            <button id="button-addon2" type="submit" class="btn btn-lg btn-link"> <i (click)="sendMessage()" class="bi bi-cursor-fill"></i></button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -25,7 +25,7 @@ export class AuthComponent {
         this.dataService.deleteUserData();
       }
       this.accountDataService.getAccount(this.login.email);
-      this.router.navigate([""]);
+      this.router.navigate(["/messenger"]);
     },
       error => {
         if (error.error.status == 401) {

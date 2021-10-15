@@ -3,15 +3,17 @@ using System;
 using CommunicationSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CommunicationSystem.Migrations
 {
     [DbContext(typeof(CommunicationContext))]
-    partial class CommunicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211013105447_ToLower")]
+    partial class ToLower
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +113,7 @@ namespace CommunicationSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("CommunicationSystem.Models.UsersToGroups", b =>

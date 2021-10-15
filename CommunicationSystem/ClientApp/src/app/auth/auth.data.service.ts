@@ -15,6 +15,7 @@ export class AuthDataService {
       tap(token => {
         localStorage.setItem("COMMUNICATION_ACCESS_TOKEN_KEY", token.access_token);
         localStorage.setItem("CURRENT_COMMUNICATION_EMAIL", email);
+        localStorage.setItem("CURRENT_COMMUNICATION_ID", token.current_account_id);
         this.currentUserEmail = email;
       })
     );
@@ -26,6 +27,7 @@ export class AuthDataService {
   }
   logOut() {
     localStorage.removeItem("COMMUNICATION_ACCESS_TOKEN_KEY");
+    localStorage.removeItem("CURRENT_COMMUNICATION_EMAIL");
     this.router.navigate(['']);
   }
   saveUserData(email: string, password: string) {

@@ -33,7 +33,7 @@ namespace CommunicationSystem.Models
         public string LastName { get; set; }
         public UserRole Role { get; set; } = UserRole.User;
         public string IsConfirmed { get; set; }
-        public string accountImage { get; set; }
+        public string accountImage { get; set; } = "/assets/user.png";
         [Phone(ErrorMessage ="Некорректный формат телефона")]
         public string Phone { get; set; }
     }

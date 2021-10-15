@@ -25,11 +25,6 @@ namespace CommunicationSystem.Controllers
             db = context;
             this.options = options;
         }
-        [HttpGet]
-        public void Get()
-        {
-            var rnd = new Random();
-        }
         [HttpPost]
         public IActionResult Post(Login login)
         {
@@ -40,7 +35,8 @@ namespace CommunicationSystem.Controllers
                 return Ok(
                     new
                     {
-                        access_token = token
+                        access_token = token,
+                        current_account_id = user.Id
                     });
             }
             return Unauthorized();

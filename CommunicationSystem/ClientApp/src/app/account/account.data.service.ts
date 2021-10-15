@@ -10,7 +10,6 @@ export class AccountDataService {
   constructor(private http: HttpClient) { }
 
   getAccount(email: string) {
-    console.log(email);
     return this.http.get(this.url + email).subscribe((data: any) => this.currentAccount = data);
   }
   postAccount() {

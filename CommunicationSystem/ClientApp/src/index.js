@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function (event) {
 
   /*===== LINK ACTIVE =====*/
-  const linkColor = document.querySelectorAll('.nav_link')
+  const linkColor = document.querySelectorAll('.nav_button')
 
   function colorLink() {
     if (linkColor) {

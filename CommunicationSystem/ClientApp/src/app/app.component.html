@@ -41,11 +41,12 @@
 
 <header class="header border" id="header" [ngClass]="{'head-pb':isNavOpen}" *ngIf="checkAuth()">
   <div class="header-toggle" (click)="openNav()"> <i class="bi bi-list" [ngClass]="{'bi-x-lg':isNavOpen,'bi-grid-3x3-gap':!isNavOpen}"></i> </div>
-  <a routerLink="/account" class="header_img text-dark" style="margin-right: 20px;cursor:pointer">
-    <span class="align-middle" style="line-height:40px;margin-right:10px;font-size:18px">{{accountDataService.currentAccount.nickName}}</span>
-    <img *ngIf="accountDataService.currentAccount.accountImage" src="{{accountDataService.currentAccount.accountImage }}" alt="" />
-    <i *ngIf ="!accountDataService.currentAccount.accountImage" class="bi bi-person-circle" style="font-size: 30px;"></i>
-  </a>
+  <div class="nav_button" style="padding-top: 0px; margin-right: 20px; cursor: pointer;">
+    <a routerLink="/account" class="header_img text-dark ">
+      <span class="align-middle" style="line-height:40px;margin-right:10px;font-size:18px">{{accountDataService.currentAccount.nickName}}</span>
+      <img src="{{accountDataService.currentAccount.accountImage }}" alt="" />
+    </a>
+  </div>
 
 
 
@@ -57,29 +58,13 @@
         <i class="bi bi-at"></i> <span class="nav_logo-name">Communication</span>
       </a>
       <div class="nav_list">
-        <a href="#" class="nav_link active">
-          <i class="bi bi-grid-3x3-gap"></i>
-          <span class="nav_name">Dashboard</span>
-        </a>
-        <a href="#" class="nav_link">
-          <i class="bi bi-person"></i>
-          <span class="nav_name">Users</span>
-        </a>
-        <a href="#" class="nav_link">
+        <a routerLink="/messenger" class="nav_link active nav_button">
           <i class="bi bi-chat-dots"></i>
-          <span class="nav_name">Messages</span>
+          <span class="nav_name">Messenger</span>
         </a>
-        <a href="#" class="nav_link">
-          <i class="bi bi-bookmark-check"></i>
-          <span class="nav_name">Bookmark</span>
-        </a>
-        <a href="#" class="nav_link">
-          <i class="bi bi-file-earmark-arrow-down"></i>
-          <span class="nav_name">Files</span>
-        </a>
-        <a href="#" class="nav_link">
-          <i class="bi bi-bar-chart"></i>
-          <span class="nav_name">Stats</span>
+        <a href="#" class="nav_link nav_button">
+          <i class="bi bi-camera-video"></i>
+          <span class="nav_name">Video calls</span>
         </a>
       </div>
     </div> <a href="#" class="nav_link" (click)="logOut()"> <i class="bi bi-box-arrow-right"></i> <span class="nav_name">SignOut</span> </a>
