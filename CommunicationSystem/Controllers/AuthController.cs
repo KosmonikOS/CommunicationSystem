@@ -47,12 +47,12 @@ namespace CommunicationSystem.Controllers
             var credentials = new SigningCredentials(AuthParams.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.Email,user.Email),
+                new Claim(ClaimsIdentity.DefaultNameClaimType,user.Email),
                 new Claim(JwtRegisteredClaimNames.Sub,user.Password),
                 new Claim("role",user.Role.ToString())
             };
             var token = new JwtSecurityToken(
-                AuthParams.Issure,
+                AuthParams.Issuer,
                 AuthParams.Audience,
                 claims,
                 expires: DateTime.Now.AddSeconds(AuthParams.TokenLifeTime),

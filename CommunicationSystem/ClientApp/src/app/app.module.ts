@@ -17,6 +17,7 @@ import { RouterModule } from "@angular/router";
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthModule } from "./auth/auth.module";
 import { HttpClientModule } from '@angular/common/http';
+//import { ChartsModule } from 'ng2-charts';
 import { RegistrationModule } from "./registration/registration.module";
 import { AccountModule } from "./account/account.module";
 import { MessengerModule } from './messenger/messenger.module'
@@ -30,7 +31,7 @@ const routes = [
   { path: "messenger", component: MessengerComponent, canActivate: [AuthGuard] },
 ]
 export function tokenGetter() {
-  return localStorage.getItem("ACCESS_TOKEN_KEY")
+  return localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY");
 }
 
 @NgModule({
@@ -51,7 +52,8 @@ export function tokenGetter() {
         tokenGetter,
         allowedDomains: environment.whiteListedHosts
       }
-      })
+    }),
+    //ChartsModule
   ],
   providers: [
     AuthGuard,

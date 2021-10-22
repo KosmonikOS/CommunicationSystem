@@ -15,5 +15,6 @@ namespace CommunicationSystem.Models
         public DateTime? Date { get; set; }
         public string NickName { get; set; }
         public string AccountImage { get; set; }
+        public MessageTypes Type { get; set; } = MessageTypes.Text;
     }
 }

@@ -5,6 +5,8 @@ export class MessageBetweenUsers {
     public to: number,
     public togroup: boolean,
     public content: string,
+    public toEmail: string,
+    public type?: number,
     public nickName?: string,
     public accountImage?: string,
     public id?: number,

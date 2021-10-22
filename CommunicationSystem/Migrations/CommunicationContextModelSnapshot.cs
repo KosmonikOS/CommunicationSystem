@@ -47,7 +47,7 @@ namespace CommunicationSystem.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("From")
@@ -58,6 +58,12 @@ namespace CommunicationSystem.Migrations
 
                     b.Property<bool>("ToGroup")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ViewStatus")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

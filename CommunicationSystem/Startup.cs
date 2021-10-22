@@ -1,14 +1,17 @@
+using CommunicationSystem.Hubs;
 using CommunicationSystem.Models;
 using CommunicationSystem.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 
 namespace CommunicationSystem
 {
@@ -33,14 +36,34 @@ namespace CommunicationSystem
                     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = authOptions.Issure,
+                        ValidIssuer = authOptions.Issuer,
                         ValidateAudience = true,
                         ValidAudience = authOptions.Audience,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
                     };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+
+                            // если запрос направлен хабу
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) &&
+                                (path.StartsWithSegments("/messengerhub")))
+                            {
+                                // получаем токен из строки запроса
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+
                 });
+            services.AddSignalR();
+            services.AddSingleton<IUserIdProvider, EmailUserIdProvider>();
             var connection = Configuration.GetConnectionString("PostgreSQL");
             services.AddDbContextPool<CommunicationContext>(options => options.UseNpgsql(connection));
             services.AddControllersWithViews();
@@ -74,17 +97,15 @@ namespace CommunicationSystem
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<MessengerHub>("/messengerhub");
                 endpoints.MapControllers();
             });
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())

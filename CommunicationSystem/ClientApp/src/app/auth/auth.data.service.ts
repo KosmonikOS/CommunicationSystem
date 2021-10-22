@@ -28,6 +28,7 @@ export class AuthDataService {
   logOut() {
     localStorage.removeItem("COMMUNICATION_ACCESS_TOKEN_KEY");
     localStorage.removeItem("CURRENT_COMMUNICATION_EMAIL");
+    localStorage.removeItem("CURRENT_COMMUNICATION_ID");
     this.router.navigate(['']);
   }
   saveUserData(email: string, password: string) {

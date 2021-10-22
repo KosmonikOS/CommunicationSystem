@@ -3,10 +3,12 @@ export class UserLastMessage {
     public id: number,
     public nickName: string,
     public accountImage: string,
+    public email: string,
     public messageId: number,
     public from: number,
     public to: number,
     public content: string,
-    public date: Date
+    public notViewed: number,
+    public date?: Date,
   ) { }
 }

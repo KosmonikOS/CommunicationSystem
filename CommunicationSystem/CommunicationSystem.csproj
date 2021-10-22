@@ -15,7 +15,10 @@
   <ItemGroup>
     <PackageReference Include="DataAnnotationsExtensions" Version="5.0.1.27" />
     <PackageReference Include="MailKit" Version="2.15.0" />
+    <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.19" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.18" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.10">
@@ -40,6 +43,7 @@
     <None Remove="ClientApp\src\app\auth\login.ts" />
     <None Remove="ClientApp\src\app\auth\token.ts" />
     <None Remove="ClientApp\src\app\guards\auth.guard.ts" />
+    <None Remove="ClientApp\src\app\messenger\group.ts" />
     <None Remove="ClientApp\src\app\messenger\messagebetweenusers.ts" />
     <None Remove="ClientApp\src\app\messenger\messenge.data.service.ts" />
     <None Remove="ClientApp\src\app\messenger\userlastmessage.ts" />
@@ -55,6 +59,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\auth\login.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth\token.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\guards\auth.guard.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\messenger\group.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\messenger\messagebetweenusers.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\messenger\messenge.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\messenger\userlastmessage.ts" />
