@@ -22,7 +22,7 @@ namespace CommunicationSystem.Models
         public long Id { get; set; }
         public int From { get; set; }
         public int To { get; set; }
-        public bool ToGroup { get; set; }
+        public int ToGroup { get; set; } = 0;
         public string Content { get; set; }
         public DateTime? Date { get; set; }
         [NotMapped]

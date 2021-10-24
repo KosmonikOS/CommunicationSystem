@@ -35,7 +35,7 @@ namespace CommunicationSystem.Controllers
             {
                 return (from u in db.Users
                         from m in db.Messages
-                        where (((m.From == id && m.To == u.Id) || (m.From == u.Id && m.To == id)))
+                        where (((m.From == id && m.To == u.Id) || (m.From == u.Id && m.To == id)) && m.ToGroup == 0)
                         && m.Date == db.Messages.Where(m => ((m.From == id && m.To == u.Id) || (m.From == u.Id && m.To == id))).Max(m => m.Date)
                         orderby m.Date, m.Id
                         select new UserLastMessage()
@@ -47,17 +47,37 @@ namespace CommunicationSystem.Controllers
                             MessageId = m.Id,
                             From = m.From,
                             To = m.To,
-                            Content = m.Type == MessageTypes.Image ? "Изображение": m.Content,
+                            Content = m.Type == MessageTypes.Image ? "Изображение" : m.Content,
                             Date = m.Date,
                             NotViewed = db.Messages.Where(m => (m.From == u.Id && m.To == id) && m.ViewStatus == ViewStatus.isntViewed).Count()
-                        }).ToList();
+                        }).ToList().Concat((from utg in db.UsersToGroups
+                                            join g in db.Groups on utg.GroupId equals g.Id
+                                            join m in db.Messages on g.Id equals m.ToGroup into gGroup
+                                            from gm in gGroup.DefaultIfEmpty()
+                                            where (utg.UserId == id) && (g.Id == gm.ToGroup) &&
+                                            (gm != null && gm.Date == db.Messages.Where(m => m.ToGroup == g.Id).Max(m => m.Date))
+                                            orderby gm.Date, gm.Id
+                                            select new UserLastMessage()
+                                            {
+                                                Id = g.Id,
+                                                accountImage = g.GroupImage,
+                                                NickName = g.Name,
+                                                Email = "Group",
+                                                MessageId = gm == null ? 0 : gm.Id,
+                                                From = 0,
+                                                To = 0,
+                                                Content = gm == null ? "" : gm.Type == MessageTypes.Image ? "Изображение" : gm.Content,
+                                                Date = gm == null ? null : gm.Date,
+                                                NotViewed = db.Messages.Where(m => (m.ToGroup == g.Id) && m.ViewStatus == ViewStatus.isntViewed).Count()
+                                            }).ToList()).OrderByDescending(m => m.Date);
             }
             return (from u in db.Users
                     join m1 in db.Messages.OrderByDescending(m => m.Date).Take(1) on new { To = id, From = u.Id } equals new { m1.To, m1.From } into m1g
                     from g1 in m1g.DefaultIfEmpty()
                     join m2 in db.Messages.OrderByDescending(m => m.Date).Take(1) on new { To = u.Id, From = id } equals new { m2.To, m2.From } into m2g
                     from g2 in m2g.DefaultIfEmpty()
-                    where u.Id != id && u.NickName == nickName
+                        //where u.Id != id && u.NickName.Contains(nickName) && (g1.ToGroup == 0 || g2.ToGroup == 0)
+                    where u.NickName.Contains(nickName) && u.Id != id && ((g1 == null && g2 == null) || (g1.ToGroup == 0 || g2.ToGroup == 0))
                     orderby g1.Date, g1.Id
                     select new UserLastMessage()
                     {
@@ -71,47 +91,69 @@ namespace CommunicationSystem.Controllers
                         Content = (g1 == null ? g2 == null ? "" : g2.Content : g1.Content),
                         Date = (g1 == null ? g2 == null ? null : g2.Date : g1.Date),
                         NotViewed = db.Messages.Where(m => (m.From == u.Id && m.To == id) && m.ViewStatus == ViewStatus.isntViewed).Count()
-                    }).ToList();
+                    }).ToList().Concat((from utg in db.UsersToGroups
+                                        join g in db.Groups on utg.GroupId equals g.Id
+                                        join m in db.Messages on g.Id equals m.ToGroup into gGroup
+                                        from gm in gGroup.DefaultIfEmpty()
+                                        where (utg.UserId == id) && (g.Name.Contains(nickName)) &&
+                                        (gm != null && gm.Date == db.Messages.Where(m => m.ToGroup == g.Id).Max(m => m.Date))
+                                        orderby gm.Date, gm.Id
+                                        select new UserLastMessage()
+                                        {
+                                            Id = g.Id,
+                                            accountImage = g.GroupImage,
+                                            NickName = g.Name,
+                                            Email = "Group",
+                                            MessageId = gm == null ? 0 : gm.Id,
+                                            From = 0,
+                                            To = 0,
+                                            Content = gm == null ? "" : gm.Type == MessageTypes.Image ? "Изображение" : gm.Content,
+                                            Date = gm == null ? null : gm.Date,
+                                            NotViewed = db.Messages.Where(m => (m.ToGroup == g.Id && m.From != id) && m.ViewStatus == ViewStatus.isntViewed).Count()
+                                        }).ToList()).OrderByDescending(m => m.Date);
         }
-        [HttpGet("getmessages/{accountid}/{userid}")]
-        public IEnumerable<MessageBewteenUsers> Get(int accountid, int userid)
+        [HttpGet("getmessages/{accountid}/{userid}/{togroup}")]
+        public IEnumerable<MessageBewteenUsers> Get(int accountid, int userid, int togroup)
         {
-            foreach (var message in db.Messages.Where(m => m.ViewStatus == ViewStatus.isntViewed && m.From == userid && m.To == accountid))
+            foreach (var message in db.Messages.Where(m => m.ViewStatus == ViewStatus.isntViewed && ((m.From == userid && m.To == accountid) || m.ToGroup == togroup)))
             {
                 message.ViewStatus = ViewStatus.isViewed;
                 db.Messages.Update(message);
             }
             db.SaveChanges();
-            return (from m in db.Messages
-                    join u in db.Users on new { m.From, m.To } equals new { From = u.Id, To = accountid } into mug
-                    from g in mug.DefaultIfEmpty()
-                    where (m.From == accountid && m.To == userid) || (m.From == userid && m.To == accountid)
-                    orderby m.Date, m.Id
-                    select new MessageBewteenUsers()
-                    {
-                        Id = m.Id,
-                        From = m.From,
-                        To = m.To,
-                        Content = m.Content,
-                        ToGroup = m.ToGroup,
-                        Date = m.Date,
-                        Type = m.Type,
-                        NickName = g == null ? "" : g.NickName,
-                        AccountImage = g == null ? "" : g.accountImage
-                    }
+            var temp = (from m in db.Messages
+                            //join u in db.Users on new { m.From, m.To } equals new { From = u.Id, To = accountid } into mug
+                        join u in db.Users on new { m.From, Me = accountid != m.From } equals new { From = u.Id, Me = true } into mug
+                        from g in mug.DefaultIfEmpty()
+                        where togroup == 0 ? (((m.From == accountid && m.To == userid) || (m.From == userid && m.To == accountid)) && m.ToGroup == 0) : (m.ToGroup == togroup && m.To == 0)
+                        orderby m.Date, m.Id
+                        select new MessageBewteenUsers()
+                        {
+                            Id = m.Id,
+                            From = m.From,
+                            To = m.To,
+                            Content = m.Content,
+                            ToGroup = m.ToGroup,
+                            Date = m.Date,
+                            Type = m.Type,
+                            NickName = g == null ? "" : g.NickName,
+                            AccountImage = g == null ? "" : g.accountImage
+                        }
                     ).ToList();
+            return temp;
         }
         [HttpPost]
         public async Task<IActionResult> Post(Message message)
         {
-            if (message != null && message.To != 0 && message.Content != "")
+            if (message != null && message.Content != "")
             {
                 try
                 {
                     message.Date = DateTime.Now;
+                    message.To = message.ToGroup != 0 ? 0 : message.To;
                     db.Messages.Add(message);
                     db.SaveChanges();
-                    await hubContext.Clients.User(message.ToEmail).SendAsync("Recive", message);
+                    await SendMessage(message);
                     return Ok();
                 }
                 catch (Exception e)
@@ -122,11 +164,11 @@ namespace CommunicationSystem.Controllers
             return BadRequest();
         }
         [HttpPost("filemessage/{length}")]
-        public async Task<IActionResult> Post(IFormCollection data,int length)
+        public async Task<IActionResult> Post(IFormCollection data, int length)
         {
-            var message = new Message() {To = Int32.Parse(data["to"]),From = Int32.Parse(data["from"]), ToEmail = data["toEmail"].ToString(), ToGroup = Boolean.Parse(data["toGroup"].ToString()),Type = MessageTypes.Image };
+            var message = new Message() { To = Int32.Parse(data["to"]), From = Int32.Parse(data["from"]), ToEmail = data["toEmail"].ToString(), ToGroup = Int32.Parse(data["toGroup"].ToString()), Type = MessageTypes.Image };
             var files = data.Files;
-            if (message != null && message.To != 0 && files != null)
+            if (message != null && files != null)
             {
                 try
                 {
@@ -134,6 +176,7 @@ namespace CommunicationSystem.Controllers
                     {
                         var path = "/assets/" + DateTime.Now.TimeOfDay.TotalMilliseconds + file.FileName.ToString();
                         message.Content = path;
+                        //message.To = message.ToGroup != 0 ? 0 : message.To;
                         message.Date = DateTime.Now;
                         db.Messages.Add(message);
                         using (var filestr = new FileStream(env.ContentRootPath + "/ClientApp/src" + path, FileMode.Create))
@@ -143,7 +186,7 @@ namespace CommunicationSystem.Controllers
                         db.SaveChanges();
                         message.Id = 0;
                     }
-                    await hubContext.Clients.User(message.ToEmail).SendAsync("Recive", message);
+                    await SendMessage(message);
                     return Ok();
                 }
                 catch (Exception e)
@@ -153,22 +196,48 @@ namespace CommunicationSystem.Controllers
             }
             return BadRequest();
         }
-        [HttpPost("groups/")]
-        public IActionResult Post(Group group)
+        private async Task SendMessage(Message message)
         {
-            if(group != null)
+            if (message.ToGroup != 0)
+            {
+                var members = (from utg in db.UsersToGroups
+                               join u in db.Users on utg.UserId equals u.Id
+                               where utg.GroupId == message.ToGroup
+                               select new
+                               {
+                                   Email = u.Email
+                               });
+                foreach (var member in members)
+                {
+                    await hubContext.Clients.User(member.Email).SendAsync("Recive", message);
+                }
+            }
+            else
+            {
+                await hubContext.Clients.User(message.ToEmail).SendAsync("Recive", message);
+            }
+        }
+        [HttpPost("groups/")]
+        public async Task<IActionResult> Post(Group group)
+        {
+            if (group != null)
             {
                 try
                 {
-                    foreach(var user in group.Users)
+                    group.GroupImage = group.GroupImage == null ? "/assets/group.png" : group.GroupImage;
+                    await db.Groups.AddAsync(group);
+                    await db.SaveChangesAsync();
+                    var createMessage = new Message() { To = 0, From = 0, Content = $"Группа {group.Name} создана", Date = DateTime.Now, ToGroup = group.Id };
+                    db.Messages.Add(createMessage);
+                    foreach (var user in group.Users)
                     {
-                        db.UsersToGroups.Add(new UsersToGroups() { Id = user.Id, GroupId = group.Id });
+                        await db.UsersToGroups.AddAsync(new UsersToGroups() { UserId = user.Id, GroupId = group.Id });
                     }
-                    db.Groups.Add(group);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
+                    await SendMessage(createMessage);
                     return Ok();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return BadRequest(e);
                 }

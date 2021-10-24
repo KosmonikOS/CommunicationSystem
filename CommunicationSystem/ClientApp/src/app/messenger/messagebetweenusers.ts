@@ -3,7 +3,7 @@ export class MessageBetweenUsers {
   constructor(
     public from: number,
     public to: number,
-    public togroup: boolean,
+    public togroup: number,
     public content: string,
     public toEmail: string,
     public type?: number,

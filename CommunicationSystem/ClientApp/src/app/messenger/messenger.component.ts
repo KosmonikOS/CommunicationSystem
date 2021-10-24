@@ -23,12 +23,12 @@ export class MessengerComponent implements OnInit {
   @ViewChild("messagesArea") messagesArea: ElementRef = new ElementRef("");
   usersList: UserLastMessage[] = [];
   messagesList: MessageBetweenUsers[] = [];
-  currentMessage: MessageBetweenUsers = new MessageBetweenUsers(Number(window.localStorage.getItem("CURRENT_COMMUNICATION_ID")), 0, false, "", "");
+  currentMessage: MessageBetweenUsers = new MessageBetweenUsers(Number(window.localStorage.getItem("CURRENT_COMMUNICATION_ID")), 0,0, "", "");
   selectedUser = 0;
   currentFiles: File[] = [];
   currentFilesLength: number = 0;
   isOnGroupImage: boolean = false;
-  newGroup: Group = new Group();
+  newGroup: Group = new Group([]);
   userGroupList: any[] = [];
 
 
@@ -42,15 +42,22 @@ export class MessengerComponent implements OnInit {
   }
   selectUser(index: number, user: UserLastMessage) {
     this.selectedUser = index;
-    this.getMessages(user.id);
-    this.currentMessage.to = user.id;
-    this.currentMessage.toEmail = user.email;
+    if (user.email == "Group") {
+      this.currentMessage.togroup = user.id;
+      this.currentMessage.to = 0;
+    } else {
+      this.currentMessage.togroup = 0;
+      this.currentMessage.to = user.id;
+      this.currentMessage.toEmail = user.email;
+    }
+    this.getMessages(user.id, this.currentMessage.togroup);
     user.notViewed = 0;
   }
   sendMessage() {
     this.dataService.postMessage(this.currentMessage, this.currentFiles).subscribe(result => {
-      this.getMessages(this.currentMessage.to);
+      this.getMessages(this.currentMessage.to, this.currentMessage.togroup);
       this.updateUserLastMessage(this.currentMessage, "to");
+      //this.searchUsers();
       this.currentMessage.content = "";
       this.currentFiles = [];
       this.currentFilesLength = 0;
@@ -58,8 +65,8 @@ export class MessengerComponent implements OnInit {
       this.toastService.showError("Ошибка отправки")
     });
   }
-  getMessages(userid: number) {
-    this.dataService.getMessages(userid).subscribe((data: any) => {
+  getMessages(userid: number, togroup: number) {
+    this.dataService.getMessages(userid, togroup).subscribe((data: any) => {
       this.messagesList = data;
       setTimeout(this.scrollMessages, 10, this.messagesArea.nativeElement);
     });
@@ -67,17 +74,18 @@ export class MessengerComponent implements OnInit {
   scrollMessages(element: any) {
     element.scrollTop = element.scrollHeight;
   }
-  updateUserLastMessage(message: MessageBetweenUsers, type: string) {
+  updateUserLastMessage(message: any, type: string) {
+    console.log(message);
     for (var i in this.usersList) {
       var val = this.usersList[i];
-      if (type == "to" && val.id == message.to) {
+      if (type == "to" && val.id == (message.to == 0 ? message.toGroup : message.to)) {
         val.content = message.content;
         val.date = message.date;
       }
-      if (type == "from" && val.id == message.from) {
+      if (type == "from" && (val.id == (message.to == 0 ? message.toGroup : message.from))) {
+        val.notViewed++;
         val.content = message.content;
         val.date = message.date;
-        val.notViewed++;
       }
     }
   }
@@ -111,28 +119,44 @@ export class MessengerComponent implements OnInit {
     this.dataService.putGroupImage(file).subscribe((result:any) => this.newGroup.groupImage = result.path);
   }
   toGroupUsersList(list: UserLastMessage[]) {
+    var temp = [];
     for (var i in list) {
-      this.userGroupList.push({ "id": list[i].id, "itemName": list[i].nickName });
+      if (list[i].email != "Group") {
+        temp.push({ "id": list[i].id, "itemName": list[i].nickName });
+      }
     }
+    this.userGroupList = temp;
   }
   saveGroup() {
-    this.newGroup.users?.push({ "id": Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")) ,"itemName": "Me" });
-    this.dataService.postGroup(this.newGroup).subscribe(result => { });
+    this.newGroup.users.push({ "id": Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "itemName": "Me" });
+    this.dataService.postGroup(this.newGroup).subscribe(result => {
+      this.modalService.dismissAll();
+      this.searchUsers();
+    });
   }
   ///////////////////////////////////////////////////////////////GROUPS///////////////////////////////////////////////////////////////////////////////////////////////////////
   ngOnInit(): void {
     this.dataService.getUsers("").subscribe((data: any) => {
       this.usersList = data;
-      this.getMessages(data[0].id);
+      if (data[0].email == "Group") {
+        this.getMessages(data[0].id, data[0].id);
+      } else {
+        this.getMessages(data[0].id, 0);
+      }
       this.currentMessage.to = data[0].id;
-      this.currentMessage.toEmail = data[0].email;
+      if (data[0].email == "Group") {
+        this.currentMessage.togroup = data[0].id;
+      } else {
+        this.currentMessage.toEmail = data[0].email;
+      }
       this.toGroupUsersList(data);
     });
     this.dataService.startConnection();
-    this.dataService.addConnectionListener("Recive", (message: MessageBetweenUsers) => {
+    this.dataService.addConnectionListener("Recive", (message: any) => {
       this.updateUserLastMessage(message, "from");
-      if (this.currentMessage.to == message.from) {
-        this.getMessages(message.from);
+      //this.searchUsers();
+      if ((this.currentMessage.to == message.from) && (this.currentMessage.togroup == message.toGroup)) {
+        this.getMessages(message.from, message.toGroup);
       }
     });
   }

@@ -13,9 +13,9 @@ export class MessengerDataService {
   getUsers(nickname: string) {
     return this.http.get(this.url + localStorage.getItem("CURRENT_COMMUNICATION_ID") + "/" + nickname);
   }
-  getMessages(userid: number) {
+  getMessages(userid: number,togroup:number) {
     this.checkConnection();
-    return this.http.get(this.url + "getmessages/" + localStorage.getItem("CURRENT_COMMUNICATION_ID") + "/" + userid);
+    return this.http.get(this.url + "getmessages/" + localStorage.getItem("CURRENT_COMMUNICATION_ID") + "/" + userid + "/" + togroup);
   }
   postMessage(message: any, fileList: File[]) {
     this.checkConnection();

@@ -47,6 +47,7 @@
           <!-- Sender Message-->
           <div class="media mb-3" *ngIf="message.nickName" [style.width]="message.type == 1? '30%' :'50%'">
             <img src="{{message.accountImage}}" alt="user" width="30" class="rounded-circle">
+            <span style="margin-left:5px;" class="text-muted">{{message.nickName}}</span>
             <div class="media-body ml-3">
               <div class="bg-light rounded py-2 px-3 mb-2" align="{{message.type == 1 ? 'center':''}}">
                 <p *ngIf="message.type == 0" class="text-small mb-0 text-break">{{message.content}}</p>
@@ -100,7 +101,7 @@
       <div class="col-8 pb-5">
         <input type="text" class="form-control rounded form-control-lg mt-3" placeholder="Название группы" [(ngModel)]="newGroup.name" />
         <div class="mt-5 p-2 border rounded">
-          <angular2-multiselect [data]="userGroupList" [settings]="{singleSelection: true, text:'Добавить пользователей',enableSearchFilter: true}" [(ngModel)]="newGroup.users"></angular2-multiselect>
+          <angular2-multiselect [data]="userGroupList" [settings]="{singleSelection: false, text:'Добавить пользователей',enableSearchFilter: true}" [(ngModel)]="newGroup.users"></angular2-multiselect>
         </div>
       </div>
       <div class="d-flex flex-column align-items-center text-center p-3 pb-5 col-4">
