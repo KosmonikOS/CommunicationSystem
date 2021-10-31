@@ -50,6 +50,7 @@
     <None Remove="ClientApp\src\app\registration\registration.data.service.ts" />
     <None Remove="ClientApp\src\app\registration\registration.ts" />
     <None Remove="ClientApp\src\app\toast.service.ts" />
+    <None Remove="ClientApp\src\app\videochat\videochat.data.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,6 +67,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\registration\registration.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\registration\registration.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\toast.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\videochat\videochat.data.service.ts" />
   </ItemGroup>
 
   <ItemGroup>

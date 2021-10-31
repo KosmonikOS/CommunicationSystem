@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { AccountComponent } from './account/account.component';
 import { MessengerComponent } from './messenger/messenger.component'
+import { VideochatComponent } from './videochat/videochat.component'
 ///////////////////////COMPONENTS///////////////////////////////////
 
 //////////////////////MODULES///////////////////////////////////////
@@ -20,7 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
 //import { ChartsModule } from 'ng2-charts';
 import { RegistrationModule } from "./registration/registration.module";
 import { AccountModule } from "./account/account.module";
-import { MessengerModule } from './messenger/messenger.module'
+import { MessengerModule } from './messenger/messenger.module';
+import { VideochatModule } from './videochat/videochat.module'
 //////////////////////MODULES///////////////////////////////////////
 
 
@@ -29,6 +31,7 @@ const routes = [
   { path: "registration", component: RegistrationComponent },
   { path: "account", component: AccountComponent, canActivate: [AuthGuard]},
   { path: "messenger", component: MessengerComponent, canActivate: [AuthGuard] },
+  { path: "videochat", component: VideochatComponent, canActivate: [AuthGuard] },
 ]
 export function tokenGetter() {
   return localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY");
@@ -45,6 +48,7 @@ export function tokenGetter() {
     RegistrationModule,
     AccountModule,
     MessengerModule,
+    VideochatModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
     JwtModule.forRoot({
@@ -53,7 +57,6 @@ export function tokenGetter() {
         allowedDomains: environment.whiteListedHosts
       }
     }),
-    //ChartsModule
   ],
   providers: [
     AuthGuard,

@@ -9,7 +9,7 @@
           <i class="bi bi-search" style="cursor:pointer" (click)="searchUsers()"></i>
         </span>
         <span class="input-group-text border-0" id="search-addon">
-          <i class="bi bi-plus-lg" (click)="openGroupModal(groupModal)"></i>
+          <i style="cursor:pointer" class="bi bi-plus-lg" (click)="openGroupModal(groupModal)"></i>
         </span>
       </div>
       <div class="bg-white pb-2">
@@ -40,32 +40,39 @@
         </div>
       </div>
     </div>
-    <div class="col-9 vh-100">
+    <div class="col-9 vh-100" style="position: relative">
+      <div class="w-100 rounded row text-white" style="min-height: 35px; font-size: 18px; line-height: 35px; background-color: #0275d8">
+        <div class="col-6">{{currentUser.nickName}}</div>
+        <div class="col-6 text-end action-bar">
+          <i class="bi bi-telephone" (click)="videochatDataService.startCall(currentUser)"></i>
+          <i *ngIf="currentUser.email == 'Group'" class="bi bi-gear" (click)="openGroupSettings(currentUser.id,groupModal)"></i>
+        </div>
+      </div>
       <div class="px-4 py-5 chat-box bg-white" style="overflow-y:auto" #messagesArea>
 
         <div *ngFor="let message of messagesList">
-          <!-- Sender Message-->
+           <!--Sender Message-->
           <div class="media mb-3" *ngIf="message.nickName" [style.width]="message.type == 1? '30%' :'50%'">
             <img src="{{message.accountImage}}" alt="user" width="30" class="rounded-circle">
             <span style="margin-left:5px;" class="text-muted">{{message.nickName}}</span>
             <div class="media-body ml-3">
               <div class="bg-light rounded py-2 px-3 mb-2" align="{{message.type == 1 ? 'center':''}}">
                 <p *ngIf="message.type == 0" class="text-small mb-0 text-break">{{message.content}}</p>
-                <img *ngIf="message.type == 1" style="width: 130px;max-height:200px" class="rounded" src="{{message.content}}" />
+                <img *ngIf="message.type == 1" style="width: 130px;max-height:200px" class="rounded" src="{{message.content}}" (click)="openImage(message.content,imageModal)" />
               </div>
               <p class="small text-muted">{{message.date | date:'shortTime'}}</p>
             </div>
           </div>
 
 
-          <!-- Reciever Message-->
+           <!--Reciever Message-->
           <div class="media ml-auto mb-3" *ngIf="!message.nickName">
-            <div class="media-body" style="width:100%" [style.padding-left]="message.type == 1? '70%':'50%'">
+            <div class="media-body message-container" style="width:100%" [style.padding-left]="message.type == 1? '70%':'50%'">
               <div class="bg-primary rounded py-2 px-3 mb-2" align="{{message.type == 1 ? 'center':''}}">
                 <p *ngIf="message.type == 0" class="text-small mb-0 text-white text-break">{{message.content}}</p>
-                <img *ngIf="message.type == 1" style="width: 150px;max-height:240px;" class="rounded" src="{{message.content}}" />
+                <img *ngIf="message.type == 1" style="width: 150px;max-height:240px;" class="rounded" src="{{message.content}}" (click)="openImage(message.content,imageModal)" />
               </div>
-              <p class="small text-muted">{{message.date | date:'shortTime'}}</p>
+              <p class="small text-muted">{{message.date | date:'shortTime'}}<i *ngIf="message.content != 'Сообщение удалено'" class="bi bi-trash text-dark delete-message" (click)="deleteMessage(message.id)"></i></p>
             </div>
           </div>
         </div>
@@ -74,7 +81,7 @@
       </div>
 
       <!-- Typing area -->
-      <form action="#" class="bg-light">
+      <form action="#" class="bg-light" style="position:absolute;bottom:90px;left:3px;right:3px">
         <div class="input-group">
           <input type="text" placeholder="Введите сообшение" aria-describedby="button-addon2" class="form-control form-control-sm rounded-0 border-0 py-4 bg-light" name="content" [(ngModel)]="currentMessage.content" (keyup.enter)="sendMessage()">
           <div class="input-group-append">
@@ -90,9 +97,29 @@
 
     </div>
   </div>
+
+  <ng-template #imageModal let-modal>
+    <div class="modal-header">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body row" style="text-align:center;font-size:36px">
+      <div class="col-1" style="position:relative">
+        <i class="bi bi-chevron-left images-toggles" style="left:10px;" (click)="toggleImage('previous')"></i>
+      </div>
+      <div class="col-10">
+      <img class="img-fluid rounded" src="{{ImagesList[currentImage]}}" />
+      </div>
+      <div class="col-1" style="position:relative">
+        <i class="bi bi-chevron-right images-toggles" style="right:10px" (click)="toggleImage('next')"></i>
+      </div>
+    </div>
+  </ng-template>
+
   <ng-template #groupModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Создание группы</h4>
+      <h4 class="modal-title" id="modal-basic-title">Настройка группы</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -101,7 +128,15 @@
       <div class="col-8 pb-5">
         <input type="text" class="form-control rounded form-control-lg mt-3" placeholder="Название группы" [(ngModel)]="newGroup.name" />
         <div class="mt-5 p-2 border rounded">
-          <angular2-multiselect [data]="userGroupList" [settings]="{singleSelection: false, text:'Добавить пользователей',enableSearchFilter: true}" [(ngModel)]="newGroup.users"></angular2-multiselect>
+          <!--<angular2-multiselect [data]="userGroupList" [settings]="{singleSelection: false, text:'Добавить пользователей',enableSearchFilter: true}" [(ngModel)]="newGroup.users"></angular2-multiselect>-->
+          <angular2-multiselect [data]="userGroupList" [settings]="{singleSelection: false, text:'Добавить пользователей',enableSearchFilter: true}" [(ngModel)]="newGroup.users">
+            <c-item>
+              <ng-template let-item="item">
+                <img [src]="item.accountImage" style="width: 30px;" />
+                <label style="color: #333;padding-left:15px;font-size:18px">{{item.itemName}}</label>
+              </ng-template>
+            </c-item>
+          </angular2-multiselect>
         </div>
       </div>
       <div class="d-flex flex-column align-items-center text-center p-3 pb-5 col-4">
@@ -112,7 +147,7 @@
       </div>
     </div>
     <div class="modal-footer justify-content-center">
-      <button type="button" class="btn btn-outline-dark" (click)="saveGroup()">Создать</button>
+      <button type="button" class="btn btn-outline-dark" (click)="saveGroup()">Сохранить</button>
     </div>
   </ng-template>
   <input type="file" style="display:none" (change)="groupFileSelected($event)" #fileGroupInput />

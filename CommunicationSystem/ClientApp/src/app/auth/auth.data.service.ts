@@ -21,7 +21,7 @@ export class AuthDataService {
     );
   }
   isAuthenticated() {
-    var token = localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY");
+    var token = localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY") || "";
     return token && !this.jwtHelper.isTokenExpired(token);
     
   }

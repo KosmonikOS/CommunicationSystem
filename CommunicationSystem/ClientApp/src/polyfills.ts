@@ -3,6 +3,11 @@
  */
 import '@angular/localize/init';
 import 'url-polyfill';
+import * as process from 'process';
+
+(window as any).global = window;
+(window as any).process = process;
+//(window as any).Buffer = [];
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.

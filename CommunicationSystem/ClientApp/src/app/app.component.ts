@@ -4,11 +4,12 @@ import { ToastService } from "./toast.service"
 import { Account } from "./account/account"
 import { AccountDataService } from "./account/account.data.service"
 import { Router } from '@angular/router';
+import { VideochatDataService } from './videochat/videochat.data.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [AuthDataService, ToastService, AccountDataService]
+  providers: [AuthDataService, ToastService, AccountDataService, VideochatDataService]
 })
 export class AppComponent implements OnInit {
   title = 'ClientApp';
@@ -30,7 +31,6 @@ export class AppComponent implements OnInit {
     if (localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") && window.location.pathname == "/") {
       this.router.navigate(["/messenger"]);
     }
-
   }
 
 }

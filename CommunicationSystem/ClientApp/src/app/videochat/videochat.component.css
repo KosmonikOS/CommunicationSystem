@@ -1,0 +1,33 @@
+.hideVideo{
+    display:none
+}
+.videoFrame {
+  position: relative;
+  height: 80vh;
+  overflow: hidden;
+  background-color: #F6FBFF;
+  border: solid 1px #1266F1;
+  border-radius: 10px
+}
+.videoScreen {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@media screen and (max-width: 992px){
+  .videoFrame {
+    height: 40vh;
+  }
+}
+@media screen and (min-width:576px) and (max-width: 767px){
+  .videoFrame {
+    height: 80vh;
+  }
+}
+.exit:hover {
+  color: white;
+  background-color: #DC3545;
+}
+.leave-icon{
+    transform:rotate(135deg)
+}

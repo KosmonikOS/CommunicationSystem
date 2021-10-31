@@ -27,6 +27,7 @@ namespace CommunicationSystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.Configure<AuthOptions>(Configuration.GetSection("Auth"));
             var authOptions = Configuration.GetSection("Auth").Get<AuthOptions>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
@@ -52,7 +53,7 @@ namespace CommunicationSystem
                             // если запрос направлен хабу
                             var path = context.HttpContext.Request.Path;
                             if (!string.IsNullOrEmpty(accessToken) &&
-                                (path.StartsWithSegments("/messengerhub")))
+                                ((path.StartsWithSegments("/messengerhub")) || (path.StartsWithSegments("/videochathub"))))
                             {
                                 // получаем токен из строки запроса
                                 context.Token = accessToken;
@@ -95,11 +96,13 @@ namespace CommunicationSystem
             }
 
             app.UseRouting();
+            app.UseCors(builder => builder.AllowAnyOrigin());
 
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<VideoChatHub>("/videochathub");
                 endpoints.MapHub<MessengerHub>("/messengerhub");
                 endpoints.MapControllers();
             });

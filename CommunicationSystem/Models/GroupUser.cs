@@ -8,6 +8,7 @@ namespace CommunicationSystem.Models
     public class GroupUser
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string itemName { get; set; }
+        public string AccountImage { get; set; }
     }
 }

@@ -196,6 +196,29 @@ namespace CommunicationSystem.Controllers
             }
             return BadRequest();
         }
+        [HttpDelete("{id}/{email}")]
+        public async Task<IActionResult> Delete(int id,string email)
+        {
+            if(id != 0)
+            {
+                try
+                {
+                    var message = db.Messages.SingleOrDefault(m => m.Id == id);
+                        message.Content = "Сообщение удалено";
+                        message.Type = MessageTypes.Text;
+                        message.ToEmail = email;
+                        db.Messages.Update(message);
+                        await db.SaveChangesAsync();
+                        await SendMessage(message);
+                    return Ok(new {message = message });
+                }
+                catch(Exception e)
+                {
+                    return BadRequest(e);
+                }
+            }
+            return BadRequest();
+        }
         private async Task SendMessage(Message message)
         {
             if (message.ToGroup != 0)
@@ -217,6 +240,23 @@ namespace CommunicationSystem.Controllers
                 await hubContext.Clients.User(message.ToEmail).SendAsync("Recive", message);
             }
         }
+        [HttpGet("groups/{id}")]
+        public Group Get(int id)
+        {
+            Group group = db.Groups.SingleOrDefault(g => g.Id == id);
+            var users = (from utg in db.UsersToGroups
+                         join u in db.Users on utg.UserId equals u.Id
+                         where utg.GroupId == id
+                         select new GroupUser()
+                         {
+                             Id = u.Id,
+                             itemName = u.NickName,
+                             AccountImage = u.accountImage
+                         }
+                         ).ToArray();
+            group.Users = users;
+            return group;
+        }
         [HttpPost("groups/")]
         public async Task<IActionResult> Post(Group group)
         {
@@ -225,16 +265,28 @@ namespace CommunicationSystem.Controllers
                 try
                 {
                     group.GroupImage = group.GroupImage == null ? "/assets/group.png" : group.GroupImage;
-                    await db.Groups.AddAsync(group);
-                    await db.SaveChangesAsync();
-                    var createMessage = new Message() { To = 0, From = 0, Content = $"Группа {group.Name} создана", Date = DateTime.Now, ToGroup = group.Id };
-                    db.Messages.Add(createMessage);
-                    foreach (var user in group.Users)
+                    if (group.Id == 0)
                     {
-                        await db.UsersToGroups.AddAsync(new UsersToGroups() { UserId = user.Id, GroupId = group.Id });
+                        await db.Groups.AddAsync(group);
+                        await db.SaveChangesAsync();
+                        var createMessage = new Message() { To = 0, From = 0, Content = $"Группа {group.Name} создана", Date = DateTime.Now, ToGroup = group.Id };
+                        db.Messages.Add(createMessage);
+                        //foreach (var user in group.users)
+                        //{
+                        //    await db.userstogroups.addasync(new userstogroups() { userid = user.id, groupid = group.id });
+                        //}
+                        await db.UsersToGroups.AddRangeAsync(group.Users.Select(u => new UsersToGroups() { UserId = u.Id, GroupId = group.Id }));
+                        await db.SaveChangesAsync();
+                        await SendMessage(createMessage);
                     }
-                    await db.SaveChangesAsync();
-                    await SendMessage(createMessage);
+                    else
+                    {
+                        db.Groups.Update(group);
+                        db.UsersToGroups.RemoveRange(db.UsersToGroups.Where(utg => utg.GroupId == group.Id));
+                        await db.SaveChangesAsync();
+                        await db.UsersToGroups.AddRangeAsync(group.Users.Select(u => new UsersToGroups() { UserId = u.Id, GroupId = group.Id }));
+                        await db.SaveChangesAsync();
+                    }
                     return Ok();
                 }
                 catch (Exception e)

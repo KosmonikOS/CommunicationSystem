@@ -7,7 +7,7 @@ import { MessageBetweenUsers } from "./messagebetweenusers";
 @Injectable()
 export class MessengerDataService {
   url = "/api/messenger/";
-  hubConnection: signalR.HubConnection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/messengerhub", { accessTokenFactory: () => window.localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY") || "" }).build();
+  hubConnection: signalR.HubConnection = new signalR.HubConnectionBuilder().withUrl("/messengerhub", { accessTokenFactory: () => window.localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY") || "" }).build();
   connectionStatus: boolean = false;
   constructor(private http: HttpClient, private accountDataService: AccountDataService) { }
   getUsers(nickname: string) {
@@ -38,6 +38,12 @@ export class MessengerDataService {
   }
   postGroup(group: any) {
     return this.http.post(this.url + "groups", group);
+  }
+  getGroup(id: number) {
+    return this.http.get(this.url + "groups/" + id);
+  }
+  deleteMessage(id: number,email:string) {
+    return this.http.delete(this.url + id + "/" + email);
   }
   startConnection() {
     this.hubConnection.start().then(() => this.connectionStatus = true).catch((err => console.log(err)));
