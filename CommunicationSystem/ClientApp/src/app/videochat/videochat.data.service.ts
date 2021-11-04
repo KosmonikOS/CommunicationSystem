@@ -1,18 +1,29 @@
 import { Injectable } from "@angular/core"
 import * as signalR from "@microsoft/signalr";
 import { Router } from "@angular/router"
+import { AudioService } from "../audio.service"
 
 @Injectable({ providedIn: 'root' })
 export class VideochatDataService {
   hubConnection: signalR.HubConnection = new signalR.HubConnectionBuilder().withUrl("/videochathub", { accessTokenFactory: () => window.localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY") || "" }).build();
   connectionStatus: boolean = false;
   calling: any = null;
-  constructor(private router: Router) { }
+  caller: any = null;
+  callState: boolean = false;
+  constructor(private router: Router, private audioService: AudioService) { }
 
   startCall(calling: any) {
     calling["Caller"] = true;
     this.calling = calling;
-    this.router.navigate(["/videochat"]);
+    this.hubConnection.invoke("Ask", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), calling);
+    this.audioService.startAudio("assets/caller.mp3");
+    this.callState = true;
+  }
+  resetCall() {
+    this.hubConnection.invoke("React", "ResetCall", this.calling);
+    this.calling = null;
+    this.callState = false;
+    this.audioService.stopAudio();
   }
   startConnection() {
     return new Promise((resolve, reject) => {
@@ -20,7 +31,12 @@ export class VideochatDataService {
         this.connectionStatus = true;
         resolve("");
       }).catch((err => console.log(err)));
-      this.hubConnection.onclose(() => this.connectionStatus = false);
+      this.hubConnection.onclose(() => {
+        this.connectionStatus = false;
+        setTimeout(() => {
+          this.checkConnection();
+        }, 2000);
+      });
     })
   }
   addConnectionListener(name: string, func: any) {
@@ -31,9 +47,9 @@ export class VideochatDataService {
     this.hubConnection.off("DestroyConnection");
     this.hubConnection.off("ToggleVideo");
     this.hubConnection.off("ToggleAudio");
-    this.hubConnection.stop().then(() => {
-      this.connectionStatus = false;
-    });
+    //this.hubConnection.stop().then(() => {
+    //  this.connectionStatus = false;
+    //});
   }
   checkConnection() {
     return new Promise((resolve, reject) => {

@@ -16,7 +16,7 @@ namespace CommunicationSystem.Hubs
         {
             db = context;
         }
-        public async Task StartCall(string caller,UserLastMessage calling,object data)
+        public async Task StartCall(string caller, UserLastMessage calling, object data)
         {
             if (calling.Email == "Group")
             {
@@ -29,15 +29,15 @@ namespace CommunicationSystem.Hubs
                                });
                 foreach (var member in members)
                 {
-                    await this.Clients.User(member.Email).SendAsync("Accept", caller,data);
+                    await this.Clients.User(member.Email).SendAsync("Accept", caller, data);
                 }
             }
             else
             {
-                await this.Clients.User(calling.Email).SendAsync("Accept", caller,data);
+                await this.Clients.User(calling.Email).SendAsync("Accept", caller, data);
             }
         }
-        public async Task ToggleState(UserLastMessage calling,bool state,string type)
+        public async Task Ask(string caller, UserLastMessage calling)
         {
             if (calling.Email == "Group")
             {
@@ -50,7 +50,49 @@ namespace CommunicationSystem.Hubs
                                });
                 foreach (var member in members)
                 {
-                        await this.Clients.User(member.Email).SendAsync("Toggle" + type, state);
+                    await this.Clients.User(member.Email).SendAsync("CallRequest",caller);
+                }
+            }
+            else if (calling.Email != null)
+            {
+                await this.Clients.User(calling.Email).SendAsync("CallRequest",caller);
+            }
+        }
+        public async Task React(string reaction, UserLastMessage calling)
+        {
+            if (calling.Email == "Group")
+            {
+                var members = (from utg in db.UsersToGroups
+                               join u in db.Users on utg.UserId equals u.Id
+                               where utg.GroupId == calling.Id
+                               select new
+                               {
+                                   Email = u.Email
+                               });
+                foreach (var member in members)
+                {
+                    await this.Clients.User(member.Email).SendAsync(reaction);
+                }
+            }
+            else if (calling.Email != null)
+            {
+                await this.Clients.User(calling.Email).SendAsync(reaction);
+            }
+        }
+        public async Task ToggleState(UserLastMessage calling, bool state, string type)
+        {
+            if (calling.Email == "Group")
+            {
+                var members = (from utg in db.UsersToGroups
+                               join u in db.Users on utg.UserId equals u.Id
+                               where utg.GroupId == calling.Id
+                               select new
+                               {
+                                   Email = u.Email
+                               });
+                foreach (var member in members)
+                {
+                    await this.Clients.User(member.Email).SendAsync("Toggle" + type, state);
                 }
             }
             else
@@ -71,10 +113,10 @@ namespace CommunicationSystem.Hubs
                                });
                 foreach (var member in members)
                 {
-                    await this.Clients.User(member.Email).SendAsync("Toggle");
+                    await this.Clients.User(member.Email).SendAsync("DestroyConnection");
                 }
             }
-            else if(calling.Email != null)
+            else if (calling.Email != null)
             {
                 await this.Clients.User(calling.Email).SendAsync("DestroyConnection");
             }

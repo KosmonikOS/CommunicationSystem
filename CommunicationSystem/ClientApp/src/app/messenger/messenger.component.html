@@ -44,7 +44,8 @@
       <div class="w-100 rounded row text-white" style="min-height: 35px; font-size: 18px; line-height: 35px; background-color: #0275d8">
         <div class="col-6">{{currentUser.nickName}}</div>
         <div class="col-6 text-end action-bar">
-          <i class="bi bi-telephone" (click)="videochatDataService.startCall(currentUser)"></i>
+          <i *ngIf="!videochatDataService.callState" class="bi bi-telephone" (click)="videochatDataService.startCall(currentUser)"></i>
+          <i *ngIf="videochatDataService.callState" class="bi bi-x-lg" (click)="videochatDataService.resetCall()"></i>
           <i *ngIf="currentUser.email == 'Group'" class="bi bi-gear" (click)="openGroupSettings(currentUser.id,groupModal)"></i>
         </div>
       </div>

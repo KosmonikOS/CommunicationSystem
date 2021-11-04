@@ -5,17 +5,22 @@ import { Account } from "./account/account"
 import { AccountDataService } from "./account/account.data.service"
 import { Router } from '@angular/router';
 import { VideochatDataService } from './videochat/videochat.data.service';
+import { AudioService } from "./audio.service"
+import { ViewChild } from '@angular/core';
+import { ElementRef } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [AuthDataService, ToastService, AccountDataService, VideochatDataService]
+  providers: [AuthDataService, ToastService, AccountDataService, VideochatDataService, AudioService]
 })
 export class AppComponent implements OnInit {
   title = 'ClientApp';
   isNavOpen: boolean = false;
-  //  currentAccount: Account = this.accountDataService.currenAccount;
-  constructor(private authDataService: AuthDataService, public toastService: ToastService, public accountDataService: AccountDataService, private router: Router) { }
+  dismissType: boolean = true;
+  @ViewChild("callModal") callModal: ElementRef = new ElementRef("");
+  constructor(private authDataService: AuthDataService, public toastService: ToastService, public accountDataService: AccountDataService, private router: Router, public videochatDataService: VideochatDataService, private audioService: AudioService, private modalService: NgbModal) { }
   openNav() {
     this.isNavOpen = !this.isNavOpen;
   }
@@ -24,12 +29,53 @@ export class AppComponent implements OnInit {
   }
   logOut() {
     this.authDataService.logOut();
-    //console.log(this.currentAccount);
+  }
+  acceptCall() {
+    this.router.navigate(["/videochat"]).then(() => {
+      this.audioService.stopAudio();
+      setTimeout(() => {
+        console.log(this.videochatDataService.caller);
+        this.videochatDataService.hubConnection.invoke("React", "AcceptCall", { Email: this.videochatDataService.caller});
+      }, 1000);
+    })
+  }
+  denyCall() {
+    this.videochatDataService.hubConnection.invoke("React", "DenyCall", { Email: this.videochatDataService.caller });
   }
   ngOnInit(): void {
     this.accountDataService.getAccount(localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") || "");
     if (localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") && window.location.pathname == "/") {
       this.router.navigate(["/messenger"]);
+    }
+    this.videochatDataService.addConnectionListener("CallRequest", (caller: any) => {
+      this.dismissType = true;
+      this.videochatDataService.caller = caller;
+      this.audioService.startAudio("assets/calling.mp3");
+      this.modalService.open(this.callModal, { size: "md" }).result.then(() => { }, () => {
+        this.audioService.stopAudio();
+        if (this.dismissType) {
+          this.denyCall();
+        }
+      });
+    })
+    this.videochatDataService.addConnectionListener("AcceptCall", () => {
+      this.router.navigate(["/videochat"]);
+      this.videochatDataService.callState = false;
+      this.audioService.stopAudio();
+    })
+    this.videochatDataService.addConnectionListener("DenyCall", () => {
+      this.toastService.showAlert("Ваш звонок отклонен");
+      this.videochatDataService.callState = false;
+      this.audioService.stopAudio();
+    })
+    this.videochatDataService.addConnectionListener("ResetCall", () => {
+      this.dismissType = false;
+      this.toastService.showAlert("Звонок завершен");
+      this.audioService.stopAudio();
+      this.modalService.dismissAll();
+    })
+    if (this.checkAuth()) {
+      this.videochatDataService.checkConnection();
     }
   }
 

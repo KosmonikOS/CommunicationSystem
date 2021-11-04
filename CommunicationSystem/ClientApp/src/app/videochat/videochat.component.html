@@ -1,22 +1,28 @@
 <div class="container-fluide pt-3 px-4 vh-75" style="position:relative">
-  <div class="vh-100">
+  <div class="vh-100" style="position:relative;">
     <div class="row">
-      <div class="col-sm-6 col-md-12 col-12 col-lg-6 videoFrame">
+      <div class="col-sm-6 col-md-12 col-12 col-lg-6" [class]="screenState?'videoFrame-sm':'videoFrame'">
         <div class="h-100 videoScreen w-100 text-primary" align="center" style="position:relative">
-          <video autoplay #callerVideo class="h-100"></video>
+          <video [class.hideVideo]="!callerVideoState" autoplay #callerVideo class="h-100"></video>
+          <img *ngIf="!callerVideoState" src="{{callerData.Image}}" class="h-100" />
           <i *ngIf="!callerAudioState" class="bi bi-mic-mute bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:20px;font-size:20px"></i>
           <i *ngIf="!callerVideoState" class="bi bi-camera-video-off bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:60px;font-size:20px"></i>
+          <span *ngIf="!callerVideoState" class="nickName">{{callerData.Name}}</span>
         </div>
       </div>
-      <div class="col-sm-6 col-md-12 col-12 col-lg-6 videoFrame">
+      <div class="col-sm-6 col-md-12 col-12 col-lg-6" [class]="screenState?'videoFrame-sm':'videoFrame'">
         <div class="h-100 videoScreen w-100 text-primary" align="center" style="position:relative">
           <video [class.hideVideo]="!mediaConfig.video" autoplay #myVideo class="h-100">
           </video>
           <img *ngIf="!mediaConfig.video" src="{{accountDataService.currentAccount.accountImage}}" class="h-100" />
           <i *ngIf="!myAudioState" class="bi bi-mic-mute bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:20px;font-size:20px"></i>
           <i *ngIf="!myVideoState" class="bi bi-camera-video-off bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:60px;font-size:20px"></i>
+          <span *ngIf="!myVideoState" class="nickName">{{accountDataService.currentAccount.nickName}}</span>
         </div>
       </div>
+    </div>
+    <div [style.display]="screenState ? 'block':'none'" class="screenShare">
+      <video autoplay #screenVideo class="screenVideo"></video>
     </div>
   </div>
   <div class="row" style="position:absolute;bottom:100px;width:300px;left:50%;margin-left:-150px;">
@@ -34,8 +40,8 @@
     </div>
     <div class="col-3" align="center">
       <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleScreen()">
-        <i *ngIf="myScreenState" class="bi bi-window"></i>
-        <img *ngIf="!myScreenState" src="../../assets/window-off.svg" style="width:32px;height:32px;margin-top:-8px" />
+        <i *ngIf="screenState" class="bi bi-window"></i>
+        <img *ngIf="!screenState" src="../../assets/window-off.svg" style="width:32px;height:32px;margin-top:-8px" />
       </button>
     </div>
     <div class="col-3" align="center">
