@@ -88,7 +88,7 @@ export class MessengerComponent implements OnInit {
         val.date = message.date;
       }
       if (type == "from" && (val.id == (message.to == 0 ? message.toGroup : message.from))) {
-        val.notViewed++;
+        val.notViewed += (this.currentMessage.to != message.from && message.toEmail != "Group") || (this.currentMessage.togroup != message.toGroup)? 1 : 0;
         val.content = message.content;
         val.date = message.date;
       }
@@ -163,7 +163,6 @@ export class MessengerComponent implements OnInit {
       }
     }
     this.userGroupList = temp;
-    console.log(temp);
   }
   saveGroup() {
     if (this.newGroup.id == null) {
@@ -204,10 +203,7 @@ export class MessengerComponent implements OnInit {
       if (message.id >= (this.messagesList[this.messagesList.length - 1].id || 0)) {
         this.updateUserLastMessage(message, "from");
       }
-      //this.searchUsers();
-      console.log(message);
-      console.log(this.currentMessage);
-      if ((this.currentMessage.to == message.from) || (this.currentMessage.togroup == message.toGroup)) {
+      if ((this.currentMessage.to == message.from && message.toEmail != "Group") || (this.currentMessage.togroup == message.toGroup)) {
         this.getMessages(message.from, message.toGroup);
       }
     });

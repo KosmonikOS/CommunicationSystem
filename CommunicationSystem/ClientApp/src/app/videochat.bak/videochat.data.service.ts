@@ -1,24 +1,29 @@
 import { Injectable } from "@angular/core"
 import * as signalR from "@microsoft/signalr";
 import { Router } from "@angular/router"
+import { AudioService } from "../audio.service"
 
 @Injectable({ providedIn: 'root' })
 export class VideochatDataService {
-  //hubConnection: signalR.HubConnection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/videochathub", { accessTokenFactory: () => window.localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY") || "" }).build();
   hubConnection: signalR.HubConnection = new signalR.HubConnectionBuilder().withUrl("/videochathub", { accessTokenFactory: () => window.localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY") || "" }).build();
   connectionStatus: boolean = false;
   calling: any = null;
-  constructor(private router: Router) { }
+  caller: any = null;
+  callState: boolean = false;
+  constructor(private router: Router, private audioService: AudioService) { }
 
   startCall(calling: any) {
+    calling["Caller"] = true;
     this.calling = calling;
-    this.router.navigate(["/videochat"]);
-    //this.startConnection();
+    this.hubConnection.invoke("Ask", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), calling);
+    this.audioService.startAudio("assets/caller.mp3");
+    this.callState = true;
   }
-  sendRequestToStartChat(peer: any, calling: any) {
-    //peer.on("signal", (data: any) => {
-    //  this.hubConnection.invoke("StartCall", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), calling, {Data: data,Dst:"RemotePeer" });
-    //});
+  resetCall() {
+    this.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), "ResetCall", this.calling);
+    this.calling = null;
+    this.callState = false;
+    this.audioService.stopAudio();
   }
   startConnection() {
     return new Promise((resolve, reject) => {
@@ -26,15 +31,37 @@ export class VideochatDataService {
         this.connectionStatus = true;
         resolve("");
       }).catch((err => console.log(err)));
-      this.hubConnection.onclose(() => this.connectionStatus = false);
+      this.hubConnection.onclose(() => {
+        this.connectionStatus = false;
+        setTimeout(() => {
+          this.checkConnection();
+        }, 2000);
+      });
     })
   }
   addConnectionListener(name: string, func: any) {
     this.hubConnection.on(name, func);
   }
-  checkConnection() {
-    if (!this.connectionStatus) {
-      this.startConnection();
-    }
+  closeConnection() {
+    this.hubConnection.off("Accept");
+    this.hubConnection.off("DestroyConnection");
+    this.hubConnection.off("ToggleVideo");
+    this.hubConnection.off("ToggleAudio");
+    //this.hubConnection.stop().then(() => {
+    //  this.connectionStatus = false;
+    //});
   }
+  checkConnection() {
+    return new Promise((resolve, reject) => {
+      if (!this.connectionStatus) {
+        this.hubConnection.start().then(() => {
+          this.connectionStatus = true;
+          resolve("");
+        }).catch((err => console.log(err)));
+        this.hubConnection.onclose(() => this.connectionStatus = false);
+      } else {
+        resolve("");
+      };
+    });
+  };
 }

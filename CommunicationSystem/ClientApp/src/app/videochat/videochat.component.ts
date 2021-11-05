@@ -6,6 +6,8 @@ import { AccountDataService } from "../account/account.data.service"
 import { Router } from '@angular/router';
 import { ToastService } from '../toast.service';
 import { decode } from 'punycode';
+import { Member } from './member';
+import { AudioService } from '../audio.service';
 @Component({
   selector: 'app-videochat',
   templateUrl: './videochat.component.html',
@@ -26,13 +28,14 @@ export class VideochatComponent implements OnInit, OnDestroy {
   screenState: boolean = false;
   callerAudioState: boolean = true;
   callerVideoState: boolean = true;
-  callerScreenState: boolean = false;
+  //callerScreenState: boolean = false;
   callerData: any = {};
-  constructor(private dataService: VideochatDataService, public accountDataService: AccountDataService, private router: Router, private toastService: ToastService) { }
+  chatRoom: any = {};
+  constructor(private dataService: VideochatDataService, public accountDataService: AccountDataService, private router: Router, private toastService: ToastService, private audioService: AudioService) { }
   toggleAudio() {
     this.myAudioState = !this.myAudioState;
     if (this.dataService.calling != null) {
-      this.dataService.hubConnection.invoke("ToggleState", this.dataService.calling, this.myAudioState, "Audio");
+      this.dataService.hubConnection.invoke("ToggleState", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), this.dataService.calling, this.myAudioState, "Audio");
     }
   }
   toggleVideo() {
@@ -46,14 +49,14 @@ export class VideochatComponent implements OnInit, OnDestroy {
     }
     this.myVideoState = !this.myVideoState
     if (this.dataService.calling != null) {
-      this.dataService.hubConnection.invoke("ToggleState", this.dataService.calling, this.myVideoState, "Video");
+      this.dataService.hubConnection.invoke("ToggleState", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), this.dataService.calling, this.myVideoState, "Video");
     }
   }
   toggleScreen() {
     this.screenState = !this.screenState;
     this._changeScreenState().then(() => {
       if (this.dataService.calling != null) {
-        this.dataService.hubConnection.invoke("ToggleState", this.dataService.calling, this.screenState, "Screen");
+        this.dataService.hubConnection.invoke("ToggleState", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), this.dataService.calling, this.screenState, "Screen");
       }
     })
   }
@@ -102,58 +105,66 @@ export class VideochatComponent implements OnInit, OnDestroy {
       });
     })
   }
-  async turnOnVideo() {
-    this.mediaConfig = await this.checkMedia();
-    return new Promise((resolve, reject) => {
-      navigator.mediaDevices.getUserMedia(this.mediaConfig).then((stream) => {
-        var video = this.myVideo.nativeElement;
-        video.muted = true;
-        this.loadVideo(video, stream);
-        this.localStream = stream;
+  CheckVideo() {
+    return new Promise(async (resolve, reject) => {
+      if (this.localStream == null) {
+        this.mediaConfig = await this.checkMedia();
+        navigator.mediaDevices.getUserMedia(this.mediaConfig).then((stream) => {
+          var video = this.myVideo.nativeElement;
+          video.muted = true;
+          this.loadVideo(video, stream);
+          this.localStream = stream;
+          resolve("");
+        }).catch((err: any) => { console.log(err) });
+      } else {
         resolve("");
-      }).catch((err: any) => { console.log(err) });
-    });
-  }
-  createInitiatorPeer() {
-    this.localPeer = new SimplePeer({ "initiator": true });
-    this.localPeer.addStream(this.localStream);
-    this.localPeer.on("error", (error: any) => { });
-    this.localPeer.on("connect", () => {
-      this.localPeer.send(this.accountDataService.currentAccount.accountImage + "@img@" + this.accountDataService.currentAccount.nickName);
-    })
-    if (this.dataService.calling != null) {
-      this.localPeer.on("signal", (data: any) => {
-        this.dataService.hubConnection.invoke("StartCall", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), this.dataService.calling, { Data: data, Dst: "RemotePeer" });
-      });
-    }
-  }
-  createRemotePeer() {
-    this.remotePeer = new SimplePeer({ initiator: false });
-    this.remotePeer.on("error", (error: any) => { });
-    this.remotePeer.on("signal", (data: any) => {
-      this.dataService.hubConnection.invoke("StartCall", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), this.dataService.calling, { Data: data, Dst: "LocalPeer" });
-    });
-    this.remotePeer.on("connect", () => {
-      if (this.dataService.calling["Caller"] == false) {
-        this.createInitiatorPeer();
       }
     });
-    this.remotePeer.on("stream", (stream: any) => {
+  }
+  createInitiatorPeer(email: string) {
+    var peer = new SimplePeer({ "initiator": true });
+    peer.addStream(this.localStream);
+    peer.on("error", (error: any) => { });
+    peer.on("connect", () => {
+      peer.send(this.accountDataService.currentAccount.accountImage + "@img@" + this.accountDataService.currentAccount.nickName);
+    })
+    //if (this.dataService.calling != null) {
+    peer.on("signal", (data: any) => {
+      this.dataService.hubConnection.invoke("StartCall", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), { Email: email }, { Data: data, Dst: "RemotePeer" });
+    });
+    //}
+    return peer;
+  }
+  createRemotePeer(email: string) {
+    var peer = new SimplePeer({ initiator: false });
+    peer.on("error", (error: any) => { });
+    peer.on("signal", (data: any) => {
+      this.dataService.hubConnection.invoke("StartCall", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), { Email: email }, { Data: data, Dst: "LocalPeer" });
+    });
+    peer.on("connect", () => {
+      if (this.dataService.calling["Caller"] == false) {
+        this.CheckVideo().then(() => {
+          this.chatRoom[email]["localPeer"] = this.createInitiatorPeer(email);
+        })
+      }
+    });
+    peer.on("stream", (stream: any) => {
       var video = this.callerVideo.nativeElement;
       this.loadVideo(video, stream);
-      this.remoteStream = stream;
+      this.chatRoom[email]["remoteStream"] = stream;
     });
-    this.remotePeer.on("data", (data: any) => {
+    peer.on("data", (data: any) => {
       var decoded = new TextDecoder().decode(data).split("@img@");
-      this.callerData["Name"] = decoded[1];
-      this.callerData["Image"] = decoded[0];
+      this.chatRoom[email]["accountImage"] = decoded[0];
+      this.chatRoom[email]["nickName"] = decoded[1];
     })
+    return peer;
   }
   destroyPeers() {
     this.localPeer?.destroy();
     this.remotePeer?.destroy();
     if (this.localPeer != null) {
-      this.dataService.hubConnection.invoke("DestroyConnection", this.dataService.calling).then(() => {
+      this.dataService.hubConnection.invoke("DestroyConnection", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), this.dataService.calling).then(() => {
         this.dataService.closeConnection();
       })
     } else {
@@ -180,26 +191,16 @@ export class VideochatComponent implements OnInit, OnDestroy {
         this.dataService.calling = { Email: caller, Caller: false };
       }
       if (data.Dst == "RemotePeer") {
-        this.remotePeer.signal(data.Data);
+        this.chatRoom[caller]["remotePeer"].signal(data.Data);
       } else {
-        this.localPeer.signal(data.Data);
+        this.chatRoom[caller]["localPeer"].signal(data.Data);
       }
     });
     this.dataService.addConnectionListener("ToggleVideo", async (state: boolean) => {
-      //var video = this.callerVideo.nativeElement;
-      //if (state) {
-      //  this.loadVideo(video, this.remoteStream);
-      //} else {
-      //  var tracks = await this.remoteStream?.getTracks();
-      //  if (tracks != undefined && tracks[3] != undefined) {
-          
-      //  }
-      //}
       this.callerVideoState = state;
     });
     this.dataService.addConnectionListener("ToggleAudio", (state: boolean) => {
       var video = this.callerVideo.nativeElement;
-      console.log(video);
       video.muted = !state;
       this.callerAudioState = state;
     });
@@ -227,16 +228,53 @@ export class VideochatComponent implements OnInit, OnDestroy {
       this.leaveVideoChat();
       this.toastService.showAlert("Звонок завершен");
     });
+    this.dataService.addConnectionListener("AcceptCall", (email: string) => {
+      this.dataService.hubConnection.invoke("NeedToConnect", email, Object.keys(this.chatRoom)).then(() => {
+        this.createChatMember(email);
+      });
+    });
+    this.dataService.addConnectionListener("OfferToConnect", (members: string[]) => {
+      setTimeout(() => {
+        members.forEach((email) => {
+          if (this.chatRoom[email]["localPeer"] == null) {
+            var peer = this.createInitiatorPeer(email);
+            this.chatRoom[email]["localPeer"] = peer;
+          }
+        })
+      }, 1000)
+    });
   };
+
+  createChatMember(email: string) {
+    var remotePeer = this.createRemotePeer(email);
+    var localPeer = this.createInitiatorPeer(email);
+    this.chatRoom[email] = new Member(localPeer, remotePeer, this.localStream, null);
+  }
+  createRemotePeers() {
+    this.dataService.members.filter((member) => member.email != localStorage.getItem("CURRENT_COMMUNICATION_EMAIL")).forEach((member) => {
+      var email = member.email
+      var remotePeer = this.createRemotePeer(email);
+      this.chatRoom[email] = new Member(null, remotePeer);
+    })
+  }
+  createLocalPeers() {
+    //this.dataService.members.filter((member) => member.email != localStorage.getItem("CURRENT_COMMUNICATION_EMAIL")).forEach((member) => {
+    //  var email = member.email
+    //  var localPeer = this.createInitiatorPeer(email);
+    //  this.chatRoom[email]["localPeer"] = localPeer;
+    //  this.chatRoom[email]["localStream"] = this.localStream;
+    //})
+  } //DELETED
   ngOnInit(): void {
     this.subscribeHubEvents();
-    this.createRemotePeer();
-    this.turnOnVideo().then(() => {
-      this.dataService.checkConnection().then(() => {
-        if (this.dataService.calling != null) {
-          this.createInitiatorPeer();
-        }
-      });
+    if (this.dataService.calling == null) {
+      this.createRemotePeers();
+    }
+    this.CheckVideo().then(() => {
+      this.dataService.checkConnection()
+      //if (this.dataService.calling != null) {
+      //  this.createLocalPeers();
+      //}
     });
   }
   ngOnDestroy(): void {

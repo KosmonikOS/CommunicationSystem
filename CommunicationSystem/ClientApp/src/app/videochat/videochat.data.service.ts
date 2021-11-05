@@ -10,6 +10,7 @@ export class VideochatDataService {
   calling: any = null;
   caller: any = null;
   callState: boolean = false;
+  members: any[] = [];
   constructor(private router: Router, private audioService: AudioService) { }
 
   startCall(calling: any) {
@@ -18,9 +19,10 @@ export class VideochatDataService {
     this.hubConnection.invoke("Ask", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), calling);
     this.audioService.startAudio("assets/caller.mp3");
     this.callState = true;
+    this.router.navigate(["/videochat"]);
   }
   resetCall() {
-    this.hubConnection.invoke("React", "ResetCall", this.calling);
+    this.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), "ResetCall", this.calling);
     this.calling = null;
     this.callState = false;
     this.audioService.stopAudio();

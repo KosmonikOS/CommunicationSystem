@@ -34,21 +34,21 @@ export class AppComponent implements OnInit {
     this.router.navigate(["/videochat"]).then(() => {
       this.audioService.stopAudio();
       setTimeout(() => {
-        console.log(this.videochatDataService.caller);
-        this.videochatDataService.hubConnection.invoke("React", "AcceptCall", { Email: this.videochatDataService.caller});
+        this.videochatDataService.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), "AcceptCall", { Email: this.videochatDataService.caller.email});
       }, 1000);
     })
   }
   denyCall() {
-    this.videochatDataService.hubConnection.invoke("React", "DenyCall", { Email: this.videochatDataService.caller });
+    this.videochatDataService.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), "DenyCall", { Email: this.videochatDataService.caller.email});
   }
   ngOnInit(): void {
     this.accountDataService.getAccount(localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") || "");
     if (localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") && window.location.pathname == "/") {
       this.router.navigate(["/messenger"]);
     }
-    this.videochatDataService.addConnectionListener("CallRequest", (caller: any) => {
+    this.videochatDataService.addConnectionListener("CallRequest", (caller: any,members:any) => {
       this.dismissType = true;
+      this.videochatDataService.members = members;
       this.videochatDataService.caller = caller;
       this.audioService.startAudio("assets/calling.mp3");
       this.modalService.open(this.callModal, { size: "md" }).result.then(() => { }, () => {
@@ -58,11 +58,11 @@ export class AppComponent implements OnInit {
         }
       });
     })
-    this.videochatDataService.addConnectionListener("AcceptCall", () => {
-      this.router.navigate(["/videochat"]);
-      this.videochatDataService.callState = false;
-      this.audioService.stopAudio();
-    })
+    //this.videochatDataService.addConnectionListener("AcceptCall", () => {
+    //  this.videochatDataService.callState = false;
+    //  this.audioService.stopAudio();
+    //  this.router.navigate(["/videochat"]);
+    //})
     this.videochatDataService.addConnectionListener("DenyCall", () => {
       this.toastService.showAlert("Ваш звонок отклонен");
       this.videochatDataService.callState = false;
