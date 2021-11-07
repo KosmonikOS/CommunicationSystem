@@ -1,0 +1,7 @@
+<div class="h-100 videoScreen w-100 text-primary" align="center" style="position:relative">
+  <video #videoFrame [class.hideVideo]="!member.videoState" autoplay class="h-100"></video>
+  <img *ngIf="!member.videoState" src="{{member.accountImage}}" class="h-100" />
+  <i *ngIf="!member.audioState" class="bi bi-mic-mute bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:20px;font-size:20px"></i>
+  <i *ngIf="!member.videoState" class="bi bi-camera-video-off bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:60px;font-size:20px"></i>
+  <span *ngIf="!member.videoState" class="nickName">{{member.nickName}}</span>
+</div>

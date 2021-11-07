@@ -1,7 +1,7 @@
 <div class="container-fluide pt-3 px-4 vh-75" style="position:relative">
-  <div class="vh-100" style="position:relative;">
+  <div class="vh-80" style="position:relative;">
     <div class="row">
-      <div class="col-sm-6 col-md-12 col-12 col-lg-6" [class]="screenState?'videoFrame-sm':'videoFrame'">
+      <!--<div class="col-sm-6 col-md-12 col-12 col-lg-6" [class]="screenState?'videoFrame-sm':'videoFrame'">
         <div class="h-100 videoScreen w-100 text-primary" align="center" style="position:relative">
           <video [class.hideVideo]="!callerVideoState" autoplay #callerVideo class="h-100"></video>
           <img *ngIf="!callerVideoState" src="{{callerData.Image}}" class="h-100" />
@@ -19,7 +19,15 @@
           <i *ngIf="!myVideoState" class="bi bi-camera-video-off bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:60px;font-size:20px"></i>
           <span *ngIf="!myVideoState" class="nickName">{{accountDataService.currentAccount.nickName}}</span>
         </div>
+      </div>-->
+      <div *ngFor="let member of chatRoom | keyvalue" class="col-{{currentSize.width}} videoFrame" [ngStyle]="{'height.vh':currentSize.height,'display':member.value.remoteStream != null ? 'block':'none'}">
+        <videoframe [member]="member.value" [state]="member.value['state']"></videoframe>
       </div>
+
+      <!--<div *ngFor="let key of chatRoomKeys(chatRoom)" class="col-{{currentSize.width}} videoFrame" [ngStyle]="{'height.vh':currentSize.height,'display':chatRoom[key].remoteStream != null ? 'block':'none'}">
+        <videoframe [member]="chatRoom[key]" [state]="chatRoom[key]['state']"></videoframe>
+      </div>-->
+
     </div>
     <div [style.display]="screenState ? 'block':'none'" class="screenShare">
       <video autoplay #screenVideo class="screenVideo"></video>

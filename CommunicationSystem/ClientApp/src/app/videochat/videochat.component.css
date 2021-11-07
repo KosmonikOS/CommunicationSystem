@@ -3,7 +3,7 @@
 }
 .videoFrame {
   position: relative;
-  height: 80vh;
+  /*height: 80vh;*/
   overflow: hidden;
   background-color: #F6FBFF;
   border: solid 1px #1266F1;
