@@ -33,29 +33,29 @@
       <video autoplay #screenVideo class="screenVideo"></video>
     </div>
   </div>
-  <div class="row" style="position:absolute;bottom:100px;width:300px;left:50%;margin-left:-150px;">
-    <div class="col-3" align="center">
-      <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleAudio()">
-        <i *ngIf="myAudioState" class="bi bi-mic"></i>
-        <i *ngIf="!myAudioState" class="bi bi-mic-mute"></i>
-      </button>
-    </div>
-    <div class="col-3" align="center">
-      <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleVideo()">
-        <i *ngIf="myVideoState" class="bi bi-camera-video"></i>
-        <i *ngIf="!myVideoState" class="bi bi-camera-video-off"></i>
-      </button>
-    </div>
-    <div class="col-3" align="center">
-      <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleScreen()">
-        <i *ngIf="screenState" class="bi bi-window"></i>
-        <img *ngIf="!screenState" src="../../assets/window-off.svg" style="width:32px;height:32px;margin-top:-8px" />
-      </button>
-    </div>
-    <div class="col-3" align="center">
-      <button type="button" class="btn btn-md leave-icon rounded-circle border border-2 border-danger text-danger bg-white" style="font-size:32px" (click)="leaveVideoChat()">
-        <i class="bi bi-telephone"></i>
-      </button>
-    </div>
+</div>
+<div class="row" style="position:absolute;bottom:100px;width:300px;left:50%;margin-left:-150px;">
+  <div class="col-3" align="center">
+    <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleState('audioState')">
+      <i *ngIf="chatRoom['myself']['audioState']" class="bi bi-mic"></i>
+      <i *ngIf="!chatRoom['myself']['audioState']" class="bi bi-mic-mute"></i>
+    </button>
+  </div>
+  <div class="col-3" align="center">
+    <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleState('videoState')">
+      <i *ngIf="chatRoom['myself']['videoState']" class="bi bi-camera-video"></i>
+      <i *ngIf="!chatRoom['myself']['videoState']" class="bi bi-camera-video-off"></i>
+    </button>
+  </div>
+  <div class="col-3" align="center">
+    <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleState('screenState')">
+      <i *ngIf="screenState" class="bi bi-window"></i>
+      <img *ngIf="!screenState" src="../../assets/window-off.svg" style="width:32px;height:32px;margin-top:-8px" />
+    </button>
+  </div>
+  <div class="col-3" align="center">
+    <button type="button" class="btn btn-md leave-icon rounded-circle border border-2 border-danger text-danger bg-white" style="font-size:32px" (click)="router.navigate(['/messenger']);">
+      <i class="bi bi-telephone"></i>
+    </button>
   </div>
 </div>

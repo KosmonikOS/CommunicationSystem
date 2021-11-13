@@ -68,47 +68,9 @@ namespace CommunicationSystem.Hubs
         {
             await this.Clients.User(calling).SendAsync("OfferToConnect", members);
         }
-        public async Task ToggleState(string caller, UserLastMessage calling, bool state, string type)
+        public async Task ToggleState(string caller, UserLastMessage calling, string type)
         {
-            if (calling.Email == "Group")
-            {
-                var members = (from utg in db.UsersToGroups
-                               join u in db.Users on utg.UserId equals u.Id
-                               where utg.GroupId == calling.Id && u.Email != caller
-                               select new
-                               {
-                                   Email = u.Email
-                               });
-                foreach (var member in members)
-                {
-                    await this.Clients.User(member.Email).SendAsync("Toggle" + type, state);
-                }
-            }
-            else
-            {
-                await this.Clients.User(calling.Email).SendAsync("Toggle" + type, state);
-            }
-        }
-        public async Task DestroyConnection(string caller, UserLastMessage calling)
-        {
-            if (calling.Email == "Group")
-            {
-                var members = (from utg in db.UsersToGroups
-                               join u in db.Users on utg.UserId equals u.Id
-                               where utg.GroupId == calling.Id && u.Email != caller
-                               select new
-                               {
-                                   Email = u.Email
-                               });
-                foreach (var member in members)
-                {
-                    await this.Clients.User(member.Email).SendAsync("DestroyConnection");
-                }
-            }
-            else if (calling.Email != null)
-            {
-                await this.Clients.User(calling.Email).SendAsync("DestroyConnection");
-            }
+            await this.Clients.User(calling.Email).SendAsync("ToggleState", caller,type);
         }
     }
 }

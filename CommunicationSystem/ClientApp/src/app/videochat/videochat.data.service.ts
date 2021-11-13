@@ -17,7 +17,7 @@ export class VideochatDataService {
     calling["Caller"] = true;
     this.calling = calling;
     this.hubConnection.invoke("Ask", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), calling);
-    this.audioService.startAudio("assets/caller.mp3");
+    //this.audioService.startAudio("assets/caller.mp3");
     this.callState = true;
     this.router.navigate(["/videochat"]);
   }

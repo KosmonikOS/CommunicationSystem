@@ -13,7 +13,6 @@ export class VideoFrameComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    //console.log(this.member.remoteStream);
     this.loadVideo();
     console.log(this.member.remoteStream);
   }
@@ -25,11 +24,13 @@ export class VideoFrameComponent implements OnInit, OnChanges {
   loadVideo() {
     var video = this.video?.nativeElement;
     if (video != null && this.member.remoteStream != null) {
-      video.srcObject = this.member.remoteStream
+      if (video.srcObject != this.member.remoteStream) {
+        video.srcObject = this.member.remoteStream
+      }
       if (this.member.myself) {
         video.muted = true;
       } else {
-        video.muted = this.member.audioState
+        video.muted = !this.member.audioState
       }
     }
   }
