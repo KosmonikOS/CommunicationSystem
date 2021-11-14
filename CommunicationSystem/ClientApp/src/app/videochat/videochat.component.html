@@ -1,6 +1,6 @@
 <div class="container-fluide pt-3 px-4 vh-75" style="position:relative">
   <div class="vh-80" style="position:relative;">
-    <div class="row">
+    <div class="row" [style.display]="!screenState ? '':'none'">
       <!--<div class="col-sm-6 col-md-12 col-12 col-lg-6" [class]="screenState?'videoFrame-sm':'videoFrame'">
         <div class="h-100 videoScreen w-100 text-primary" align="center" style="position:relative">
           <video [class.hideVideo]="!callerVideoState" autoplay #callerVideo class="h-100"></video>
