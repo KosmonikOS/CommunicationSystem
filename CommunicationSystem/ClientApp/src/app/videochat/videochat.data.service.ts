@@ -17,9 +17,13 @@ export class VideochatDataService {
     calling["Caller"] = true;
     this.calling = calling;
     this.hubConnection.invoke("Ask", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), calling);
-    //this.audioService.startAudio("assets/caller.mp3");
     this.callState = true;
-    this.router.navigate(["/videochat"]);
+    console.log(calling.email);
+    if (calling.email != "Group") {
+      this.audioService.startAudio("assets/caller.mp3");
+    } else {
+      this.router.navigate(["/videochat"]);
+    }
   }
   resetCall() {
     this.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), "ResetCall", this.calling);

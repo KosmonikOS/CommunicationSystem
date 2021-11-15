@@ -57,7 +57,7 @@ namespace CommunicationSystem.Hubs
             else if (calling.Email != null)
             {
                 var callerName = db.Users.SingleOrDefault(u => u.Email == caller).NickName;
-                await this.Clients.User(calling.Email).SendAsync("CallRequest", new { email = caller, name = callerName }, new List<object> { new { Email = calling.Email } });
+                await this.Clients.User(calling.Email).SendAsync("CallRequest", new { email = caller, name = callerName }, new List<object> { new { Email = caller } });
             }
         }
         public async Task React(string caller, string reaction, UserLastMessage calling)

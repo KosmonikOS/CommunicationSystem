@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     this.router.navigate(["/videochat"]).then(() => {
       this.audioService.stopAudio();
       setTimeout(() => {
-        this.videochatDataService.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), "AcceptCall", { Email: this.videochatDataService.caller.email});
+        this.videochatDataService.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), !this.videochatDataService.caller.groupId?"AcceptCall":"AddMember", { Email: this.videochatDataService.caller.email});
       }, 1000);
     })
   }
@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
     this.videochatDataService.addConnectionListener("CallRequest", (caller: any,members:any) => {
       this.dismissType = true;
       this.videochatDataService.members = members;
+      console.log(members);
       this.videochatDataService.caller = caller;
       this.audioService.startAudio("assets/calling.mp3");
       this.modalService.open(this.callModal, { size: "md" }).result.then(() => { }, () => {
@@ -58,15 +59,17 @@ export class AppComponent implements OnInit {
         }
       });
     })
-    //this.videochatDataService.addConnectionListener("AcceptCall", () => {
-    //  this.videochatDataService.callState = false;
-    //  this.audioService.stopAudio();
-    //  this.router.navigate(["/videochat"]);
-    //})
-    this.videochatDataService.addConnectionListener("DenyCall", () => {
-      this.toastService.showAlert("Ваш звонок отклонен");
+    this.videochatDataService.addConnectionListener("AcceptCall", () => {
       this.videochatDataService.callState = false;
       this.audioService.stopAudio();
+      this.router.navigate(["/videochat"]);
+    })
+    this.videochatDataService.addConnectionListener("DenyCall", () => {
+      if (!this.videochatDataService.caller.groupId) {
+        this.toastService.showAlert("Ваш звонок отклонен");
+        this.videochatDataService.callState = false;
+        this.audioService.stopAudio();
+      }
     })
     this.videochatDataService.addConnectionListener("ResetCall", () => {
       this.dismissType = false;
