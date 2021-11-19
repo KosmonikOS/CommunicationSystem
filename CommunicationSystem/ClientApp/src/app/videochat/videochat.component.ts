@@ -184,10 +184,16 @@ export class VideochatComponent implements OnInit, OnDestroy {
   }
   destroyPeers() {
     return new Promise((resolve, reject) => {
+      console.log("destroy");
+      console.log(this.chatRoom);
       Object.keys(this.chatRoom).forEach((key) => {
+        console.log(key);
         this.chatRoom[key]?.localPeer?.destroy();
         this.chatRoom[key]?.remotePeer?.destroy();
         this.chatRoom[key]?.remoteStream?.getTracks()?.forEach(function (track: any) {
+          track?.stop();
+        });
+        this.chatRoom[key]?.localStream?.getTracks()?.forEach(function (track: any) {
           track?.stop();
         });
       })
@@ -317,12 +323,13 @@ export class VideochatComponent implements OnInit, OnDestroy {
     this.calculateSize();
   }
   ngOnDestroy(): void {
-    if (Object.keys(this.chatRoom).length > 0) {
+    //if (Object.keys(this.chatRoom).length > 0) {
       //var dcst = this.getConnectedMembers.length > 1 ? "disconnect" : "disconnectAll";
-      var dcst = Object.keys(this.chatRoom).length > 2 || this.dataService?.calling?.email == "Group" ? "disconnect" : "disconnectAll";
+    var dcst = Object.keys(this.chatRoom).length > 2 || this.dataService?.calling?.email == "Group" ? "disconnect" : "disconnectAll";
+    console.log(dcst);
       this.toggleState(dcst).then(() => {
         this.destroyPeers();
       });
-    }
+    //}
   }
 }
