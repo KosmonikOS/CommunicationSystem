@@ -10,6 +10,7 @@ export class VideoFrameComponent implements OnInit, OnChanges {
   @ViewChild("videoFrame", { static: false }) video: ElementRef = new ElementRef(null);
   @Input() member: Member = new Member();
   @Input() state: boolean = false;
+  @Input() screenState: boolean = false;
 
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -1,6 +1,7 @@
-.hideVideo{
-    display:none
+.hideVideo {
+  display: none
 }
+
 .videoFrame {
   position: relative;
   /*height: 80vh;*/
@@ -9,35 +10,57 @@
   border: solid 1px #1266F1;
   border-radius: 10px;
 }
+
 .videoScreen {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
 }
-.videoFrame-sm {
-  position: relative;
+
+.videoPanel-sm {
   overflow: hidden;
-  height: 10vh;
-  background-color: #F6FBFF;
-  border: solid 1px #1266F1;
-  border-radius: 10px;
-  z-index: 1000;
-  max-width: 120px;
+}
+
+.videoState {
+  position: absolute;
+  top: 20px;
+  left: 60px;
+  font-size: 20px
+}
+.videoState-sm {
+  position: absolute;
+  top: 3px;
+  left: 27px;
+  font-size: 12px
+}
+.audioState {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 20px
+}
+.audioState-sm {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  font-size: 12px
 }
 .screenShare {
-  position: absolute;
+  /*position: absolute;
   top: 10px;
-  left: 0px;
+  left: 0px;*/
   height: 80vh;
-  width: 100vw;
+  /*width: 100vw;*/
   background-color: #F6FBFF;
   border: solid 1px #1266F1;
   border-radius: 10px
 }
-.screenVideo{
-    width:100%;
-    height:100%;
+
+.screenVideo {
+  width: 100%;
+  height: 100%;
 }
+
 .nickName {
   position: absolute;
   bottom: 5px;
@@ -45,20 +68,18 @@
   color: #1266F1;
   font-size: 18px;
 }
-@media screen and (max-width: 992px) {
-  .videoFrame {
-    height: 40vh;
+
+@media screen and (min-width:0px) and (max-width: 576px) {
+  .videoPanel-sm {
+    max-height: 10vh;
   }
 }
-@media screen and (min-width:576px) and (max-width: 767px){
-  .videoFrame {
-    height: 80vh;
-  }
-}
+
 .exit:hover {
   color: white;
   background-color: #DC3545;
 }
-.leave-icon{
-    transform:rotate(135deg)
+
+.leave-icon {
+  transform: rotate(135deg)
 }

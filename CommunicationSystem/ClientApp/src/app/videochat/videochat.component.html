@@ -1,61 +1,39 @@
-<div class="container-fluide pt-3 px-4 vh-75" style="position:relative">
-  <div class="vh-80" style="position:relative;">
-    <div class="row" [style.display]="!screenState ? '':'none'">
-      <!--<div class="col-sm-6 col-md-12 col-12 col-lg-6" [class]="screenState?'videoFrame-sm':'videoFrame'">
-        <div class="h-100 videoScreen w-100 text-primary" align="center" style="position:relative">
-          <video [class.hideVideo]="!callerVideoState" autoplay #callerVideo class="h-100"></video>
-          <img *ngIf="!callerVideoState" src="{{callerData.Image}}" class="h-100" />
-          <i *ngIf="!callerAudioState" class="bi bi-mic-mute bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:20px;font-size:20px"></i>
-          <i *ngIf="!callerVideoState" class="bi bi-camera-video-off bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:60px;font-size:20px"></i>
-          <span *ngIf="!callerVideoState" class="nickName">{{callerData.Name}}</span>
+  <div class="container-fluide pt-3 px-4 vh-75" style="position:relative;">
+    <div class="vh-80 row" style="position:relative;">
+      <div [ngClass]="{'col-sm-11 col-12 order-2 order-sm-1':screenState}" [style.display]="screenState ? 'block':'none'" class="screenShare">
+        <video autoplay #screenVideo class="screenVideo"></video>
+      </div>
+      <div [ngClass]="{'col-12':!screenState,'col-sm-1 col-12 order-1 order-sm-2 videoPanel-sm':screenState}" style="overflow:auto;height:81vh">
+        <div class="row">
+          <div *ngFor="let member of chatRoom | keyvalue" class=" col-{{currentSize.width}} videoFrame" [ngStyle]="{'height.vh':currentSize.height,'display':member.value.remoteStream != null ? 'block':'none'}">
+            <videoframe [member]="member.value" [state]="member.value['state']" [screenState]="screenState"></videoframe>
+          </div>
         </div>
       </div>
-      <div class="col-sm-6 col-md-12 col-12 col-lg-6" [class]="screenState?'videoFrame-sm':'videoFrame'">
-        <div class="h-100 videoScreen w-100 text-primary" align="center" style="position:relative">
-          <video [class.hideVideo]="!mediaConfig.video" autoplay #myVideo class="h-100">
-          </video>
-          <img *ngIf="!mediaConfig.video" src="{{accountDataService.currentAccount.accountImage}}" class="h-100" />
-          <i *ngIf="!myAudioState" class="bi bi-mic-mute bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:20px;font-size:20px"></i>
-          <i *ngIf="!myVideoState" class="bi bi-camera-video-off bg-white rounded-circle px-1 border border-primary" style="position:absolute;top:20px;left:60px;font-size:20px"></i>
-          <span *ngIf="!myVideoState" class="nickName">{{accountDataService.currentAccount.nickName}}</span>
-        </div>
-      </div>-->
-      <div *ngFor="let member of chatRoom | keyvalue" class="col-{{currentSize.width}} videoFrame" [ngStyle]="{'height.vh':currentSize.height,'display':member.value.remoteStream != null ? 'block':'none'}">
-        <videoframe [member]="member.value" [state]="member.value['state']"></videoframe>
-      </div>
-
-      <!--<div *ngFor="let key of chatRoomKeys(chatRoom)" class="col-{{currentSize.width}} videoFrame" [ngStyle]="{'height.vh':currentSize.height,'display':chatRoom[key].remoteStream != null ? 'block':'none'}">
-        <videoframe [member]="chatRoom[key]" [state]="chatRoom[key]['state']"></videoframe>
-      </div>-->
-
-    </div>
-    <div [style.display]="screenState ? 'block':'none'" class="screenShare">
-      <video autoplay #screenVideo class="screenVideo"></video>
     </div>
   </div>
-</div>
-<div class="row" style="position:absolute;bottom:100px;width:300px;left:50%;margin-left:-150px;">
-  <div class="col-3" align="center">
-    <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleState('audioState')">
-      <i *ngIf="chatRoom['myself']['audioState']" class="bi bi-mic"></i>
-      <i *ngIf="!chatRoom['myself']['audioState']" class="bi bi-mic-mute"></i>
-    </button>
+  <div class="row" style="position:absolute;bottom:100px;width:300px;left:50%;margin-left:-150px;">
+    <div class="col-3" align="center">
+      <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleState('audioState')">
+        <i *ngIf="chatRoom['myself']['audioState']" class="bi bi-mic"></i>
+        <i *ngIf="!chatRoom['myself']['audioState']" class="bi bi-mic-mute"></i>
+      </button>
+    </div>
+    <div class="col-3" align="center">
+      <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleState('videoState')">
+        <i *ngIf="chatRoom['myself']['videoState']" class="bi bi-camera-video"></i>
+        <i *ngIf="!chatRoom['myself']['videoState']" class="bi bi-camera-video-off"></i>
+      </button>
+    </div>
+    <div class="col-3" align="center">
+      <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleState('screenState')">
+        <i *ngIf="screenState" class="bi bi-window"></i>
+        <img *ngIf="!screenState" src="../../assets/window-off.svg" style="width:32px;height:32px;margin-top:-8px" />
+      </button>
+    </div>
+    <div class="col-3" align="center">
+      <button type="button" class="btn btn-md leave-icon rounded-circle border border-2 border-danger text-danger bg-white" style="font-size:32px" (click)="router.navigate(['/messenger']);">
+        <i class="bi bi-telephone"></i>
+      </button>
+    </div>
   </div>
-  <div class="col-3" align="center">
-    <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleState('videoState')">
-      <i *ngIf="chatRoom['myself']['videoState']" class="bi bi-camera-video"></i>
-      <i *ngIf="!chatRoom['myself']['videoState']" class="bi bi-camera-video-off"></i>
-    </button>
-  </div>
-  <div class="col-3" align="center">
-    <button type="button" class="btn btn-md rounded-circle border border-2 border-primary text-primary bg-white" style="font-size:32px" (click)="toggleState('screenState')">
-      <i *ngIf="screenState" class="bi bi-window"></i>
-      <img *ngIf="!screenState" src="../../assets/window-off.svg" style="width:32px;height:32px;margin-top:-8px" />
-    </button>
-  </div>
-  <div class="col-3" align="center">
-    <button type="button" class="btn btn-md leave-icon rounded-circle border border-2 border-danger text-danger bg-white" style="font-size:32px" (click)="router.navigate(['/messenger']);">
-      <i class="bi bi-telephone"></i>
-    </button>
-  </div>
-</div>

@@ -1,4 +1,4 @@
-import { OnDestroy, QueryList } from '@angular/core';
+import { HostListener, OnDestroy, QueryList } from '@angular/core';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as SimplePeer from 'simple-peer';
 import { VideochatDataService } from './videochat.data.service';
@@ -44,6 +44,7 @@ export class VideochatComponent implements OnInit, OnDestroy {
           break;
         case "screenState":
           await this.toggleScreen();
+          this.calculateSize();
           break;
       }
       this.getConnectedMembers().forEach((member) => {
@@ -66,9 +67,8 @@ export class VideochatComponent implements OnInit, OnDestroy {
   //}
   async toggleScreen() {
     return new Promise((resolve, reject) => {
-      this.screenState = !this.screenState;
       var video = this.screenVideo.nativeElement;
-      if (!this.screenState) {
+      if (this.screenState) {
         video.srcObject = null
         this.screenStream?.getTracks()?.forEach((track: any) => {
           this.getConnectedMembers().forEach((member: string) => {
@@ -77,6 +77,7 @@ export class VideochatComponent implements OnInit, OnDestroy {
           track?.stop();
           this.screenStream = new MediaStream();
         });
+        this.screenState = false
         resolve("");
       } else {
         video.muted = true;
@@ -92,6 +93,7 @@ export class VideochatComponent implements OnInit, OnDestroy {
             })
           });
           video.srcObject = stream;
+          this.screenState = true;
           resolve("");
         });
       };
@@ -173,14 +175,26 @@ export class VideochatComponent implements OnInit, OnDestroy {
     })
     return peer;
   }
+  @HostListener('window:resize', ['$event'])
   calculateSize() {
-    var length = this.currentQuantity;
-    this.currentSize = {
-      width: length <= 4 ? 6 : length <= 9 ? 4 : length <= 16 ? 3 : 2,
-      height: length <= 2 ? 80 : length <= 6 ? 40 : length <= 9 ? 27 : length <= 16 ? 20 : 16
-    };
-    console.log("Length " + length);
-    console.log(this.currentSize);
+    if (!this.screenState) {
+      var length = this.currentQuantity;
+      console.log(length);
+      if (window.innerWidth >= 576) {
+        this.currentSize = {
+          width: length <= 4 ? 6 : length <= 9 ? 4 : length <= 16 ? 3 : 2,
+          height: length <= 2 ? 80 : length <= 6 ? 40 : length <= 9 ? 27 : length <= 16 ? 20 : 16
+        };
+      } else {
+        this.currentSize = {
+          width: length <= 2 ? 12 : 6,
+          height: 40
+        };
+      }
+    } else {
+      this.currentSize.height = 10;
+      this.currentSize.width = window.innerWidth >= 576 ? 12 : 4;
+    }
   }
   destroyPeers() {
     return new Promise((resolve, reject) => {
@@ -232,6 +246,12 @@ export class VideochatComponent implements OnInit, OnDestroy {
           var video = this.screenVideo.nativeElement;
           video.muted = false;
           this.screenState = !this.screenState;
+          if (this.screenState) {
+            this.currentSize.height = 10;
+            this.currentSize.width = window.innerWidth >= 576 ? 12 : 4;
+          } else {
+            this.calculateSize();
+          }
           if (this.screenState) {
             setTimeout(async () => {
               var tracks = await this.chatRoom[caller]?.remoteStream?.getTracks();
@@ -324,12 +344,12 @@ export class VideochatComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     //if (Object.keys(this.chatRoom).length > 0) {
-      //var dcst = this.getConnectedMembers.length > 1 ? "disconnect" : "disconnectAll";
+    //var dcst = this.getConnectedMembers.length > 1 ? "disconnect" : "disconnectAll";
     var dcst = Object.keys(this.chatRoom).length > 2 || this.dataService?.calling?.email == "Group" ? "disconnect" : "disconnectAll";
     console.log(dcst);
-      this.toggleState(dcst).then(() => {
-        this.destroyPeers();
-      });
+    this.toggleState(dcst).then(() => {
+      this.destroyPeers();
+    });
     //}
   }
 }

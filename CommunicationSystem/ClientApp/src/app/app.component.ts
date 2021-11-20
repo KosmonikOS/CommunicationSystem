@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
       this.router.navigate(["/videochat"]);
     })
     this.videochatDataService.addConnectionListener("DenyCall", () => {
-      if (!this.videochatDataService.caller.groupId) {
+      if (this.videochatDataService.calling.email != "Group") {
         this.toastService.showAlert("Ваш звонок отклонен");
         this.videochatDataService.callState = false;
         this.audioService.stopAudio();
