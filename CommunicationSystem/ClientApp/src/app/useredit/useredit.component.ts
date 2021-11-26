@@ -9,7 +9,7 @@ import { ToastService } from "../toast.service"
   selector: 'app-useredit',
   templateUrl: './useredit.component.html',
   styleUrls: ['./useredit.component.css'],
-  providers: [UsereditDataService,AccountDataService]
+  providers: [UsereditDataService, AccountDataService]
 })
 export class UsereditComponent implements OnInit {
   users: Account[] = [];
@@ -39,25 +39,35 @@ export class UsereditComponent implements OnInit {
   saveUser() {
     this.dataService.postUser(this.currentUser).subscribe(result => {
       this.errors = {};
-      this.currentUser == new Account();
-      this.currentRow = -1;
       this.modalService.dismissAll();
     }, error => {
       this.toastService.showError("Ошибка сохранения");
       this.errors = error.error.errors;
     });
   }
+  public dblSetUser(user: Account, i: number) {
+    this.currentUser = user;
+    this.currentRow = i;
+    this.editUser();
+  }
   public setUser(user: Account, i: number) {
     this.currentUser = this.currentUser == user ? new Account() : user;
     this.currentRow = this.currentRow == i ? -1 : i;
   }
+  public openUserModal() {
+    this.modalService.open(this.userModal, { size: "xl" }).result.then(() => {}, () => {
+      this.currentUser == new Account();
+      this.currentRow = -1;
+      this.errors = {};
+    });
+  }
   public createUser() {
     this.currentUser = new Account();
-    this.modalService.open(this.userModal, { size: "xl" });
+    this.openUserModal();
   }
   public editUser() {
     if (this.currentUser.id) {
-      this.modalService.open(this.userModal, { size: "xl" });
+      this.openUserModal();
     }
   }
   public deleteUser() {

@@ -30,10 +30,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="user-row" (click)="setUser(user,i)">
+      <tr *ngFor="let user of users | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="user-row" (click)="setUser(user,i)" (dblclick)="dblSetUser(user,i)">
         <th scope="row">{{user.lastName}} {{user.firstName}} {{user.middleName}}</th>
         <td>{{user.nickName}}</td>
-        <td>{{user.grade}} {{user.gradeLetter}}</td>
+        <td><span *ngIf="user.role == 1">{{user.grade}} {{user.gradeLetter}}</span></td>
         <td>{{user.email}}</td>
         <td>{{user.roleName}}</td>
       </tr>
@@ -68,8 +68,8 @@
             <div class="col-md-6"><label class="labels">Фамилия</label><input type="text" class="form-control" [error]="{Error:errors?.LastName,PlaceHolder:'Фамилия'}" [(ngModel)]="currentUser.lastName"></div>
           </div>
           <div class="row mt-3">
-            <div class="col-md-6"><label class="labels">Отчество</label><input type="text" class="form-control" [error]="{Error:errors?.MiddleName,PlaceHolder:'Отчество'}" [(ngModel)]="currentUser.middleName"></div>
-            <div class="col-md-6">
+            <div [ngClass] ="{'col-md-6':currentUser.role == 1,'col-12':currentUser.role != 1}"><label class="labels">Отчество</label><input type="text" class="form-control" [error]="{Error:errors?.MiddleName,PlaceHolder:'Отчество'}" [(ngModel)]="currentUser.middleName"></div>
+            <div *ngIf="currentUser.role == 1" class="col-md-6">
               <label class="labels">Класс</label>
               <div class="d-flex">
                 <input type="number" class="form-control" [error]="{Error:errors?.Grade,PlaceHolder:''}" [(ngModel)]="currentUser.grade">
