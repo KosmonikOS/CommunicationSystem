@@ -13,7 +13,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [AuthDataService, ToastService, AccountDataService, VideochatDataService, AudioService]
+  providers: [AuthDataService, ToastService, VideochatDataService, AudioService]
 })
 export class AppComponent implements OnInit {
   title = 'ClientApp';

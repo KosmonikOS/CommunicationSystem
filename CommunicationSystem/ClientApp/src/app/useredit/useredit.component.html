@@ -1,0 +1,93 @@
+<div class="container-fluide pt-3 px-4 vh-75" style="position:relative;">
+  <div class="btn-group toolbar w-100">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="createUser()">
+      <i class="bi bi-plus-lg"></i>
+      <span class="d-none d-md-block" style="padding-left:5px">Добавить</span>
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="editUser()">
+      <i class="bi bi-pencil"></i>
+      <span class="d-none d-md-block" style="padding-left:5px">Изменить</span>
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="deleteUser()">
+      <i class="bi bi-trash"></i>
+      <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
+    </button>
+    <div class="input-group w-100">
+        <input placeholder="Поиск" type="search" class="form-control" [(ngModel)] ="search"/>
+      <button class="btn btn-outline-primary">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </div>
+  <table class="table">
+    <thead style="border-bottom: solid 2px #DEE2E6">
+      <tr>
+        <th scope="col">ФИО</th>
+        <th scope="col">Никнейм</th>
+        <th scope="col">Класс</th>
+        <th scope="col">Почта</th>
+        <th scope="col">Роль</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="user-row" (click)="setUser(user,i)">
+        <th scope="row">{{user.lastName}} {{user.firstName}} {{user.middleName}}</th>
+        <td>{{user.nickName}}</td>
+        <td>{{user.grade}} {{user.gradeLetter}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.roleName}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #userModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{currentUser.id ? currentUser.nickName : 'Создание Пользователя'}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body row">
+    <div class="row d-flex justify-content-center align-items-center h-100 w-100">
+      <div class="col-md-4" *ngIf="currentUser.id">
+        <div class="d-flex flex-column align-items-center text-center p-3 pb-5">
+          <div (mouseenter)="enterImage()" (mouseleave)="leaveImage()" [ngClass]="{'darker':isOnImage}" (click)="openFileInput()">
+            <img class="rounded-circle" src="{{currentUser.accountImage}}" style="width:150px;max-height:150px">
+            <i class="bi bi-pencil text-white" [ngClass]="{'icon-mask':isOnImage}" style="font-size:20px;position:absolute"></i>
+          </div>
+          <span class="font-weight-bold">{{currentUser.nickName}}</span>
+          <span class="text-black-50">{{currentUser.email}}</span>
+          <span> </span>
+        </div>
+      </div>
+      <div class="col-md-7 border-right">
+        <div class="p-3 py-5">
+          <div class="row mt-2">
+            <div class="col-md-6"><label class="labels">Имя</label><input type="text" class="form-control" [error]="{Error:errors?.FirstName,PlaceHolder:'Имя'}" [(ngModel)]="currentUser.firstName"></div>
+            <div class="col-md-6"><label class="labels">Фамилия</label><input type="text" class="form-control" [error]="{Error:errors?.LastName,PlaceHolder:'Фамилия'}" [(ngModel)]="currentUser.lastName"></div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6"><label class="labels">Отчество</label><input type="text" class="form-control" [error]="{Error:errors?.MiddleName,PlaceHolder:'Отчество'}" [(ngModel)]="currentUser.middleName"></div>
+            <div class="col-md-6">
+              <label class="labels">Класс</label>
+              <div class="d-flex">
+                <input type="number" class="form-control" [error]="{Error:errors?.Grade,PlaceHolder:''}" [(ngModel)]="currentUser.grade">
+                <input style="width:40px" type="text" class="form-control" [(ngModel)]="currentUser.gradeLetter" />
+              </div>
+
+            </div>
+            <div class="col-md-12"><label class="labels">Никнейм</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'Никнейм'}" [(ngModel)]="currentUser.nickName"></div>
+            <div class="col-md-12"><label class="labels">Почта</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'Почта'}" [(ngModel)]="currentUser.email"></div>
+            <div class="col-md-12"><label class="labels">Номер телефона</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'Номер телефона'}" [(ngModel)]="currentUser.phone"></div>
+            <div class="col-md-12"><label class="labels">Пароль</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'Пароль'}" [(ngModel)]="currentUser.password"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <div class="mt-5 text-center"><button class="btn btn-primary" type="button" (click)="saveUser()">Сохранить</button></div>
+  </div>
+</ng-template>
+<input type="file" style="display:none" (change)="fileSelected($event)" #fileInput />

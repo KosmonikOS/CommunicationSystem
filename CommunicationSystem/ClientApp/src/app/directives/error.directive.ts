@@ -14,6 +14,8 @@ export class ErrorDirective implements OnChanges {
       this.render.setAttribute(this.elem.nativeElement, "placeholder", this.error.Error[0]);
     } else {
       this.render.setAttribute(this.elem.nativeElement, "placeholder", this.error.PlaceHolder);
+      this.render.removeClass(this.elem.nativeElement, "border-danger");
+      this.render.removeClass(this.elem.nativeElement, "input-danger");
     }
     }
 }

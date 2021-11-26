@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { environment } from '../environments/environment.prod';
 import { AuthGuard } from "./guards/auth.guard"
+import { AdminGuard } from "./guards/admin.guard"
+import { TeacherGuard } from "./guards/teacher.guard"
 import { AuthDataService } from "./auth/auth.data.service"
+import { AccountDataService } from "./account/account.data.service"
 ///////////////////////COMPONENTS///////////////////////////////////
 import { AuthComponent } from "./auth/auth.component";
 import { AppComponent } from './app.component';
@@ -9,6 +12,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { AccountComponent } from './account/account.component';
 import { MessengerComponent } from './messenger/messenger.component'
 import { VideochatComponent } from './videochat/videochat.component'
+import { UsereditComponent } from "./useredit/useredit.component"
 ///////////////////////COMPONENTS///////////////////////////////////
 
 //////////////////////MODULES///////////////////////////////////////
@@ -18,11 +22,11 @@ import { RouterModule } from "@angular/router";
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthModule } from "./auth/auth.module";
 import { HttpClientModule } from '@angular/common/http';
-//import { ChartsModule } from 'ng2-charts';
 import { RegistrationModule } from "./registration/registration.module";
 import { AccountModule } from "./account/account.module";
 import { MessengerModule } from './messenger/messenger.module';
-import { VideochatModule } from './videochat/videochat.module'
+import { VideochatModule } from './videochat/videochat.module';
+import { UsereditModule } from "./useredit/useredit.module"
 //////////////////////MODULES///////////////////////////////////////
 
 
@@ -32,6 +36,7 @@ const routes = [
   { path: "account", component: AccountComponent, canActivate: [AuthGuard]},
   { path: "messenger", component: MessengerComponent, canActivate: [AuthGuard] },
   { path: "videochat", component: VideochatComponent, canActivate: [AuthGuard] },
+  { path: "users", component: UsereditComponent, canActivate: [AuthGuard, AdminGuard] }
 ]
 export function tokenGetter() {
   return localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY");
@@ -48,6 +53,7 @@ export function tokenGetter() {
     RegistrationModule,
     AccountModule,
     MessengerModule,
+    UsereditModule,
     VideochatModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
@@ -60,7 +66,10 @@ export function tokenGetter() {
   ],
   providers: [
     AuthGuard,
-    AuthDataService
+    AdminGuard,
+//    TeacherGuard,
+    AuthDataService,
+    AccountDataService
   ],
   bootstrap: [AppComponent]
 })

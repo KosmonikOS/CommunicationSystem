@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VideochatComponent } from './videochat.component';
+import { UsereditComponent } from './useredit.component';
 
-describe('VideochatComponent', () => {
-  let component: VideochatComponent;
-  let fixture: ComponentFixture<VideochatComponent>;
+describe('UsereditComponent', () => {
+  let component: UsereditComponent;
+  let fixture: ComponentFixture<UsereditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VideochatComponent ]
+      declarations: [ UsereditComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VideochatComponent);
+    fixture = TestBed.createComponent(UsereditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

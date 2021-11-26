@@ -2,17 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Models
 {
-    public enum UserRole
-    {
-        User = 1,
-        Teacher = 2,
-        Admin = 3,
-    }
     public class User
     {
         public int Id { get; set; }
@@ -31,7 +26,12 @@ namespace CommunicationSystem.Models
         public string MiddleName { get; set; }
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Введите от 2 до 50 символов")]
         public string LastName { get; set; }
-        public UserRole Role { get; set; } = UserRole.User;
+        [Range(1,11,ErrorMessage ="Некорректный формат класса")]
+        public int Grade { get; set; }
+        public string GradeLetter { get; set; }
+        public int Role { get; set; } = 1;
+        [NotMapped]
+        public string RoleName { get; set; }
         public string IsConfirmed { get; set; }
         public string accountImage { get; set; } = "/assets/user.png";
         [Phone(ErrorMessage ="Некорректный формат телефона")]

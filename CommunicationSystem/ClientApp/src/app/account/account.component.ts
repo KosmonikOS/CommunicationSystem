@@ -28,6 +28,12 @@ export class AccountComponent {
     this.dataService.putImage(file, this.dataService.currentAccount.id).subscribe(result => { this.toastService.showSuccess("Файл загружен") }, error => { this.toastService.showError("Ошибка загрузки") });
   }
   saveAccount() {
-    this.dataService.postAccount().subscribe(result => { this.toastService.showSuccess("Профиль сохранен") }, error => { this.toastService.showError("Ошибка сохранения") });
+    this.dataService.postAccount().subscribe(result => {
+      this.toastService.showSuccess("Профиль сохранен");
+      this.errors = {};
+    }, error => {
+      this.toastService.showError("Ошибка сохранения");
+      this.errors = error.error.errors;
+    });
   }
 }
