@@ -4,15 +4,17 @@ import { UsereditDataService } from "./useredit.data.service"
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountDataService } from "../account/account.data.service"
 import { ToastService } from "../toast.service"
+import { Role } from './role';
 
 @Component({
   selector: 'app-useredit',
   templateUrl: './useredit.component.html',
-  styleUrls: ['./useredit.component.css'],
+  styleUrls: ['./useredit.component.css','../app.component.css'],
   providers: [UsereditDataService, AccountDataService]
 })
 export class UsereditComponent implements OnInit {
   users: Account[] = [];
+  roles: Role[] = [];
   public currentUser: Account = new Account();
   public currentRow: number = -1;
   isOnImage: boolean = false;
@@ -37,9 +39,11 @@ export class UsereditComponent implements OnInit {
     this.accountDataService.putImage(file, this.currentUser.id).subscribe(result => { this.toastService.showSuccess("Файл загружен") }, error => { this.toastService.showError("Ошибка загрузки") });
   }
   saveUser() {
+    this.currentUser.role = Number(this.currentUser.role);
     this.dataService.postUser(this.currentUser).subscribe(result => {
       this.errors = {};
       this.modalService.dismissAll();
+      this.getUsers()
     }, error => {
       this.toastService.showError("Ошибка сохранения");
       this.errors = error.error.errors;
@@ -86,6 +90,9 @@ export class UsereditComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getUsers();
+    this.dataService.getRoles().subscribe((data: any) => {
+      this.roles = data;
+    })
   }
 
 }

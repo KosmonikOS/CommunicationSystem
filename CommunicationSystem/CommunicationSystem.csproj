@@ -53,7 +53,11 @@
     <None Remove="ClientApp\src\app\pipes\pipes.module.ts" />
     <None Remove="ClientApp\src\app\registration\registration.data.service.ts" />
     <None Remove="ClientApp\src\app\registration\registration.ts" />
+    <None Remove="ClientApp\src\app\subjects\subject.data.service.ts" />
+    <None Remove="ClientApp\src\app\subjects\subject.ts" />
+    <None Remove="ClientApp\src\app\tests\test.ts" />
     <None Remove="ClientApp\src\app\toast.service.ts" />
+    <None Remove="ClientApp\src\app\useredit\role.ts" />
     <None Remove="ClientApp\src\app\useredit\useredit.data.service.ts" />
     <None Remove="ClientApp\src\app\videochat\member.ts" />
     <None Remove="ClientApp\src\app\videochat\videochat.data.service.ts" />
@@ -77,7 +81,11 @@
     <TypeScriptCompile Include="ClientApp\src\app\pipes\pipes.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\registration\registration.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\registration\registration.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\subjects\subject.data.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\subjects\subject.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\tests\test.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\toast.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\useredit\role.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\useredit\useredit.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\videochat\videoframe.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\videochat\member.ts" />

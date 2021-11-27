@@ -1,0 +1,60 @@
+<div class="container-fluide pt-3 px-4 vh-75" style="position:relative;">
+  <div class="btn-group toolbar w-100">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex">
+      <i class="bi bi-plus-lg"></i>
+      <span class="d-none d-md-block" style="padding-left:5px">Добавить</span>
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex">
+      <i class="bi bi-pencil"></i>
+      <span class="d-none d-md-block" style="padding-left:5px">Изменить</span>
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex">
+      <i class="bi bi-trash"></i>
+      <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
+    </button>
+    <div class="input-group w-100">
+      <input placeholder="Поиск" type="search" class="form-control" [(ngModel)]="search" />
+      <button class="btn btn-outline-primary">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </div>
+  <table class="table">
+    <thead style="border-bottom: solid 2px #DEE2E6">
+      <tr>
+        <th scope="col">Предмет</th>
+        <th scope="col">Название</th>
+        <th scope="col">Класс</th>
+        <th scope="col">Вопросы</th>
+        <th scope="col">Время</th>
+        <th scope="col">Дата</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let test of tests | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row">
+        <th scope="row"></th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #testModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"></h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body row">
+    
+  </div>
+  <div class="modal-footer justify-content-center">
+    <div class="mt-5 text-center"><button class="btn btn-primary" type="button">Сохранить</button></div>
+  </div>
+</ng-template>
+<input type="file" style="display:none" (change)="fileSelected($event)" #fileInput />

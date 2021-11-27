@@ -9,6 +9,9 @@ export class UsereditDataService {
   getUsers() {
     return this.http.get(this.url);
   }
+  getRoles() {
+    return this.http.get(this.url + "getroles");
+  }
   postUser(user: any) {
     return this.http.post(this.url, user);
   }

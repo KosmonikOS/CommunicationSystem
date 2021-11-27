@@ -26,7 +26,6 @@ namespace CommunicationSystem.Models
         public string MiddleName { get; set; }
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Введите от 2 до 50 символов")]
         public string LastName { get; set; }
-        [Range(1,11,ErrorMessage ="Некорректный формат класса")]
         public int Grade { get; set; }
         public string GradeLetter { get; set; }
         public int Role { get; set; } = 1;

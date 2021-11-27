@@ -1,0 +1,53 @@
+<div class="container-fluide pt-3 px-4 vh-75" style="position:relative;">
+  <div class="btn-group toolbar w-100">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="createSubject()">
+      <i class="bi bi-plus-lg"></i>
+      <span class="d-none d-md-block" style="padding-left:5px">Добавить</span>
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="editSubject()">
+      <i class="bi bi-pencil"></i>
+      <span class="d-none d-md-block" style="padding-left:5px">Изменить</span>
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="deleteSubject()">
+      <i class="bi bi-trash"></i>
+      <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
+    </button>
+    <div class="input-group w-100">
+      <input placeholder="Поиск" type="search" class="form-control" [(ngModel)]="search" />
+      <button class="btn btn-outline-primary">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </div>
+  <table class="table">
+    <thead style="border-bottom: solid 2px #DEE2E6">
+      <tr>
+        <th scope="col">Название</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let subject of subjects | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="setSubject(subject,i)" (dblclick)="dblSetSubject(subject,i)">
+        <th scope="row">{{subject.name}}</th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #subjectModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{currentSubject.id != 0 ? currentSubject.name:'Новый предмет'}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body row">
+    <div class="d-flex justify-content-center align-items-center h-100 w-100">
+      <div>
+        <div><label class="labels">Название</label><input type="text" class="form-control" [error]="{Error:errors?.FirstName,PlaceHolder:'Название'}" [(ngModel)]="currentSubject.name"></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <div class="mt-5 text-center"><button class="btn btn-primary" type="button" (click)="saveSubject()">Сохранить</button></div>
+  </div>
+</ng-template>

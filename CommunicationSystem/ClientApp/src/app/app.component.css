@@ -1,0 +1,10 @@
+.table-row th, tr {
+  min-height: 30px;
+  line-height: 30px;
+  height: 30px;
+}
+
+.toolbar button:focus, button:active {
+  outline: none !important;
+  box-shadow: none;
+}

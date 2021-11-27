@@ -1,20 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsereditComponent } from "./useredit.component"
+import { SubjectsComponent } from "./subjects.component"
+import { FormsModule } from "@angular/forms"
 import { DirectivesModule } from "../directives/directives.module"
 import { PipesModule } from "../pipes/pipes.module"
-import { FormsModule } from "@angular/forms"
-
-
 @NgModule({
   declarations: [
-    UsereditComponent
+    SubjectsComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     DirectivesModule,
-    PipesModule,
+    PipesModule
   ]
 })
-export class UsereditModule { }
+export class SubjectsModule { }

@@ -1,4 +1,5 @@
 ﻿using CommunicationSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace CommunicationSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserEditController : ControllerBase
     {
         private CommunicationContext db;
@@ -41,6 +43,11 @@ namespace CommunicationSystem.Controllers
                         Phone = u.Phone
                     }
                 ).ToList();
+        }
+        [HttpGet("getroles")]
+        public List<Role> GetRoles()
+        {
+            return db.Roles.ToList();
         }
         [HttpPost]
         public IActionResult Post(User user)

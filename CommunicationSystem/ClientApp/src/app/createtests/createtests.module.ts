@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsereditComponent } from "./useredit.component"
+import { CreatetestsComponent } from './createtests.component'
+import { FormsModule } from '@angular/forms';
 import { DirectivesModule } from "../directives/directives.module"
 import { PipesModule } from "../pipes/pipes.module"
-import { FormsModule } from "@angular/forms"
-
 
 @NgModule({
   declarations: [
-    UsereditComponent
-  ],
+    CreatetestsComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -17,4 +15,4 @@ import { FormsModule } from "@angular/forms"
     PipesModule,
   ]
 })
-export class UsereditModule { }
+export class CreatetestsModule { }

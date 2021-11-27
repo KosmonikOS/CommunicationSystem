@@ -13,6 +13,8 @@ import { AccountComponent } from './account/account.component';
 import { MessengerComponent } from './messenger/messenger.component'
 import { VideochatComponent } from './videochat/videochat.component'
 import { UsereditComponent } from "./useredit/useredit.component"
+import { CreatetestsComponent } from './createtests/createtests.component'
+import { SubjectsComponent } from './subjects/subjects.component'
 ///////////////////////COMPONENTS///////////////////////////////////
 
 //////////////////////MODULES///////////////////////////////////////
@@ -26,7 +28,9 @@ import { RegistrationModule } from "./registration/registration.module";
 import { AccountModule } from "./account/account.module";
 import { MessengerModule } from './messenger/messenger.module';
 import { VideochatModule } from './videochat/videochat.module';
-import { UsereditModule } from "./useredit/useredit.module"
+import { UsereditModule } from "./useredit/useredit.module";
+import { CreatetestsModule } from './createtests/createtests.module';
+import { SubjectsModule } from './subjects/subjects.module'
 //////////////////////MODULES///////////////////////////////////////
 
 
@@ -36,7 +40,9 @@ const routes = [
   { path: "account", component: AccountComponent, canActivate: [AuthGuard]},
   { path: "messenger", component: MessengerComponent, canActivate: [AuthGuard] },
   { path: "videochat", component: VideochatComponent, canActivate: [AuthGuard] },
-  { path: "users", component: UsereditComponent, canActivate: [AuthGuard, AdminGuard] }
+  { path: "users", component: UsereditComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: "subjects", component: SubjectsComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: "createtests", component: CreatetestsComponent, canActivate: [AuthGuard, TeacherGuard] },
 ]
 export function tokenGetter() {
   return localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY");
@@ -53,6 +59,7 @@ export function tokenGetter() {
     RegistrationModule,
     AccountModule,
     MessengerModule,
+    CreatetestsModule,
     UsereditModule,
     VideochatModule,
     HttpClientModule,
@@ -67,7 +74,7 @@ export function tokenGetter() {
   providers: [
     AuthGuard,
     AdminGuard,
-//    TeacherGuard,
+    TeacherGuard,
     AuthDataService,
     AccountDataService
   ],
