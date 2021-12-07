@@ -15,6 +15,8 @@ namespace CommunicationSystem.Models
         public DbSet<Role> Roles { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Test> Tests { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Option> Options { get; set; }
         public CommunicationContext(DbContextOptions<CommunicationContext> options): base(options)
         {
             //Database.EnsureCreated();

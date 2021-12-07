@@ -42,6 +42,7 @@
     <None Remove="ClientApp\src\app\auth\auth.data.service.ts" />
     <None Remove="ClientApp\src\app\auth\login.ts" />
     <None Remove="ClientApp\src\app\auth\token.ts" />
+    <None Remove="ClientApp\src\app\createtests\createtests.data.service.ts" />
     <None Remove="ClientApp\src\app\guards\admin.guard.ts" />
     <None Remove="ClientApp\src\app\guards\auth.guard.ts" />
     <None Remove="ClientApp\src\app\guards\teacher.guard.ts" />
@@ -55,6 +56,8 @@
     <None Remove="ClientApp\src\app\registration\registration.ts" />
     <None Remove="ClientApp\src\app\subjects\subject.data.service.ts" />
     <None Remove="ClientApp\src\app\subjects\subject.ts" />
+    <None Remove="ClientApp\src\app\tests\option.ts" />
+    <None Remove="ClientApp\src\app\tests\question.ts" />
     <None Remove="ClientApp\src\app\tests\test.ts" />
     <None Remove="ClientApp\src\app\toast.service.ts" />
     <None Remove="ClientApp\src\app\useredit\role.ts" />
@@ -70,6 +73,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\auth\auth.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth\login.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth\token.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\createtests\createtests.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\guards\admin.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\guards\auth.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\guards\teacher.guard.ts" />
@@ -83,6 +87,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\registration\registration.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\subjects\subject.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\subjects\subject.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\tests\option.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\tests\question.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\tests\test.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\useredit\role.ts" />

@@ -15,7 +15,7 @@ namespace CommunicationSystem.Controllers
     [Authorize]
     public class SubjectsController : ControllerBase
     {
-        private CommunicationContext db;
+        private readonly CommunicationContext db;
         public SubjectsController(CommunicationContext context)
         {
             db = context;

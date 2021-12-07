@@ -1,14 +1,14 @@
 <div class="container-fluide pt-3 px-4 vh-75" style="position:relative;">
   <div class="btn-group toolbar w-100">
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="createTest()">
       <i class="bi bi-plus-lg"></i>
       <span class="d-none d-md-block" style="padding-left:5px">Добавить</span>
     </button>
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="editTest()">
       <i class="bi bi-pencil"></i>
       <span class="d-none d-md-block" style="padding-left:5px">Изменить</span>
     </button>
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="deleteTest()">
       <i class="bi bi-trash"></i>
       <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
     </button>
@@ -26,18 +26,20 @@
         <th scope="col">Название</th>
         <th scope="col">Класс</th>
         <th scope="col">Вопросы</th>
-        <th scope="col">Время</th>
+        <th scope="col">Время(мин)</th>
+        <th scope="col" *ngIf="accountDataService.currentAccount.role == 3">Создатель</th>
         <th scope="col">Дата</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let test of tests | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row">
-        <th scope="row"></th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <th scope="row">{{test.subjectName}}</th>
+        <td>{{test.name}}</td>
+        <td>{{test.grade}}</td>
+        <td>{{test.questions}}</td>
+        <td>{{test.time}}</td>
+        <td scope="col" *ngIf="accountDataService.currentAccount.role == 3">{{test.creatorName}}</td>
+        <td>{{test.date}}</td>
       </tr>
     </tbody>
   </table>
@@ -45,16 +47,150 @@
 
 <ng-template #testModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title"></h4>
+    <h4 class="modal-title" id="modal-basic-title">{{currentTest.id != 0 ? currentTest.name:'Новый тест'}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body row">
-    
+    <div class="d-flex justify-content-center align-items-center h-100 w-100">
+      <div class="row mt-2 py-3">
+        <div class="col-md-6"><label class="labels">Название</label><input type="text" class="form-control" [error]="{Error:errors?.Name,PlaceHolder:'Название'}" [(ngModel)]="currentTest.name"></div>
+        <div class="col-md-6">
+          <label class="labels">Предмет</label>
+          <select class="form-select" [(ngModel)]="currentTest.subject">
+            <option *ngFor="let subject of subjects" value="{{subject.id}}">{{subject.name}}</option>
+          </select>
+        </div>
+        <div class="col-md-6"><label class="labels">Класс</label><input type="text" class="form-control" [error]="{Error:errors?.Grade,PlaceHolder:'Класс'}" [(ngModel)]="currentTest.grade"></div>
+        <div class="col-md-6"><label class="labels">Время(мин)</label><input type="number" class="form-control" [error]="{Error:errors?.Time,PlaceHolder:'Кол-во минут'}" [(ngModel)]="currentTest.time"></div>
+        <div class="btn-group toolbar col-12 pt-5">
+          <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="createQuestion()">
+            <i class="bi bi-plus-lg"></i>
+            <span class="d-none d-md-block" style="padding-left:5px">Добавить</span>
+          </button>
+          <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="editQuestion()">
+            <i class="bi bi-pencil"></i>
+            <span class="d-none d-md-block" style="padding-left:5px">Изменить</span>
+          </button>
+          <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="deleteQuestion()">
+            <i class="bi bi-trash"></i>
+            <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
+          </button>
+          <div class="input-group w-100">
+            <input placeholder="Поиск" type="search" class="form-control" [(ngModel)]="searchQuestions" />
+            <button class="btn btn-outline-primary">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-12 pt-1">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">№</th>
+                <th scope="col">Вопрос</th>
+                <th scope="col">Верный ответ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let question of currentTest.questionsList | filter:searchQuestions;let i = index " [ngClass]="{'bg-primary text-white':currentQuestionRow == i}" class="table-row" (click)="set('question',question,i)" (dblclick)="dblSet('question',question,i)">
+                <th scope="row">{{i + 1}}</th>
+                <td>{{question.text}}</td>
+                <td>{{findRightAnswer(question)}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div class="modal-footer justify-content-center">
-    <div class="mt-5 text-center"><button class="btn btn-primary" type="button">Сохранить</button></div>
+    <div class="text-center"><button class="btn btn-primary" type="button">Сохранить</button></div>
   </div>
 </ng-template>
+
+<ng-template #questionModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{currentQuestion.id != 0 ? '':'Новый вопрос'}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body row">
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="row mt-2 py-3 w-100">
+        <div class="col-md-12"><label class="labels">Вопрос</label><textarea type="text" class="form-control" placeholder="Вопрос" [(ngModel)]="currentQuestion.text"></textarea></div>
+        <div class="btn-group toolbar pt-5">
+          <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="createOption()">
+            <i class="bi bi-plus-lg"></i>
+            <span class="d-none d-md-block" style="padding-left:5px">Добавить</span>
+          </button>
+          <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="editOption()">
+            <i class="bi bi-pencil"></i>
+            <span class="d-none d-md-block" style="padding-left:5px">Изменить</span>
+          </button>
+          <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="deleteOption()">
+            <i class="bi bi-trash"></i>
+            <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
+          </button>
+          <div class="w-100"></div>
+          </div>
+          <div class="col-12 pt-2">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">№</th>
+                  <th scope="col">Ответ</th>
+                  <th scope="col">Верный ответ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let option of currentQuestion.options;let i = index " [ngClass]="{'bg-primary text-white':currentOptionRow == i}" class="table-row">
+                  <th scope="row">{{i + 1}}</th>
+                  <td>{{option.text}}</td>
+                  <td>{{option.isRightOption?'Да':''}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal-footer justify-content-center">
+    <div class="text-center"><button class="btn btn-primary" type="button" (click)="saveQuestion()">Сохранить</button></div>
+  </div>
+</ng-template>
+
+<ng-template #optionModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{currentOption.id != 0 ? '':'Новый Вариант ответа'}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body row">
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="row mt-2 py-3 w-100">
+        <div class="col-md-12"><label class="labels">Ответ</label><input type="text" class="form-control" placeholder="Ответ" [(ngModel)]="currentOption.text" /></div>
+        <div class="col-md-12 pt-1">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="currentOption.isRightOption">
+            <label class="form-check-label">
+              Правильный ответ
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer justify-content-center">
+    <div class="text-center"><button class="btn btn-primary" type="button" (click)="saveOption()">Сохранить</button></div>
+  </div>
+</ng-template>
+
+
 <input type="file" style="display:none" (change)="fileSelected($event)" #fileInput />

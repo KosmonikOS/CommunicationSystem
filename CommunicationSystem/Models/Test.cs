@@ -11,6 +11,8 @@ namespace CommunicationSystem.Models
     {
         public long Id { get; set; }
         public int Subject { get; set; }
+        [NotMapped]
+        public string SubjectName { get; set; }
         [Required(ErrorMessage = "Это поле обязательное")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Введите от 2 до 50 символов")]
         public string Name { get; set; }
@@ -21,6 +23,9 @@ namespace CommunicationSystem.Models
         public int Creator { get; set; }
         [NotMapped]
         public string CreatorName { get; set; }
-        
+        [NotMapped]
+        public List<int> Students { get; set; }
+        [NotMapped]
+        public List<Question> QuestionsList { get; set; }
     }
 }
