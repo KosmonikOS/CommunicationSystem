@@ -32,7 +32,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let test of tests | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row">
+      <tr *ngFor="let test of tests | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="set('test',test,i)" (dblclick)="dblSet('test',test,i)">
         <th scope="row">{{test.subjectName}}</th>
         <td>{{test.name}}</td>
         <td>{{test.grade}}</td>
@@ -47,7 +47,7 @@
 
 <ng-template #testModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{currentTest.id != 0 ? currentTest.name:'Новый тест'}}</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{currentTest.id != -1 ? currentTest.name:'Новый тест'}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -78,7 +78,7 @@
             <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
           </button>
           <div class="input-group w-100">
-            <input placeholder="Поиск" type="search" class="form-control" [(ngModel)]="searchQuestions" />
+            <input placeholder="Поиск" type="search" class="form-control" [(ngModel)]="search" />
             <button class="btn btn-outline-primary">
               <i class="bi bi-search"></i>
             </button>
@@ -94,7 +94,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let question of currentTest.questionsList | filter:searchQuestions;let i = index " [ngClass]="{'bg-primary text-white':currentQuestionRow == i}" class="table-row" (click)="set('question',question,i)" (dblclick)="dblSet('question',question,i)">
+              <tr *ngFor="let question of currentTest.questionsList | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentQuestionRow == i}" class="table-row" (click)="set('question',question,i)" (dblclick)="dblSet('question',question,i)">
                 <th scope="row">{{i + 1}}</th>
                 <td>{{question.text}}</td>
                 <td>{{findRightAnswer(question)}}</td>
@@ -102,18 +102,45 @@
             </tbody>
           </table>
         </div>
+        <div class="btn-group toolbar col-12 pt-5">
+          <div class="input-group w-100">
+            <input placeholder="Поиск по ФИО или классу" type="search" class="form-control" [(ngModel)]="searchUsers" (keyup.enter)="getUsers()" />
+            <button class="btn btn-outline-primary" (click)="getUsers()">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-12 pt-1">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Класс</th>
+                <th scope="col">ФИО</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of userList" class="table-row">
+                <th scope="row">{{user.grade}}</th>
+                <td>{{user.name}}</td>
+                <td><input class="form-check-input" type="checkbox" [(ngModel)]="user.isSelected"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+
     </div>
   </div>
 
   <div class="modal-footer justify-content-center">
-    <div class="text-center"><button class="btn btn-primary" type="button">Сохранить</button></div>
+    <div class="text-center"><button class="btn btn-primary" type="button" (click)="saveTest()">Сохранить</button></div>
   </div>
 </ng-template>
 
 <ng-template #questionModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{currentQuestion.id != 0 ? '':'Новый вопрос'}}</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{currentQuestion.id != -1 ? '':'Новый вопрос'}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -136,26 +163,26 @@
             <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
           </button>
           <div class="w-100"></div>
-          </div>
-          <div class="col-12 pt-2">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">№</th>
-                  <th scope="col">Ответ</th>
-                  <th scope="col">Верный ответ</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let option of currentQuestion.options;let i = index " [ngClass]="{'bg-primary text-white':currentOptionRow == i}" class="table-row">
-                  <th scope="row">{{i + 1}}</th>
-                  <td>{{option.text}}</td>
-                  <td>{{option.isRightOption?'Да':''}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
+        <div class="col-12 pt-2">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">№</th>
+                <th scope="col">Ответ</th>
+                <th scope="col">Верный ответ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let option of currentQuestion.options;let i = index " [ngClass]="{'bg-primary text-white':currentOptionRow == i}" class="table-row" (click)="set('option',option,i)" (dblclick)="dblSet('option',option,i)">
+                <th scope="row">{{i + 1}}</th>
+                <td>{{option.text}}</td>
+                <td>{{option.isRightOption?'Да':''}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -166,7 +193,7 @@
 
 <ng-template #optionModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{currentOption.id != 0 ? '':'Новый Вариант ответа'}}</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{currentOption.id != -1 ? '':'Новый Вариант ответа'}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
     </button>

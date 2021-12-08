@@ -10,4 +10,10 @@ export class CreatetestsDataService {
   getSubjects() {
     return this.http.get("/api/subjects");
   }
+  getUsers(param: string) {
+    return this.http.get(this.url + "getusers/" + param);
+  }
+  delete(id: number, type: string) {
+    return this.http.delete(this.url + type + "/" + id);
+  }
 }

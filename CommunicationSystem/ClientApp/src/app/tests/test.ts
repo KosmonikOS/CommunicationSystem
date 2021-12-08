@@ -9,11 +9,10 @@ export class Test {
     public grade?: number,
     public questions?: number,
     public time?: number,
-    public notFormatedTime?:any,
     public date?: Date,
     public creator?: number,
     public creatorName?: string,
-    public students?: number[],
+    public students: number[] = [],
     public questionsList: Question[] = [],
   ) { };
 }

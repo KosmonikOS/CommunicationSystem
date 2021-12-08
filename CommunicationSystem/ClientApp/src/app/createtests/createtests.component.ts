@@ -6,7 +6,7 @@ import { Subject } from '../subjects/subject';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Question } from '../tests/question';
 import { Option } from '../tests/option';
-import { find } from 'rxjs/operators';
+import { SelectableUser } from './selectableuser';
 
 @Component({
   selector: 'app-createtests',
@@ -22,10 +22,11 @@ export class CreatetestsComponent implements OnInit {
   currentOptionRow: number = -1;
   currentQuestion: Question = new Question();
   currentOption: Option = new Option();
+  userList: SelectableUser[] = [];
   subjects: Subject[] = [];
   errors: any = {};
   search: string = "";
-  searchQuestions: string = "";
+  searchUsers: string = "";
   @ViewChild("testModal") testModal: ElementRef = new ElementRef("");
   @ViewChild("questionModal") questionModal: ElementRef = new ElementRef("");
   @ViewChild("optionModal") optionModal: ElementRef = new ElementRef("");
@@ -83,7 +84,8 @@ export class CreatetestsComponent implements OnInit {
     }
   }
   createTest() {
-    this.currentTest = new Test();
+    this.search = "";
+    this.currentTest = new Test(-1);
     this.openModal(this.testModal);
   }
   editTest() {
@@ -92,22 +94,29 @@ export class CreatetestsComponent implements OnInit {
     }
   }
   deleteTest() {
-
+    if (this.currentTest.id > 0) {
+      this.dataService.delete(this.currentTest.id, "test");
+    }
   }
   createQuestion() {
-    this.currentQuestion = new Question();
+    this.search = "";
+    this.currentQuestion = new Question(-1);
     this.openModal(this.questionModal);
   }
   editQuestion() {
     if (this.currentQuestionRow != -1) {
-    this.openModal(this.questionModal);
-  }
+      this.openModal(this.questionModal);
+    }
   }
   deleteQuestion() {
-
+    if (this.currentQuestion.id > 0) {
+      this.dataService.delete(this.currentQuestion.id, "question");
+    }
+    var index = this.currentTest.questionsList.findIndex(q => q.id == this.currentQuestion.id)
+    this.currentTest.questionsList.splice(index, 1);
   }
   createOption() {
-    this.currentOption = new Option();
+    this.currentOption = new Option(-1);
     this.openModal(this.optionModal);
   }
   editOption() {
@@ -116,26 +125,34 @@ export class CreatetestsComponent implements OnInit {
     }
   }
   deleteOption() {
-
+    if (this.currentOption.id > 0) {
+      this.dataService.delete(this.currentOption.id, "option");
+    }
+    var index = this.currentQuestion.options.findIndex(o => o.id == this.currentOption.id)
+    this.currentQuestion.options.splice(index, 1);
   }
   saveQuestion() {
-    if (this.currentQuestion.id != 0) {
+    if (this.currentQuestion.id != -1) {
       this.currentTest.questionsList[this.currentTest.questionsList.findIndex(q => q.id == this.currentQuestion.id)] = this.currentQuestion;
     } else {
+      this.currentQuestion.id = Math.round((Math.random() * -1000));
       this.currentTest.questionsList.push(this.currentQuestion);
       this.currentTest.questions = this.currentTest.questionsList.length;
     }
     this.modalService.dismissAll();
   }
   saveOption() {
-    if (this.currentOption.id != 0) {
+    if (this.currentOption.id != -1) {
       this.currentQuestion.options[this.currentQuestion.options.findIndex(o => o.id == this.currentOption.id)] = this.currentOption;
     } else {
+      this.currentOption.id = Math.round((Math.random() * -1000));
       this.currentQuestion.options.push(this.currentOption);
     }
     this.modalService.dismissAll();
   }
   saveTest() {
+    this.currentTest.creator = this.accountDataService.currentAccount.id;
+    this.currentTest.questions = this.currentTest.questionsList.length;
     console.log(this.currentTest);
     this.modalService.dismissAll();
   }
@@ -152,6 +169,19 @@ export class CreatetestsComponent implements OnInit {
     this.dataService.getTests(this.accountDataService.currentAccount.id).subscribe((data: any) => {
       this.tests = data;
     });
+  }
+  getUsers() {
+    this.dataService.getUsers(this.searchUsers).subscribe((data:any) => {
+      this.userList = data;
+    })
+  }
+  addTestMember(id: number, isSelected: boolean) {
+    if (isSelected) {
+      var index = this.currentTest.students.indexOf(id);;
+      this.currentTest.students?.splice(index, 1);
+    } else {
+      this.currentTest.students?.push(id);
+    }
   }
   ngOnInit(): void {
     this.dataService.getSubjects().subscribe((data: any) => {
