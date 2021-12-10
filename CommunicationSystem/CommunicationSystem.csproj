@@ -43,7 +43,7 @@
     <None Remove="ClientApp\src\app\auth\login.ts" />
     <None Remove="ClientApp\src\app\auth\token.ts" />
     <None Remove="ClientApp\src\app\createtests\createtests.data.service.ts" />
-    <None Remove="ClientApp\src\app\createtests\selectableuser.ts" />
+    <None Remove="ClientApp\src\app\createtests\testmember.ts" />
     <None Remove="ClientApp\src\app\guards\admin.guard.ts" />
     <None Remove="ClientApp\src\app\guards\auth.guard.ts" />
     <None Remove="ClientApp\src\app\guards\teacher.guard.ts" />
@@ -75,7 +75,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\auth\login.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth\token.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\createtests\createtests.data.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\createtests\selectableuser.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\createtests\testmember.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\guards\admin.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\guards\auth.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\guards\teacher.guard.ts" />

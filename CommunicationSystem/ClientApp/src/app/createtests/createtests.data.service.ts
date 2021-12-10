@@ -16,4 +16,7 @@ export class CreatetestsDataService {
   delete(id: number, type: string) {
     return this.http.delete(this.url + type + "/" + id);
   }
+  postTest(test: any) {
+    return this.http.post(this.url, test);
+  }
 }

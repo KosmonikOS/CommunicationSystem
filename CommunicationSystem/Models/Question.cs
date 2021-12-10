@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace CommunicationSystem.Models
 {
+    public enum QuestionType
+    {
+        Single = 0,
+        Multy = 1,
+        OpenWhithCheck = 2,
+        Open = 3
+    }
     public class Question
     {
         public int Id { get; set; }
@@ -13,5 +20,6 @@ namespace CommunicationSystem.Models
         [NotMapped]
         public List<Option> Options { get; set; }
         public string Text { get; set; }
+        public QuestionType QuestionType { get; set; } = QuestionType.Single;
     }
 }

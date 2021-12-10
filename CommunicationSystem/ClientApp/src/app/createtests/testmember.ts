@@ -1,8 +1,10 @@
-export class SelectableUser {
+export class TestMember {
   constructor(
-    public id: number,
+    public testId: number,
+    public userId: number,
     public name: string,
     public grade: string,
     public isSelected: boolean,
+    public id: number = 0,
   ) { };
 }

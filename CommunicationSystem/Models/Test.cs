@@ -13,10 +13,8 @@ namespace CommunicationSystem.Models
         public int Subject { get; set; }
         [NotMapped]
         public string SubjectName { get; set; }
-        [Required(ErrorMessage = "Это поле обязательное")]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "Введите от 2 до 50 символов")]
         public string Name { get; set; }
-        public int Grade { get; set; }
+        public string Grade { get; set; }
         public int Questions { get; set; }
         public long Time {get;set;}
         public DateTime Date { get; set; }
@@ -24,7 +22,7 @@ namespace CommunicationSystem.Models
         [NotMapped]
         public string CreatorName { get; set; }
         [NotMapped]
-        public List<int> Students { get; set; }
+        public List<UsersToTests> Students { get; set; }
         [NotMapped]
         public List<Question> QuestionsList { get; set; }
     }

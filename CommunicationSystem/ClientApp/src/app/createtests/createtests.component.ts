@@ -6,13 +6,15 @@ import { Subject } from '../subjects/subject';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Question } from '../tests/question';
 import { Option } from '../tests/option';
-import { SelectableUser } from './selectableuser';
+import { ToastService } from '../toast.service';
+import { TestMember } from './testmember';
+import { QuestionType } from "../tests/question"
 
 @Component({
   selector: 'app-createtests',
   templateUrl: './createtests.component.html',
   styleUrls: ['./createtests.component.css', '../app.component.css'],
-  providers: [CreatetestsDataService]
+  providers: [CreatetestsDataService, ToastService]
 })
 export class CreatetestsComponent implements OnInit {
   tests: Test[] = [];
@@ -22,7 +24,7 @@ export class CreatetestsComponent implements OnInit {
   currentOptionRow: number = -1;
   currentQuestion: Question = new Question();
   currentOption: Option = new Option();
-  userList: SelectableUser[] = [];
+  userList: TestMember[] = [];
   subjects: Subject[] = [];
   errors: any = {};
   search: string = "";
@@ -31,7 +33,8 @@ export class CreatetestsComponent implements OnInit {
   @ViewChild("questionModal") questionModal: ElementRef = new ElementRef("");
   @ViewChild("optionModal") optionModal: ElementRef = new ElementRef("");
   tempModals: ElementRef[] = [];
-  constructor(private dataService: CreatetestsDataService, public accountDataService: AccountDataService, private modalService: NgbModal) { }
+  questionTypes = QuestionType
+  constructor(private dataService: CreatetestsDataService, public accountDataService: AccountDataService, private modalService: NgbModal, private toastService: ToastService) { }
 
   public dblSet(objectToSet: any, object: any, i: number) {
     this.set(objectToSet, object, i, true);
@@ -91,11 +94,15 @@ export class CreatetestsComponent implements OnInit {
   editTest() {
     if (this.currentRow != -1) {
       this.openModal(this.testModal);
+      this.userList = this.currentTest.students;
+      console.log(this.userList);
     }
   }
   deleteTest() {
     if (this.currentTest.id > 0) {
-      this.dataService.delete(this.currentTest.id, "test");
+      this.dataService.delete(this.currentTest.id, "test").subscribe(() => {
+        this.getTests();
+      });
     }
   }
   createQuestion() {
@@ -110,7 +117,7 @@ export class CreatetestsComponent implements OnInit {
   }
   deleteQuestion() {
     if (this.currentQuestion.id > 0) {
-      this.dataService.delete(this.currentQuestion.id, "question");
+      this.dataService.delete(this.currentQuestion.id, "question").subscribe(() => { });
     }
     var index = this.currentTest.questionsList.findIndex(q => q.id == this.currentQuestion.id)
     this.currentTest.questionsList.splice(index, 1);
@@ -126,12 +133,13 @@ export class CreatetestsComponent implements OnInit {
   }
   deleteOption() {
     if (this.currentOption.id > 0) {
-      this.dataService.delete(this.currentOption.id, "option");
+      this.dataService.delete(this.currentOption.id, "option").subscribe(() => { });
     }
     var index = this.currentQuestion.options.findIndex(o => o.id == this.currentOption.id)
     this.currentQuestion.options.splice(index, 1);
   }
   saveQuestion() {
+    this.currentQuestion.questionType = Number(this.currentQuestion.questionType);
     if (this.currentQuestion.id != -1) {
       this.currentTest.questionsList[this.currentTest.questionsList.findIndex(q => q.id == this.currentQuestion.id)] = this.currentQuestion;
     } else {
@@ -153,8 +161,13 @@ export class CreatetestsComponent implements OnInit {
   saveTest() {
     this.currentTest.creator = this.accountDataService.currentAccount.id;
     this.currentTest.questions = this.currentTest.questionsList.length;
-    console.log(this.currentTest);
-    this.modalService.dismissAll();
+    this.currentTest.subject = Number(this.currentTest.subject);
+    this.dataService.postTest(this.currentTest).subscribe(() => {
+      this.modalService.dismissAll();
+      this.getTests();
+    }, () => {
+      this.toastService.showError("Ошибка сохранения");
+    })
   }
   findRightAnswer(question: Question) {
     let answer = "";
@@ -168,19 +181,20 @@ export class CreatetestsComponent implements OnInit {
   getTests() {
     this.dataService.getTests(this.accountDataService.currentAccount.id).subscribe((data: any) => {
       this.tests = data;
+      console.log(data);
     });
   }
   getUsers() {
-    this.dataService.getUsers(this.searchUsers).subscribe((data:any) => {
-      this.userList = data;
+    this.dataService.getUsers(this.searchUsers).subscribe((data: any) => {
+      this.userList = this.currentTest.students.concat(data);
     })
   }
-  addTestMember(id: number, isSelected: boolean) {
-    if (isSelected) {
-      var index = this.currentTest.students.indexOf(id);;
+  addTestMember(user: TestMember) {
+    if (!user.isSelected) {
+      var index = this.currentTest.students.findIndex(s => s.userId == user.id);
       this.currentTest.students?.splice(index, 1);
     } else {
-      this.currentTest.students?.push(id);
+      this.currentTest.students?.push(new TestMember(this.currentTest.id, user.userId, user.name, user.grade, user.isSelected));
     }
   }
   ngOnInit(): void {

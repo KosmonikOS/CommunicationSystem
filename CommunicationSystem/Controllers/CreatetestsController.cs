@@ -37,6 +37,15 @@ namespace CommunicationSystem.Controllers
                         Questions = t.Questions,
                         Time = t.Time,
                         Subject = t.Subject,
+                        Students = (from s in db.UsersToTests
+                                    join u in db.Users on s.UserId equals u.Id
+                                    where s.TestId == t.Id
+                                    select new UsersToTests() {
+                                       Name = u.FirstName + " " +  u.LastName + " " + u.MiddleName,
+                                       Grade = u.Grade + " " + u.GradeLetter,
+                                       UserId = u.Id,
+                                       IsSelected = true
+                                    }).ToList(),
                         SubjectName = s.Name,
                         QuestionsList = (from q in db.Questions
                                          where q.TestId == t.Id
@@ -45,6 +54,7 @@ namespace CommunicationSystem.Controllers
                                              Id = q.Id,
                                              TestId = q.Id,
                                              Text = q.Text,
+                                             QuestionType = q.QuestionType,
                                              Options = (from o in db.Options
                                                         where o.QuestionId == q.Id
                                                         select new Option()
@@ -59,44 +69,121 @@ namespace CommunicationSystem.Controllers
                     }).ToList();
         }
         [HttpGet("getusers/{param}")]
-        public List<SelectableUser> GetUsers(string param)
+        public List<UsersToTests> GetUsers(string param)
         {
-            var grade = 0;
-            return (from u in db.Users
-                    where (Int32.TryParse(param, out grade) && grade == u.Grade) || param.Contains(u.FirstName) || param.Contains(u.MiddleName) || param.Contains(u.LastName)
-                    select new SelectableUser()
-                    {
-                        Id = u.Id,
-                        Name = u.LastName + " " + u.FirstName + " " + u.MiddleName,
-                        Grade = u.Grade +" " + u.GradeLetter
+            if (param != "")
+            {
+                var grade = 0;
+                return (from u in db.Users
+                        where (Int32.TryParse(param, out grade) && grade == u.Grade) || (u.FirstName + " " + u.MiddleName + " " + u.LastName).ToLower().Contains(param.ToLower())
+                        select new UsersToTests()
+                        {
+                            UserId = u.Id,
+                            Name = u.LastName + " " + u.FirstName + " " + u.MiddleName,
+                            Grade = u.Grade + " " + u.GradeLetter
 
+                        }
+                        ).ToList();
+            }
+            return new List<UsersToTests>() { };
+        }
+        [HttpPost]
+        public IActionResult Post(Test test)
+        {
+            if (test != null)
+            {
+                try
+                {
+                    test.Date = DateTime.Now;
+                    if (test.Id > 0)
+                    {
+                        db.Tests.Update(test);
+                        var prestudents = db.UsersToTests.Where(s => s.TestId == test.Id).ToList();
+                        db.UsersToTests.RemoveRange(prestudents);
                     }
-                    ).ToList();
+                    else
+                    {
+                        test.Id = 0;
+                        db.Tests.Add(test);
+                        db.SaveChanges();
+                    }
+                    foreach (var question in test.QuestionsList)
+                    {
+                        if (question.Id > 0)
+                        {
+                            db.Questions.Update(question);
+                        }
+                        else
+                        {
+                            question.TestId = (int)test.Id;
+                            question.Id = 0;
+                            db.Questions.Add(question);
+                            db.SaveChanges();
+                        }
+                        foreach (var option in question.Options)
+                        {
+                            if (option.Id > 0)
+                            {
+                                db.Options.Update(option);
+                            }
+                            else
+                            {
+                                option.QuestionId = question.Id;
+                                option.Id = 0;
+                                db.Options.Add(option);
+                            }
+                        }
+                    }
+                    foreach(var student in test.Students)
+                    {
+                        student.TestId = (int)test.Id;
+                        db.UsersToTests.Add(student);
+                    }
+                    db.SaveChanges();
+                    return Ok();
+                }
+                catch(Exception e)
+                {
+                    return BadRequest(e);
+                }
+            }
+            return BadRequest();
         }
         [HttpDelete("{type}/{id}")]
-        public IActionResult Delete(string type,int id)
+        public IActionResult Delete(string type, int id)
         {
-            if(type != null && id != 0) {
+            if (type != null && id != 0)
+            {
                 try
                 {
                     switch (type)
                     {
                         case "test":
-                            var test = this.db.Tests.SingleOrDefault(t => t.Id == id);
-                            this.db.Tests.Remove(test);
+                            var test = db.Tests.SingleOrDefault(t => t.Id == id);
+                            var questions = db.Questions.Where(q => q.TestId == test.Id);
+                            foreach(var q in questions)
+                            {
+                                var opts = db.Options.Where(o => o.QuestionId == q.Id);
+                                db.Options.RemoveRange(opts);
+                            }
+                            db.Questions.RemoveRange(questions);
+                            db.Tests.Remove(test);
                             break;
                         case "question":
-                            var question = this.db.Questions.SingleOrDefault(q => q.Id == id);
-                            this.db.Questions.Remove(question);
+                            var question = db.Questions.SingleOrDefault(q => q.Id == id);
+                            var options = db.Options.Where(o => o.QuestionId == question.Id);
+                            db.Options.RemoveRange(options);
+                            db.Questions.Remove(question);
                             break;
                         case "option":
-                            var option= this.db.Options.SingleOrDefault(o => o.Id == id);
-                            this.db.Options.Remove(option);
+                            var option = db.Options.SingleOrDefault(o => o.Id == id);
+                            db.Options.Remove(option);
                             break;
                     }
+                    db.SaveChanges();
                     return Ok();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return BadRequest(e);
                 }

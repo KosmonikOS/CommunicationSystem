@@ -39,7 +39,7 @@
         <td>{{test.questions}}</td>
         <td>{{test.time}}</td>
         <td scope="col" *ngIf="accountDataService.currentAccount.role == 3">{{test.creatorName}}</td>
-        <td>{{test.date}}</td>
+        <td>{{test.date | date:'MM.dd.yyyy'}}</td>
       </tr>
     </tbody>
   </table>
@@ -123,7 +123,7 @@
               <tr *ngFor="let user of userList" class="table-row">
                 <th scope="row">{{user.grade}}</th>
                 <td>{{user.name}}</td>
-                <td><input class="form-check-input" type="checkbox" [(ngModel)]="user.isSelected"></td>
+                <td><input class="form-check-input" type="checkbox" [(ngModel)]="user.isSelected" (change)="addTestMember(user)"></td>
               </tr>
             </tbody>
           </table>
@@ -149,6 +149,12 @@
     <div class="d-flex justify-content-center align-items-center">
       <div class="row mt-2 py-3 w-100">
         <div class="col-md-12"><label class="labels">Вопрос</label><textarea type="text" class="form-control" placeholder="Вопрос" [(ngModel)]="currentQuestion.text"></textarea></div>
+        <div class="col-md-15">
+          <label class="labels">Тип вопроса</label>
+          <select class="form-select" [(ngModel)]="currentQuestion.questionType">
+            <option *ngFor="let type of questionTypes" value="{{type.value}}">{{type.name}}</option>
+          </select>
+        </div>
         <div class="btn-group toolbar pt-5">
           <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="createOption()">
             <i class="bi bi-plus-lg"></i>
