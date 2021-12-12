@@ -3,15 +3,17 @@ using System;
 using CommunicationSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CommunicationSystem.Migrations
 {
     [DbContext(typeof(CommunicationContext))]
-    partial class CommunicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211211123506_StudentsAnswer")]
+    partial class StudentsAnswer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,7 +150,7 @@ namespace CommunicationSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StudentAnswers");
+                    b.ToTable("studentAnswers");
                 });
 
             modelBuilder.Entity("CommunicationSystem.Models.Subject", b =>
@@ -279,12 +281,6 @@ namespace CommunicationSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Mark")
-                        .HasColumnType("integer");
 
                     b.Property<int>("TestId")
                         .HasColumnType("integer");

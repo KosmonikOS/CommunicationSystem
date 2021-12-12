@@ -12,5 +12,7 @@ export class Question {
     public options: Option[] = [],
     public text?: string,
     public questionType: number = 0,
+    public image?: string,
+    public studentAnswers: any[] = [],
   ) { }
 }

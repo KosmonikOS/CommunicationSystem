@@ -59,7 +59,7 @@ export class UsereditComponent implements OnInit {
     this.currentRow = this.currentRow == i ? -1 : i;
   }
   public openUserModal() {
-    this.modalService.open(this.userModal, { size: "xl" }).result.then(() => {}, () => {
+    this.modalService.open(this.userModal, { size: "xl", "scrollable": true }).result.then(() => {}, () => {
       this.currentUser == new Account();
       this.currentRow = -1;
       this.errors = {};

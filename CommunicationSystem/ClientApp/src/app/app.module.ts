@@ -15,6 +15,7 @@ import { VideochatComponent } from './videochat/videochat.component'
 import { UsereditComponent } from "./useredit/useredit.component"
 import { CreatetestsComponent } from './createtests/createtests.component'
 import { SubjectsComponent } from './subjects/subjects.component'
+import {TestsComponent} from "./tests/tests.component"
 ///////////////////////COMPONENTS///////////////////////////////////
 
 //////////////////////MODULES///////////////////////////////////////
@@ -31,18 +32,20 @@ import { VideochatModule } from './videochat/videochat.module';
 import { UsereditModule } from "./useredit/useredit.module";
 import { CreatetestsModule } from './createtests/createtests.module';
 import { SubjectsModule } from './subjects/subjects.module'
+import { TestsModule } from "./tests/tests.module"
 //////////////////////MODULES///////////////////////////////////////
 
 
 const routes = [
   { path: "", component: AuthComponent },
   { path: "registration", component: RegistrationComponent },
-  { path: "account", component: AccountComponent, canActivate: [AuthGuard]},
+  { path: "account", component: AccountComponent, canActivate: [AuthGuard] },
   { path: "messenger", component: MessengerComponent, canActivate: [AuthGuard] },
   { path: "videochat", component: VideochatComponent, canActivate: [AuthGuard] },
   { path: "users", component: UsereditComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: "subjects", component: SubjectsComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: "createtests", component: CreatetestsComponent, canActivate: [AuthGuard, TeacherGuard] },
+  { path: "tests", component: TestsComponent, canActivate: [AuthGuard] },
 ]
 export function tokenGetter() {
   return localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY");
@@ -60,6 +63,7 @@ export function tokenGetter() {
     AccountModule,
     MessengerModule,
     CreatetestsModule,
+    TestsModule,
     UsereditModule,
     VideochatModule,
     HttpClientModule,

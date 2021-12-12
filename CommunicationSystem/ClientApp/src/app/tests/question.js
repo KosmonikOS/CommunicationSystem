@@ -8,14 +8,17 @@ exports.QuestionType = [
     { "value": 3, "name": "С открытым ответом" }
 ];
 var Question = /** @class */ (function () {
-    function Question(id, options, text, questionType) {
+    function Question(id, options, text, questionType, image, studentAnswers) {
         if (id === void 0) { id = 0; }
         if (options === void 0) { options = []; }
         if (questionType === void 0) { questionType = 0; }
+        if (studentAnswers === void 0) { studentAnswers = []; }
         this.id = id;
         this.options = options;
         this.text = text;
         this.questionType = questionType;
+        this.image = image;
+        this.studentAnswers = studentAnswers;
     }
     return Question;
 }());

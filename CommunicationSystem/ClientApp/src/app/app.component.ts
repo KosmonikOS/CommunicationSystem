@@ -9,11 +9,12 @@ import { AudioService } from "./audio.service"
 import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { UtilitesService } from "./utilites.service"
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [AuthDataService, ToastService, VideochatDataService, AudioService]
+  providers: [AuthDataService, ToastService, VideochatDataService, AudioService, UtilitesService]
 })
 export class AppComponent implements OnInit {
   title = 'ClientApp';

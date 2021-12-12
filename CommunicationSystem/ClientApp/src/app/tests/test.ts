@@ -9,7 +9,7 @@ export class Test {
     public name?: string,
     public grade?: number,
     public questions?: number,
-    public time?: number,
+    public time: number = 40,
     public date?: Date,
     public creator?: number,
     public creatorName?: string,

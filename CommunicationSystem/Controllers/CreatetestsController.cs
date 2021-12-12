@@ -1,4 +1,5 @@
 ﻿using CommunicationSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace CommunicationSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CreatetestsController : ControllerBase
     {
         private readonly CommunicationContext db;
@@ -44,7 +46,9 @@ namespace CommunicationSystem.Controllers
                                        Name = u.FirstName + " " +  u.LastName + " " + u.MiddleName,
                                        Grade = u.Grade + " " + u.GradeLetter,
                                        UserId = u.Id,
-                                       IsSelected = true
+                                       IsSelected = true,
+                                       IsCompleted = s.IsCompleted,
+                                       Mark = s.Mark
                                     }).ToList(),
                         SubjectName = s.Name,
                         QuestionsList = (from q in db.Questions
@@ -54,6 +58,7 @@ namespace CommunicationSystem.Controllers
                                              Id = q.Id,
                                              TestId = q.Id,
                                              Text = q.Text,
+                                             Image = q.Image,
                                              QuestionType = q.QuestionType,
                                              Options = (from o in db.Options
                                                         where o.QuestionId == q.Id
@@ -75,7 +80,8 @@ namespace CommunicationSystem.Controllers
             {
                 var grade = 0;
                 return (from u in db.Users
-                        where (Int32.TryParse(param, out grade) && grade == u.Grade) || (u.FirstName + " " + u.MiddleName + " " + u.LastName).ToLower().Contains(param.ToLower())
+                        where ((Int32.TryParse(param, out grade) && grade == u.Grade) || (u.FirstName + " " + u.MiddleName + " " + u.LastName).ToLower().Contains(param.ToLower()))
+                        && u.Role == 1
                         select new UsersToTests()
                         {
                             UserId = u.Id,
@@ -109,13 +115,13 @@ namespace CommunicationSystem.Controllers
                     }
                     foreach (var question in test.QuestionsList)
                     {
+                        question.TestId = (int)test.Id;
                         if (question.Id > 0)
                         {
                             db.Questions.Update(question);
                         }
                         else
                         {
-                            question.TestId = (int)test.Id;
                             question.Id = 0;
                             db.Questions.Add(question);
                             db.SaveChanges();

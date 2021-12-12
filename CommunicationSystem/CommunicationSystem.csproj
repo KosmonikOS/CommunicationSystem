@@ -60,9 +60,11 @@
     <None Remove="ClientApp\src\app\tests\option.ts" />
     <None Remove="ClientApp\src\app\tests\question.ts" />
     <None Remove="ClientApp\src\app\tests\test.ts" />
+    <None Remove="ClientApp\src\app\tests\tests.data.service.ts" />
     <None Remove="ClientApp\src\app\toast.service.ts" />
     <None Remove="ClientApp\src\app\useredit\role.ts" />
     <None Remove="ClientApp\src\app\useredit\useredit.data.service.ts" />
+    <None Remove="ClientApp\src\app\utilites.service.ts" />
     <None Remove="ClientApp\src\app\videochat\member.ts" />
     <None Remove="ClientApp\src\app\videochat\videochat.data.service.ts" />
     <None Remove="ClientApp\src\app\videochat\videoframe.component.ts" />
@@ -92,9 +94,11 @@
     <TypeScriptCompile Include="ClientApp\src\app\tests\option.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\tests\question.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\tests\test.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\tests\tests.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\toast.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\useredit\role.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\useredit\useredit.data.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\utilites.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\videochat\videoframe.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\videochat\member.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\videochat\videochat.data.service.ts" />

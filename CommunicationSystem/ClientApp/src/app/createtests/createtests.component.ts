@@ -9,6 +9,7 @@ import { Option } from '../tests/option';
 import { ToastService } from '../toast.service';
 import { TestMember } from './testmember';
 import { QuestionType } from "../tests/question"
+import { UtilitesService } from '../utilites.service';
 
 @Component({
   selector: 'app-createtests',
@@ -34,7 +35,7 @@ export class CreatetestsComponent implements OnInit {
   @ViewChild("optionModal") optionModal: ElementRef = new ElementRef("");
   tempModals: ElementRef[] = [];
   questionTypes = QuestionType
-  constructor(private dataService: CreatetestsDataService, public accountDataService: AccountDataService, private modalService: NgbModal, private toastService: ToastService) { }
+  constructor(private dataService: CreatetestsDataService, public accountDataService: AccountDataService, private modalService: NgbModal, private toastService: ToastService, private utilitesService: UtilitesService) { }
 
   public dblSet(objectToSet: any, object: any, i: number) {
     this.set(objectToSet, object, i, true);
@@ -68,12 +69,15 @@ export class CreatetestsComponent implements OnInit {
   }
   fileSelected(event: any) {
     var file = <File>event.target.files[0];
+    this.utilitesService.putImage(file).subscribe((response: any) => {
+      this.currentQuestion.image = response.path;
+    })
   }
   openModal(modal: any, initial: boolean = true) {
     if (this.tempModals.length > 0) {
       this.modalService.dismissAll("background");
     }
-    this.modalService.open(modal, { size: "xl" }).result.then(() => { }, (reason) => {
+    this.modalService.open(modal, { size: "xl","scrollable": true }).result.then(() => { }, (reason) => {
       if (reason != "background") {
         let length = this.tempModals.length;
         if (length > 1) {
@@ -95,7 +99,6 @@ export class CreatetestsComponent implements OnInit {
     if (this.currentRow != -1) {
       this.openModal(this.testModal);
       this.userList = this.currentTest.students;
-      console.log(this.userList);
     }
   }
   deleteTest() {
@@ -181,13 +184,16 @@ export class CreatetestsComponent implements OnInit {
   getTests() {
     this.dataService.getTests(this.accountDataService.currentAccount.id).subscribe((data: any) => {
       this.tests = data;
-      console.log(data);
     });
   }
   getUsers() {
-    this.dataService.getUsers(this.searchUsers).subscribe((data: any) => {
-      this.userList = this.currentTest.students.concat(data);
-    })
+    if (this.searchUsers != "") {
+      this.dataService.getUsers(this.searchUsers).subscribe((data: any) => {
+        this.userList = this.currentTest.students.concat(data);
+      })
+    } else {
+      this.userList = this.currentTest.students;
+    }
   }
   addTestMember(user: TestMember) {
     if (!user.isSelected) {

@@ -21,5 +21,8 @@ namespace CommunicationSystem.Models
         public List<Option> Options { get; set; }
         public string Text { get; set; }
         public QuestionType QuestionType { get; set; } = QuestionType.Single;
+        public string Image { get; set; }
+        [NotMapped]
+        public List<object> StudentAnswers { get; set; } = new List<object>() { };
     }
 }

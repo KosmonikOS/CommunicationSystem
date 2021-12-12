@@ -1,0 +1,75 @@
+<div class="container-fluide pt-3 px-4 vh-75" style="position:relative;">
+  <div class="btn-group toolbar w-100">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="openTest()">
+      <i class="bi bi-pencil"></i>
+      <span class="d-none d-md-block" style="padding-left:5px">Открыть</span>
+    </button>
+    <div class="input-group w-100">
+      <input placeholder="Поиск" type="search" class="form-control" [(ngModel)]="search" />
+      <button class="btn btn-outline-primary">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </div>
+  <table class="table">
+    <thead style="border-bottom: solid 2px #DEE2E6">
+      <tr>
+        <th scope="col">Предмет</th>
+        <th scope="col">Название</th>
+        <th scope="col">Вопросы</th>
+        <th scope="col">Время(мин)</th>
+        <th scope="col">Дата</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let test of tests | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="set(test,i)" (dblclick)="dblSet(test,i)">
+        <th scope="row">{{test.subjectName}}</th>
+        <td>{{test.name}}</td>
+        <td>{{test.questions}}</td>
+        <td>{{test.time | number :'1.0-1'}}</td>
+        <td>{{test.date | date:'MM.dd.yyyy'}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #testModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{currentTest.name}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body row">
+    <div>
+      <div class="col-12 card px-2 py-2 mb-3" *ngFor="let question of currentTest.questionsList;let i = index">
+        <div class="col-12 mb-1" style="font-size:18px">
+          {{question.text}}
+        </div>
+        <div *ngIf="question.image" class="col-md-12 mb-1 border rounded d-flex justify-content-center align-items-center h-100 w-100">
+          <div class="my-1">
+            <img src="{{question.image}}" class="w-100 w-md-75" style="max-height:300px" />
+          </div>
+        </div>
+        <div class="col-12">
+          <div *ngIf="question.questionType < 2;else openAnswer">
+            <div class="form-check">
+              <div *ngFor="let option of question.options">
+                <input class="form-check-input" name="question.id" type="{{question.questionType == 0? 'radio':'checkbox'}}" (change)="setAnswer(question,option)">
+                <label class="form-check-label">{{option.text}}</label>
+              </div>
+            </div>
+
+          </div>
+          <ng-template #openAnswer>
+            <textarea type="text" class="form-control" [style.resize]="question.questionType == 2 ? 'none':''"  rows="{{question.questionType == 2 ? '1':'2'}}" placeholder="Ответ" [(ngModel)]="question.studentAnswers[0]"></textarea>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer justify-content-center" style="position:relative">
+    <span style="position:absolute;top:15px;left:20px;font-size:20px">{{currentTest.time * 1000 | date:'mm:ss'}}</span>
+    <div class="text-center"><button class="btn btn-primary" type="button" (click)="submitTest()">Отправить</button></div>
+  </div>
+</ng-template>
