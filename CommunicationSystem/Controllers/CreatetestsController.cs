@@ -59,6 +59,7 @@ namespace CommunicationSystem.Controllers
                                              TestId = q.Id,
                                              Text = q.Text,
                                              Image = q.Image,
+                                             Points = q.Points,
                                              QuestionType = q.QuestionType,
                                              Options = (from o in db.Options
                                                         where o.QuestionId == q.Id
@@ -166,19 +167,23 @@ namespace CommunicationSystem.Controllers
                     {
                         case "test":
                             var test = db.Tests.SingleOrDefault(t => t.Id == id);
-                            var questions = db.Questions.Where(q => q.TestId == test.Id);
+                            var questions = db.Questions.Where(q => q.TestId == test.Id).ToList();
                             foreach(var q in questions)
                             {
-                                var opts = db.Options.Where(o => o.QuestionId == q.Id);
+                                var opts = db.Options.Where(o => o.QuestionId == q.Id).ToList();
+                                var answrs = db.StudentAnswers.Where(a => a.QuestionId == q.Id).ToList();
                                 db.Options.RemoveRange(opts);
+                                db.StudentAnswers.RemoveRange(answrs);
                             }
                             db.Questions.RemoveRange(questions);
                             db.Tests.Remove(test);
                             break;
                         case "question":
                             var question = db.Questions.SingleOrDefault(q => q.Id == id);
-                            var options = db.Options.Where(o => o.QuestionId == question.Id);
+                            var options = db.Options.Where(o => o.QuestionId == question.Id).ToList();
+                            var answers = db.StudentAnswers.Where(a => a.QuestionId == question.Id).ToList();
                             db.Options.RemoveRange(options);
+                            db.StudentAnswers.RemoveRange(answers);
                             db.Questions.Remove(question);
                             break;
                         case "option":

@@ -47,13 +47,13 @@ export class TestsComponent implements OnInit {
   }
   setAnswer(question: Question, option: Option) {
     if (question.questionType == 0) {
-      question.studentAnswers[0] = option.id;
+      question.studentAnswers[0] = option.id.toString();
     } else {
-      var index = question.studentAnswers.indexOf(option.id);
+      var index = question.studentAnswers.indexOf(option.id.toString());
       if (index != -1) {
         question.studentAnswers.splice(index, 1);
       } else {
-        question.studentAnswers.push(option.id);
+        question.studentAnswers.push(option.id.toString());
       }
     }
   }

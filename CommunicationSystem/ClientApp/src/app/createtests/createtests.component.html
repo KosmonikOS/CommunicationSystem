@@ -90,6 +90,7 @@
               <tr>
                 <th scope="col">№</th>
                 <th scope="col">Вопрос</th>
+                <th scope="col">Баллы</th>
                 <th scope="col">Верный ответ</th>
               </tr>
             </thead>
@@ -97,6 +98,7 @@
               <tr *ngFor="let question of currentTest.questionsList | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentQuestionRow == i}" class="table-row" (click)="set('question',question,i)" (dblclick)="dblSet('question',question,i)">
                 <th scope="row">{{i + 1}}</th>
                 <td>{{question.text}}</td>
+                <td>{{question.points}}</td>
                 <td>{{findRightAnswer(question)}}</td>
               </tr>
             </tbody>
@@ -159,14 +161,18 @@
             <option *ngFor="let type of questionTypes" value="{{type.value}}">{{type.name}}</option>
           </select>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
+          <label class="labels">Баллы</label>
+          <input type="number" class="form-control" [(ngModel)]="currentQuestion.points">
+        </div>
+        <div class="col-md-3">
           <label class="labels">Изображение</label>
           <div class="custom-file">
             <input (change)="fileSelected($event)" type="file" class="form-control" lang="ru">
           </div>
         </div>
         <div *ngIf="currentQuestion.image" class="col-md-12 mt-2 border rounded">
-          <img src="{{currentQuestion.image}}" class="w-100" style="max-height:300px"/>
+          <img src="{{currentQuestion.image}}" class="w-100" style="max-height:300px" />
         </div>
         <div *ngIf="currentQuestion.questionType != 3">
           <div class="btn-group toolbar pt-2">

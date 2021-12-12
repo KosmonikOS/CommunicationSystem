@@ -13,6 +13,7 @@ export class Question {
     public text?: string,
     public questionType: number = 0,
     public image?: string,
-    public studentAnswers: any[] = [],
+    public points: number = 1,
+    public studentAnswers: string[] = [],
   ) { }
 }

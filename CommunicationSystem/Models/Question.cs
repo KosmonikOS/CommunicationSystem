@@ -10,7 +10,7 @@ namespace CommunicationSystem.Models
     {
         Single = 0,
         Multy = 1,
-        OpenWhithCheck = 2,
+        OpenWithCheck = 2,
         Open = 3
     }
     public class Question
@@ -20,9 +20,10 @@ namespace CommunicationSystem.Models
         [NotMapped]
         public List<Option> Options { get; set; }
         public string Text { get; set; }
+        public int Points { get; set; } = 1;
         public QuestionType QuestionType { get; set; } = QuestionType.Single;
         public string Image { get; set; }
         [NotMapped]
-        public List<object> StudentAnswers { get; set; } = new List<object>() { };
+        public List<string> StudentAnswers { get; set; } = new List<string>() { };
     }
 }

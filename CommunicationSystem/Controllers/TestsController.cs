@@ -47,6 +47,7 @@ namespace CommunicationSystem.Controllers
                                              Id = q.Id,
                                              TestId = q.Id,
                                              Text = q.Text,
+                                             Points = q.Points,
                                              Image = q.Image,
                                              QuestionType = q.QuestionType,
                                              Options = (from o in db.Options
@@ -72,10 +73,11 @@ namespace CommunicationSystem.Controllers
                     var currentAnswers = db.StudentAnswers.Where(u => u.UserId == testAnswer.UserId);
                     db.StudentAnswers.RemoveRange(currentAnswers);
                     var utt = db.UsersToTests.FirstOrDefault(u => u.UserId == testAnswer.UserId && u.TestId == testAnswer.TestId);
+                    utt.Mark = CalculateMark(testAnswer);
                     utt.IsCompleted = true;
                     foreach (var question in testAnswer.Questions)
                     {
-                        foreach(var answer in question.StudentAnswers)
+                        foreach (var answer in question.StudentAnswers)
                         {
                             db.StudentAnswers.Add(new StudentAnswer() { UserId = testAnswer.UserId, Answer = answer.ToString(), QuestionId = question.Id });
                         }
@@ -89,6 +91,30 @@ namespace CommunicationSystem.Controllers
                 }
             }
             return BadRequest();
+        }
+        private int CalculateMark(TestAnswer testAnswer)
+        {
+            int totatPoints = testAnswer.Questions.Where(q => q.QuestionType != QuestionType.Open).Sum(q => q.Points);
+            double userPoints = 0;
+            foreach (var question in testAnswer.Questions.Where(q => q.QuestionType != QuestionType.Open))
+            {
+                var answers = db.Options.Where(o => o.QuestionId == question.Id && o.IsRightOption == true).Select(o => question.QuestionType == QuestionType.OpenWithCheck ? o.Text : o.Id.ToString()).ToList();
+                if (question.StudentAnswers.Count() <= answers.Count())
+                {
+                    foreach (var studentAnswer in question.StudentAnswers)
+                    {
+                        foreach (var answer in answers)
+                        {
+                            if (studentAnswer.ToLower() == answer.ToLower())
+                            {
+                                userPoints += question.Points / Convert.ToDouble(answers.Count());
+                            }
+                        }
+                    }
+                }
+            }
+            double result = (userPoints / totatPoints) * 100;
+            return result >= 90 ? 5 : result >= 70 ? 4 : result >= 60 ? 3 : 2;
         }
     }
 }
