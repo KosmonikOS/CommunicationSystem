@@ -25,5 +25,7 @@ namespace CommunicationSystem.Models
         public string Image { get; set; }
         [NotMapped]
         public List<string> StudentAnswers { get; set; } = new List<string>() { };
+        [NotMapped]
+        public string OpenAnswer { get; set; }
     }
 }

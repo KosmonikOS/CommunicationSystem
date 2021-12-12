@@ -25,6 +25,8 @@ export class CreatetestsComponent implements OnInit {
   currentOptionRow: number = -1;
   currentQuestion: Question = new Question();
   currentOption: Option = new Option();
+  currentStudent: { answers: Question[], user: TestMember } = { "answers": [], "user": new TestMember() };
+  currentStudentRow: number = -1;
   userList: TestMember[] = [];
   subjects: Subject[] = [];
   errors: any = {};
@@ -33,6 +35,7 @@ export class CreatetestsComponent implements OnInit {
   @ViewChild("testModal") testModal: ElementRef = new ElementRef("");
   @ViewChild("questionModal") questionModal: ElementRef = new ElementRef("");
   @ViewChild("optionModal") optionModal: ElementRef = new ElementRef("");
+  @ViewChild("studentModal") studentModal: ElementRef = new ElementRef("");
   tempModals: ElementRef[] = [];
   questionTypes = QuestionType
   constructor(private dataService: CreatetestsDataService, public accountDataService: AccountDataService, private modalService: NgbModal, private toastService: ToastService, private utilitesService: UtilitesService) { }
@@ -49,6 +52,9 @@ export class CreatetestsComponent implements OnInit {
       case "option":
         this.editOption();
         break;
+      case "student":
+        this.openStudentAnswers()
+        break;
     }
   }
   public set(objectToSet: string, object: any, i: number, dbl: boolean = false) {
@@ -64,6 +70,10 @@ export class CreatetestsComponent implements OnInit {
       case "option":
         this.currentOption = this.currentOption == object && !dbl ? new Option() : object;
         this.currentOptionRow = this.currentOptionRow == i ? -1 : i;
+        break;
+      case "student":
+        this.currentStudent = this.currentStudent == object && !dbl ? { "user": new TestMember(), "answers":[] } : { "user": object, "answers": [] };
+        this.currentStudentRow = this.currentStudentRow == i ? -1 : i;
         break;
     }
   }
@@ -89,6 +99,18 @@ export class CreatetestsComponent implements OnInit {
     if (this.tempModals.length < 3 && initial) {
       this.tempModals.push(modal);
     }
+  }
+  openStudentAnswers() {
+    this.dataService.getAnswers(this.currentStudent.user.userId, this.currentTest.id).subscribe((data: any) => {
+      this.currentStudent.answers = data;
+      console.log(data);
+      this.openModal(this.studentModal);
+    })
+  }
+  saveStudent() {
+    this.dataService.putMark(this.currentStudent.user.userId, this.currentTest.id, this.currentStudent.user.mark).subscribe(() => {
+      this.modalService.dismissAll();
+    })
   }
   createTest() {
     this.search = "";

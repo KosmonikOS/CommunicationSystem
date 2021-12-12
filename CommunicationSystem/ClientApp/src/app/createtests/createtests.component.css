@@ -1,0 +1,6 @@
+.rightAnswer {
+  border: solid 3px #20c997;
+}
+.incorrectAnswer {
+  border: solid 3px #dc3545;
+}

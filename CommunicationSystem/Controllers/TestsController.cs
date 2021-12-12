@@ -79,7 +79,7 @@ namespace CommunicationSystem.Controllers
                     {
                         foreach (var answer in question.StudentAnswers)
                         {
-                            db.StudentAnswers.Add(new StudentAnswer() { UserId = testAnswer.UserId, Answer = answer.ToString(), QuestionId = question.Id });
+                            db.StudentAnswers.Add(new StudentAnswer() { UserId = testAnswer.UserId, Answer = answer.ToString(), QuestionId = question.Id,TestId = testAnswer.TestId });
                         }
                     }
                     db.SaveChanges();

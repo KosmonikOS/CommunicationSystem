@@ -42,13 +42,14 @@ namespace CommunicationSystem.Controllers
                         Students = (from s in db.UsersToTests
                                     join u in db.Users on s.UserId equals u.Id
                                     where s.TestId == t.Id
-                                    select new UsersToTests() {
-                                       Name = u.FirstName + " " +  u.LastName + " " + u.MiddleName,
-                                       Grade = u.Grade + " " + u.GradeLetter,
-                                       UserId = u.Id,
-                                       IsSelected = true,
-                                       IsCompleted = s.IsCompleted,
-                                       Mark = s.Mark
+                                    select new UsersToTests()
+                                    {
+                                        Name = u.FirstName + " " + u.LastName + " " + u.MiddleName,
+                                        Grade = u.Grade + " " + u.GradeLetter,
+                                        UserId = u.Id,
+                                        IsSelected = true,
+                                        IsCompleted = s.IsCompleted,
+                                        Mark = s.Mark
                                     }).ToList(),
                         SubjectName = s.Name,
                         QuestionsList = (from q in db.Questions
@@ -93,6 +94,34 @@ namespace CommunicationSystem.Controllers
                         ).ToList();
             }
             return new List<UsersToTests>() { };
+        }
+        [HttpGet("getanswers/{id}/{testid}")]
+        public List<Question> GetAnswers(int id, int testid)
+        {
+            return (from q in db.Questions
+                    where q.TestId == testid
+                    select new Question()
+                    {
+                        Id = q.Id,
+                        Image = q.Image,
+                        Points = q.Points,
+                        QuestionType = q.QuestionType,
+                        TestId = q.TestId,
+                        Text = q.Text,
+                        OpenAnswer = db.StudentAnswers.FirstOrDefault(a => a.UserId == id && a.QuestionId == q.Id).Answer ?? "",
+                        Options = (from o in db.Options
+                                   where o.QuestionId == q.Id
+                                   select new Option()
+                                   {
+                                       Id = o.Id,
+                                       Text = o.Text,
+                                       IsRightOption = o.IsRightOption,
+                                       QuestionId = o.QuestionId,
+                                       IsSelected = db.StudentAnswers.Where(a => a.Answer.ToLower() == (q.QuestionType == QuestionType.OpenWithCheck ? o.Text.ToLower() : o.Id.ToString()) && a.UserId == id && a.QuestionId == q.Id).Count() >= 1,
+                                   }
+                        ).ToList()
+                    }
+                ).ToList();
         }
         [HttpPost]
         public IActionResult Post(Test test)
@@ -141,7 +170,7 @@ namespace CommunicationSystem.Controllers
                             }
                         }
                     }
-                    foreach(var student in test.Students)
+                    foreach (var student in test.Students)
                     {
                         student.TestId = (int)test.Id;
                         db.UsersToTests.Add(student);
@@ -149,7 +178,26 @@ namespace CommunicationSystem.Controllers
                     db.SaveChanges();
                     return Ok();
                 }
-                catch(Exception e)
+                catch (Exception e)
+                {
+                    return BadRequest(e);
+                }
+            }
+            return BadRequest();
+        }
+        [HttpPut("{id}/{testid}/{mark}")]
+        public IActionResult Put(int id, int testid, int mark)
+        {
+            if (id != 0 && testid != 0 && mark != 0)
+            {
+                try
+                {
+                    var utt = db.UsersToTests.SingleOrDefault(u => u.TestId == testid && u.UserId == id);
+                    utt.Mark = mark;
+                    db.SaveChanges();
+                    return Ok();
+                }
+                catch (Exception e)
                 {
                     return BadRequest(e);
                 }
@@ -168,7 +216,7 @@ namespace CommunicationSystem.Controllers
                         case "test":
                             var test = db.Tests.SingleOrDefault(t => t.Id == id);
                             var questions = db.Questions.Where(q => q.TestId == test.Id).ToList();
-                            foreach(var q in questions)
+                            foreach (var q in questions)
                             {
                                 var opts = db.Options.Where(o => o.QuestionId == q.Id).ToList();
                                 var answrs = db.StudentAnswers.Where(a => a.QuestionId == q.Id).ToList();

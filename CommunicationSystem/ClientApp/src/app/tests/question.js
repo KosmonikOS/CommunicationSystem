@@ -8,12 +8,13 @@ exports.QuestionType = [
     { "value": 3, "name": "С открытым ответом" }
 ];
 var Question = /** @class */ (function () {
-    function Question(id, options, text, questionType, image, points, studentAnswers) {
+    function Question(id, options, text, questionType, image, points, studentAnswers, openAnswer) {
         if (id === void 0) { id = 0; }
         if (options === void 0) { options = []; }
         if (questionType === void 0) { questionType = 0; }
         if (points === void 0) { points = 1; }
         if (studentAnswers === void 0) { studentAnswers = []; }
+        if (openAnswer === void 0) { openAnswer = ""; }
         this.id = id;
         this.options = options;
         this.text = text;
@@ -21,6 +22,7 @@ var Question = /** @class */ (function () {
         this.image = image;
         this.points = points;
         this.studentAnswers = studentAnswers;
+        this.openAnswer = openAnswer;
     }
     return Question;
 }());
