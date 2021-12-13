@@ -1,9 +1,9 @@
-<div class="container rounded bg-white mt-5 mb-5 vh-100">
+<div class="container rounded bg-white mt-5 mb-5 vh-100 scrollable">
   <div class="row d-flex justify-content-center align-items-center h-100">
     <div class="col-md-3">
-      <div class="d-flex flex-column align-items-center text-center p-3 pb-5">
+      <div class="d-flex flex-column align-items-center text-center p-3 pb-md-5">
         <div (mouseenter)="enterImage()" (mouseleave)="leaveImage()" [ngClass]="{'darker':isOnImage}" (click)="openFileInput()">
-          <img class="rounded-circle" src="{{dataService.currentAccount.accountImage}}" style="width:150px;max-height:150px">
+          <img class="rounded-circle" src="{{dataService.currentAccount.accountImage}}" style="width:150px;max-height:150px;margin-top:40px">
           <i class="bi bi-pencil text-white" [ngClass]="{'icon-mask':isOnImage}" style="font-size:20px;position:absolute"></i>
           <input type="file" style="display:none" (change)="fileSelected($event)" #fileInput />
         </div>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="col-md-5 border-right">
-      <div class="p-3 py-5">
+      <div class="p-3 py-md-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h4 class="text-right">Настройки профиля</h4>
         </div>
@@ -26,8 +26,8 @@
           <div class="col-md-6">
             <label class="labels">Класс</label>
             <div class="d-flex">
-                <input type="number" class="form-control" [error]="{Error:errors?.Grade,PlaceHolder:''}" [(ngModel)]="dataService.currentAccount.grade">
-                <input style="width:40px" type="text" class="form-control" [(ngModel)]="dataService.currentAccount.gradeLetter"/>
+              <input type="number" class="form-control" [error]="{Error:errors?.Grade,PlaceHolder:''}" [(ngModel)]="dataService.currentAccount.grade">
+              <input style="width:40px" type="text" class="form-control" [(ngModel)]="dataService.currentAccount.gradeLetter" />
             </div>
 
           </div>
@@ -35,10 +35,8 @@
           <div class="col-md-12"><label class="labels">Почта</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'Почта'}" [(ngModel)]="dataService.currentAccount.email"></div>
           <div class="col-md-12"><label class="labels">Номер телефона</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'Номер телефона'}" [(ngModel)]="dataService.currentAccount.phone"></div>
           <div class="col-md-12"><label class="labels">Пароль</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'Пароль'}" [(ngModel)]="dataService.currentAccount.password"></div>
+          <div class="col-md-12 mt-md-5 mt-3 text-center"><button class="btn btn-primary" type="button" (click)="saveAccount()">Сохранить</button></div>
         </div>
-        <div class="row mt-3">
-        </div>
-        <div class="mt-5 text-center"><button class="btn btn-primary" type="button" (click)="saveAccount()">Сохранить</button></div>
       </div>
     </div>
   </div>

@@ -279,7 +279,7 @@
 
           </div>
           <ng-template #openAnswer>
-            <textarea disabled type="text" class="form-control" style="background-color:white" [style.resize]="question.questionType == 2 ? 'none':''" rows="{{question.questionType == 2 ? '1':'2'}}" placeholder="Ответ">{{question.openAnswer}}</textarea>
+            <textarea disabled [class]="question.questionType == 2 ? question.options[0].isSelected ? 'rightAnswer':'incorrectAnswer':''" type="text" class="form-control" style="background-color:white" [style.resize]="question.questionType == 2 ? 'none':''" rows="{{question.questionType == 2 ? '1':'2'}}" placeholder="Ответ">{{question.openAnswer}}</textarea>
           </ng-template>
         </div>
       </div>

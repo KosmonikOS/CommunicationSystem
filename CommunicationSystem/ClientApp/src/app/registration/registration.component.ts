@@ -12,10 +12,10 @@ import { ToastService } from "../toast.service"
 export class RegistrationComponent {
   registration: Registration = new Registration();
   errors: any = {};
-  approval: boolean = false;
+  //approval: boolean = false;
   constructor(private dataService: RegistrationDataService, private router: Router, private toastService: ToastService) { };
   Register() {
-    if (this.approval) {
+    //if (this.approval) {
       this.dataService.postRegistration(this.registration).subscribe(
         result => {
           this.toastService.showSuccess("Проверьте свою почту");
@@ -25,9 +25,9 @@ export class RegistrationComponent {
           this.errors = error.error.errors;
         }
       )
-    } else {
-      this.toastService.showAlert("Подтвердите согласие");
-    }
+   // } else {
+   //   this.toastService.showAlert("Подтвердите согласие");
+    //}
   }
   redirectToAuth() {
     this.router.navigate([""]);
