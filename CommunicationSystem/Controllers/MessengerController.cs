@@ -76,8 +76,7 @@ namespace CommunicationSystem.Controllers
                     from g1 in m1g.DefaultIfEmpty()
                     join m2 in db.Messages.OrderByDescending(m => m.Date).Take(1) on new { To = u.Id, From = id } equals new { m2.To, m2.From } into m2g
                     from g2 in m2g.DefaultIfEmpty()
-                        //where u.Id != id && u.NickName.Contains(nickName) && (g1.ToGroup == 0 || g2.ToGroup == 0)
-                    where u.NickName.Contains(nickName) && u.Id != id && ((g1 == null && g2 == null) || (g1.ToGroup == 0 || g2.ToGroup == 0))
+                    where u.NickName.ToLower().Contains(nickName.ToLower()) && u.Id != id && ((g1 == null && g2 == null) || (g1.ToGroup == 0 || g2.ToGroup == 0))
                     orderby g1.Date, g1.Id
                     select new UserLastMessage()
                     {

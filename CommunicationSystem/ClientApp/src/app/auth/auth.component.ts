@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthDataService } from "./auth.data.service"
 import { Login } from "./login"
@@ -12,7 +12,7 @@ import { VideochatDataService } from '../videochat/videochat.data.service';
   styleUrls: ['./auth.component.css'],
   providers: [AuthDataService]
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit {
   login: Login = new Login(localStorage.getItem("COMMUNICATION_EMAIL") || "", localStorage.getItem("COMMUNICATION_PASSWORD") || "");
   saveToLocalStorage: boolean = false;
   errors: any = {};
@@ -40,5 +40,8 @@ export class AuthComponent {
  
   redirectToRegistration() {
     this.router.navigate(["/registration"]);
+  }
+  ngOnInit(): void {
+    this.dataService.logOut();
   }
 }

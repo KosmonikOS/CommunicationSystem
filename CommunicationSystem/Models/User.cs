@@ -35,5 +35,6 @@ namespace CommunicationSystem.Models
         public string accountImage { get; set; } = "/assets/user.png";
         [Phone(ErrorMessage ="Некорректный формат телефона")]
         public string Phone { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

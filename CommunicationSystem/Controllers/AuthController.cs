@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -31,26 +33,65 @@ namespace CommunicationSystem.Controllers
             var user = db.Users.SingleOrDefault(u => u.Email == login.Email && u.Password == login.Password && u.IsConfirmed == "true");
             if(user != null)
             {
-                var token = GenerateJWT(user);
-                return Ok(
-                    new
-                    {
-                        access_token = token,
-                        current_account_id = user.Id
-                    });
-            }
-            return Unauthorized();
-        }
-        private string GenerateJWT(User user)
-        {
-            var AuthParams = options.Value;
-            var credentials = new SigningCredentials(AuthParams.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
-            var claims = new List<Claim>()
+                var claims = new List<Claim>()
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType,user.Email),
                 new Claim(JwtRegisteredClaimNames.Sub,user.Password),
                 new Claim("role",user.Role.ToString())
             };
+                var token = GenerateJWT(claims);
+                var rt = GenerateRT(login.Email) ;
+                return Ok(
+                    new
+                    {
+                        access_token = token,
+                        refresh_token = rt,
+                        current_account_id = user.Id
+                    });
+            }
+            return Unauthorized();
+        }
+        [HttpPost("refresh")]
+        public IActionResult Refresh(TokenPair pair)
+        {
+            var principal = GetClaims(pair.JWT);
+            var userRT = db.Users.FirstOrDefault(u => u.Email == principal.Identity.Name).RefreshToken;
+            if (pair.RT == userRT)
+            {
+                var token = GenerateJWT(principal.Claims.ToList());
+                var rt = GenerateRT(principal.Identity.Name);
+                return Ok(
+                    new
+                    {
+                        access_token = token,
+                        refresh_token = rt,
+                    });
+            }
+            return BadRequest();
+        }
+        private ClaimsPrincipal GetClaims(string token)
+        {
+            var AuthParams = options.Value;
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false, 
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = AuthParams.GetSymmetricSecurityKey(),
+                ValidateLifetime = false 
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+            return principal;
+        }
+        private string GenerateJWT(List<Claim> claims)
+        {
+            var AuthParams = options.Value;
+            var credentials = new SigningCredentials(AuthParams.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 AuthParams.Issuer,
                 AuthParams.Audience,
@@ -59,6 +100,20 @@ namespace CommunicationSystem.Controllers
                 signingCredentials: credentials
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        private string GenerateRT(string email)
+        {
+            var rt = "";
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                var randomNumber = new byte[32];
+                rng.GetBytes(randomNumber);
+                rt = Convert.ToBase64String(randomNumber);
+            }
+            var user = db.Users.FirstOrDefault(u => u.Email == email);
+            user.RefreshToken = rt;
+            db.SaveChanges();
+            return rt;
         }
     }
 }

@@ -1,8 +1,7 @@
 <div class="container-fluide pt-3 px-4 vh-100">
-
   <div class="row rounded-lg overflow-hidden shadow">
     <!-- Users box-->
-    <div class="col-3 vh-100" style="overflow-y:auto">
+    <div class="col-md-3 cl-12 vh-100 d-md-block" [ngClass]="{'d-none':!isOpen}">
       <div class="input-group rounded mb-1">
         <input type="search" class="form-control rounded" placeholder="Поиск по Никнейму" [(ngModel)]="search" (keyup.enter)="searchUsers()" />
         <span class="input-group-text border-0" id="search-addon">
@@ -13,11 +12,8 @@
         </span>
       </div>
       <div class="bg-white pb-2">
-
         <div class="messages-box">
-          <div class="list-group rounded-0">
-
-
+          <div class="list-group rounded-0 vh-100 scrollable">
             <a *ngFor="let user of usersList; let i = index" class="list-group-item list-group-item-action text-white rounded-0 text-dark" style="max-height: 130px" (click)="selectUser(i,user)" [ngClass]="{'active':selectedUser == i,'text-white':selectedUser == i}">
               <div class="media">
                 <img src="{{user.accountImage}}" alt="user" width="30" class="rounded-circle text">
@@ -34,15 +30,16 @@
                 </div>
               </div>
             </a>
-
-
           </div>
         </div>
       </div>
     </div>
-    <div class="col-9 vh-100" style="position: relative">
-      <div class="w-100 rounded row text-white" style="min-height: 35px; font-size: 18px; line-height: 35px; background-color: #0275d8">
-        <div class="col-6">{{currentUser.nickName}}</div>
+    <div class="col-md-9 col-12 vh-100 d-md-block" [ngClass]="{'d-none':isOpen}" style="position: relative">
+      <div class="rounded row text-white" style="min-height: 35px;position:relative; font-size: 18px; line-height: 35px; background-color: #0275d8">
+        <div class="col-6">
+          <i class="d-md-none bi bi-caret-left" (click) ="openUserList()"></i>
+          {{currentUser.nickName}}
+        </div>
         <div class="col-6 text-end action-bar">
           <i *ngIf="!videochatDataService.callState" class="bi bi-telephone" (click)="videochatDataService.startCall(currentUser)"></i>
           <i *ngIf="videochatDataService.callState" class="bi bi-x-lg" (click)="videochatDataService.resetCall()"></i>
@@ -52,12 +49,12 @@
       <div class="px-4 py-5 chat-box bg-white" style="overflow-y:auto" #messagesArea>
 
         <div *ngFor="let message of messagesList">
-           <!--Sender Message-->
-          <div class="media mb-3" *ngIf="message.nickName" [style.width]="message.type == 1? '30%' :'50%'">
+          <!--Sender Message-->
+          <div class="media mb-3" *ngIf="message.nickName" [ngClass]="{'reciver-image-message':message.type == 1,'reciver-text-message':message.type != 1}">
             <img src="{{message.accountImage}}" alt="user" width="30" class="rounded-circle">
             <span style="margin-left:5px;" class="text-muted">{{message.nickName}}</span>
             <div class="media-body ml-3">
-              <div class="bg-light rounded py-2 px-3 mb-2" align="{{message.type == 1 ? 'center':''}}">
+              <div class="bg-light rounded mb-2" align="{{message.type == 1 ? 'center':''}}" [ngClass]="{'py-2 px-3':message.type != 1}">
                 <p *ngIf="message.type == 0" class="text-small mb-0 text-break">{{message.content}}</p>
                 <img *ngIf="message.type == 1" style="width: 130px;max-height:200px" class="rounded" src="{{message.content}}" (click)="openImage(message.content,imageModal)" />
               </div>
@@ -66,10 +63,11 @@
           </div>
 
 
-           <!--Reciever Message-->
+          <!--Reciever Message-->
           <div class="media ml-auto mb-3" *ngIf="!message.nickName">
-            <div class="media-body message-container" style="width:100%" [style.padding-left]="message.type == 1? '70%':'50%'">
-              <div class="bg-primary rounded py-2 px-3 mb-2" align="{{message.type == 1 ? 'center':''}}">
+            <!--<div class="media-body message-container" style="width:100%" [style.padding-left]="message.type == 1? '70%':'50%'">-->
+            <div class="media-body message-container" style="width:100%" [ngClass]="{'image-message':message.type == 1,'text-message':message.type != 1}">
+              <div class="bg-primary rounded mb-2" align="{{message.type == 1 ? 'center':''}}" [ngClass]="{'py-2 px-3':message.type != 1}">
                 <p *ngIf="message.type == 0" class="text-small mb-0 text-white text-break">{{message.content}}</p>
                 <img *ngIf="message.type == 1" style="width: 150px;max-height:240px;" class="rounded" src="{{message.content}}" (click)="openImage(message.content,imageModal)" />
               </div>

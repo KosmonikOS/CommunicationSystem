@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
     return this.authDataService.isAuthenticated();
   }
   logOut() {
+    this.isNavOpen = false;
     this.authDataService.logOut();
   }
   acceptCall() {
@@ -46,6 +47,9 @@ export class AppComponent implements OnInit {
     this.accountDataService.getAccount(localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") || "");
     if (localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") && window.location.pathname == "/") {
       this.router.navigate(["/messenger"]);
+    }
+    if (this.checkAuth()) {
+      this.authDataService.setRefreshTimer();
     }
     this.videochatDataService.addConnectionListener("CallRequest", (caller: any,members:any) => {
       this.dismissType = true;

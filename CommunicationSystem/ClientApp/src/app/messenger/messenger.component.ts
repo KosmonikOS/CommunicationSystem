@@ -34,9 +34,13 @@ export class MessengerComponent implements OnInit {
   isOnGroupImage: boolean = false;
   newGroup: Group = new Group([]);
   userGroupList: any[] = [];
+  isOpen: boolean = true;
 
   constructor(private dataService: MessengerDataService, private toastService: ToastService, private modalService: NgbModal, public videochatDataService: VideochatDataService) { }
   ///////////////////////////////////////////////////////////////USERS///////////////////////////////////////////////////////////////////////////////////////////////////////
+  openUserList() {
+    this.isOpen = true;
+  }
   searchUsers() {
     this.dataService.getUsers(this.search).subscribe((data: any) => {
       this.usersList = data;
@@ -44,6 +48,7 @@ export class MessengerComponent implements OnInit {
     });
   }
   selectUser(index: number, user: UserLastMessage) {
+    this.isOpen = false;
     this.selectedUser = index;
     this.currentUser = user
     if (user.email == "Group") {

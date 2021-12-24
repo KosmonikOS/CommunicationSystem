@@ -52,11 +52,9 @@
 
 </header>
 <div class="l-navbar" id="nav-bar" [ngClass]="{'nav-show':isNavOpen}" *ngIf="checkAuth()">
-  <nav class="nav">
+  <nav class="nav scrollable">
     <div>
-      <a href="#" class="nav_logo">
-        <i class="bi bi-at"></i> <span class="nav_logo-name">Communication</span>
-      </a>
+      <a href="#" class="nav_link" (click)="logOut()"> <i class="bi bi-box-arrow-right"></i> <span class="nav_name">Выйти</span> </a>
       <div class="nav_list">
         <a routerLink="/messenger" routerLinkActive="active" class="nav_link nav_button">
           <i class="bi bi-chat-dots"></i>
@@ -67,9 +65,9 @@
           <span class="nav_name">Видео звонки</span>
         </a>
         <a routerLink="{{accountDataService.currentAccount.role == 1 ? '/tests': '/createtests'}}" routerLinkActive="active" class="nav_link nav_button">
-           <i class="bi bi-journals"></i>
-           <span class="nav_name">Тесты</span>
-          </a>
+          <i class="bi bi-journals"></i>
+          <span class="nav_name">Тесты</span>
+        </a>
         <div *ngIf="accountDataService.currentAccount.role == 3">
           <a routerLink="/users" routerLinkActive="active" class="nav_link nav_button">
             <i class="bi bi-person-lines-fill"></i>
@@ -80,11 +78,11 @@
             <span class="nav_name">Предметы</span>
           </a>
         </div>
-</div>
-    </div> <a href="#" class="nav_link" (click)="logOut()"> <i class="bi bi-box-arrow-right"></i> <span class="nav_name">Выйти</span> </a>
+      </div>
+    </div>
   </nav>
 </div>
-<div class="height-100 main-body" [ngClass]="{'body-pd':isNavOpen,'login-form':!checkAuth()}">
+<div class="height-100 main-body" [ngClass]="{'login-form':!checkAuth()}">
 
   <router-outlet></router-outlet>
 </div>

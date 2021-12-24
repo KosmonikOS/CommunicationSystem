@@ -24,7 +24,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from "@angular/router";
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthModule } from "./auth/auth.module";
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegistrationModule } from "./registration/registration.module";
 import { AccountModule } from "./account/account.module";
 import { MessengerModule } from './messenger/messenger.module';
@@ -71,7 +71,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter,
-        allowedDomains: environment.whiteListedHosts
+        allowedDomains: environment.whiteListedHosts,
       }
     }),
   ],
@@ -80,7 +80,7 @@ export function tokenGetter() {
     AdminGuard,
     TeacherGuard,
     AuthDataService,
-    AccountDataService
+    AccountDataService,
   ],
   bootstrap: [AppComponent]
 })
