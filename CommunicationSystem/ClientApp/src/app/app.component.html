@@ -82,8 +82,7 @@
     </div>
   </nav>
 </div>
-<div class="height-100 main-body" [ngClass]="{'login-form':!checkAuth()}">
-
+<div class="main-body" [ngClass]="{'login-form':!checkAuth()}">
   <router-outlet></router-outlet>
 </div>
 
@@ -91,9 +90,7 @@
 <ng-template #callModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Принять вызов от {{videochatDataService.caller.name}} ?</h4>
-    <button type="button" class="close" aria-label="Close" (click)="denyCall()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-footer justify-content-center">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close();acceptCall()">Принять</button>

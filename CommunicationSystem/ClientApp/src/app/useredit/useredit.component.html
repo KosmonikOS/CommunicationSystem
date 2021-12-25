@@ -1,4 +1,4 @@
-<div class="container-fluide pt-3 px-4 vh-75" style="position:relative;">
+<div class="container-fluide pt-3 px-md-4 px-1 h-100" style="position:relative;">
   <div class="btn-group toolbar w-100">
     <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="createUser()">
       <i class="bi bi-plus-lg"></i>
@@ -19,34 +19,34 @@
       </button>
     </div>
   </div>
-  <table class="table">
-    <thead style="border-bottom: solid 2px #DEE2E6">
-      <tr>
-        <th scope="col">ФИО</th>
-        <th scope="col">Никнейм</th>
-        <th scope="col">Класс</th>
-        <th scope="col">Почта</th>
-        <th scope="col">Роль</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of users | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="setUser(user,i)" (dblclick)="dblSetUser(user,i)">
-        <th scope="row">{{user.lastName}} {{user.firstName}} {{user.middleName}}</th>
-        <td>{{user.nickName}}</td>
-        <td><span *ngIf="user.role == 1">{{user.grade}} {{user.gradeLetter}}</span></td>
-        <td>{{user.email}}</td>
-        <td>{{user.roleName}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="scrollable w-100" style="height:90%">
+    <table class="table">
+      <thead style="border-bottom: solid 2px #DEE2E6">
+        <tr>
+          <th scope="col">ФИО</th>
+          <th scope="col">Никнейм</th>
+          <th scope="col">Класс</th>
+          <th class="d-none d-md-table-cell" scope="col">Почта</th>
+          <th scope="col">Роль</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="setUser(user,i)" (dblclick)="dblSetUser(user,i)">
+          <th scope="row">{{user.lastName}} {{user.firstName}} {{user.middleName}}</th>
+          <td>{{user.nickName}}</td>
+          <td><span *ngIf="user.role == 1">{{user.grade}} {{user.gradeLetter}}</span></td>
+          <td class="d-none d-md-table-cell">{{user.email}}</td>
+          <td>{{user.roleName}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <ng-template #userModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">{{currentUser.id ? currentUser.nickName : 'Создание Пользователя'}}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body row">
     <div class="row d-flex justify-content-center align-items-center h-100 w-100">

@@ -145,6 +145,7 @@ export class MessengerComponent implements OnInit {
 
   ///////////////////////////////////////////////////////////////GROUPS///////////////////////////////////////////////////////////////////////////////////////////////////////
   openGroupModal(modal: any) {
+    this.newGroup = new Group([]);
     this.modalService.open(modal);
   }
   enterImage() {
@@ -181,7 +182,6 @@ export class MessengerComponent implements OnInit {
   }
   openGroupSettings(id: number, modal: any) {
     this.dataService.getGroup(id).subscribe((data: any) => {
-      console.log(data);
       this.newGroup = data;
       this.modalService.open(modal);
     })

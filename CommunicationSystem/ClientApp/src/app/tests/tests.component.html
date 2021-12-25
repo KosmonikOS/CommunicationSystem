@@ -1,4 +1,4 @@
-<div class="container-fluide pt-3 px-4 vh-75" style="position:relative;">
+<div class="container-fluide pt-3 px-md-4 px-1 h-100" style="position:relative;">
   <div class="btn-group toolbar w-100">
     <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="openTest()">
       <i class="bi bi-pencil"></i>
@@ -11,34 +11,34 @@
       </button>
     </div>
   </div>
-  <table class="table">
-    <thead style="border-bottom: solid 2px #DEE2E6">
-      <tr>
-        <th scope="col">Предмет</th>
-        <th scope="col">Название</th>
-        <th scope="col">Вопросы</th>
-        <th scope="col">Время(мин)</th>
-        <th scope="col">Дата</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let test of tests | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="set(test,i)" (dblclick)="dblSet(test,i)">
-        <th scope="row">{{test.subjectName}}</th>
-        <td>{{test.name}}</td>
-        <td>{{test.questions}}</td>
-        <td>{{test.time | number :'1.0-1'}}</td>
-        <td>{{test.date | date:'MM.dd.yyyy'}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="scrollable w-100" style="height:90%">
+    <table class="table">
+      <thead style="border-bottom: solid 2px #DEE2E6">
+        <tr>
+          <th scope="col">Предмет</th>
+          <th scope="col">Название</th>
+          <th class="d-none d-md-table-cell" scope="col">Вопросы</th>
+          <th scope="col">Время(мин)</th>
+          <th class="d-none d-md-table-cell" scope="col">Дата</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let test of tests | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="set(test,i)" (dblclick)="dblSet(test,i)">
+          <th scope="row">{{test.subjectName}}</th>
+          <td>{{test.name}}</td>
+          <td class="d-none d-md-table-cell">{{test.questions}}</td>
+          <td>{{test.time | number :'1.0-1'}}</td>
+          <td class="d-none d-md-table-cell">{{test.date | date:'MM.dd.yyyy'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <ng-template #testModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">{{currentTest.name}}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body row">
     <div>
@@ -62,7 +62,7 @@
 
           </div>
           <ng-template #openAnswer>
-            <textarea type="text" class="form-control" [style.resize]="question.questionType == 2 ? 'none':''"  rows="{{question.questionType == 2 ? '1':'2'}}" placeholder="Ответ" [(ngModel)]="question.studentAnswers[0]"></textarea>
+            <textarea type="text" class="form-control" [style.resize]="question.questionType == 2 ? 'none':''" rows="{{question.questionType == 2 ? '1':'2'}}" placeholder="Ответ" [(ngModel)]="question.studentAnswers[0]"></textarea>
           </ng-template>
         </div>
       </div>

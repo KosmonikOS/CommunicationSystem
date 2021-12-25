@@ -57,6 +57,11 @@ input::placeholder {
   width: 30%;
 }
 
+.image-scroller {
+  text-align: center;
+  font-size: 36px;
+}
+
 @media screen and (max-width: 768px) {
   .image-message {
     padding-left: 50%;
@@ -64,5 +69,8 @@ input::placeholder {
 
   .reciver-image-message {
     width: 50%;
+  }
+  .image-scroller {
+    font-size: 18px;
   }
 }

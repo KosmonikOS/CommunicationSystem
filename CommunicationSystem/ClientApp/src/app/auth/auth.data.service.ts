@@ -35,7 +35,12 @@ export class AuthDataService {
   }
   isAuthenticated() {
     var token = localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY") || "";
-    return token && !this.jwtHelper.isTokenExpired(token);
+    var lifeTime = this.jwtHelper.isTokenExpired(token);
+    if (token && lifeTime) {
+      this.router.navigate([""]);
+    }
+    return token && !lifeTime;
+    
   }
   logOut() {
     clearTimeout(this.refreshTimer);
