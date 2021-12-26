@@ -61,6 +61,21 @@ input::placeholder {
   text-align: center;
   font-size: 36px;
 }
+.typing-area {
+  position: absolute;
+  bottom: 2px;
+  left: 3px;
+  right: 3px
+}
+@media screen and (min-width: 768px) {
+  .active-user {
+    background-color: #0D6EFD;
+  }
+
+    .active-user * {
+      color: white;
+    }
+}
 
 @media screen and (max-width: 768px) {
   .image-message {
@@ -70,6 +85,7 @@ input::placeholder {
   .reciver-image-message {
     width: 50%;
   }
+
   .image-scroller {
     font-size: 18px;
   }
