@@ -17,5 +17,6 @@ namespace CommunicationSystem.Models
         public string Content { get; set; }
         public DateTime? Date { get; set; }
         public int NotViewed { get; set; }
+        public string UserActivity { get; set; }
     }
 }

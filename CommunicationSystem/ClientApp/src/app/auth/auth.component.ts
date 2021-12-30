@@ -17,7 +17,7 @@ export class AuthComponent implements OnInit {
   saveToLocalStorage: boolean = false;
   errors: any = {};
 
-  constructor(private dataService: AuthDataService, private router: Router, private toastService: ToastService, private accountDataService: AccountDataService,private videochatDataService: VideochatDataService) { }
+  constructor(private dataService: AuthDataService, private router: Router, private toastService: ToastService, private accountDataService: AccountDataService, private videochatDataService: VideochatDataService) { }
   enter() {
     this.dataService.getToken(this.login.email, this.login.password).subscribe(result => {
       if (this.saveToLocalStorage) {
@@ -28,6 +28,7 @@ export class AuthComponent implements OnInit {
       this.videochatDataService.checkConnection();
       this.accountDataService.getAccount(this.login.email);
       this.router.navigate(["/messenger"]);
+      this.dataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "enter")
     },
       error => {
         if (error.error.status == 401) {

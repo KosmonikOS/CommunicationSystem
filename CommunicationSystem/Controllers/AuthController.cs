@@ -22,10 +22,38 @@ namespace CommunicationSystem.Controllers
         private readonly CommunicationContext db;
         private readonly IOptions<AuthOptions> options;
 
-        public AuthController(CommunicationContext context,IOptions<AuthOptions> options)
+        public AuthController(CommunicationContext context, IOptions<AuthOptions> options)
         {
             db = context;
             this.options = options;
+        }
+        [HttpGet("settime/{id}/{act?}")]
+        public async Task<IActionResult> SetEnterTime(int id, string act)
+        {
+            if (id != 0)
+            {
+                try
+                {
+                    var user = db.Users.FirstOrDefault(u => u.Id == id);
+                    switch (act)
+                    {
+                        case "enter":
+                            user.EnterTime = DateTime.Now;
+                            break;
+                        case "leave":
+                            user.LeaveTime = DateTime.Now;
+                            break;
+                    }
+                    db.Users.Update(user);
+                    await db.SaveChangesAsync();
+                    return Ok();
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e);
+                }
+            }
+            return BadRequest();
         }
         [HttpPost]
         public IActionResult Post(Login login)

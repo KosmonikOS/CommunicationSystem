@@ -33,6 +33,9 @@ export class AuthDataService {
       })
     }, time);
   }
+  setTime(id: number, action: string) {
+    return this.http.get(this.url + "settime/" + id + "/" + action).subscribe(() => { });
+  }
   isAuthenticated() {
     var token = localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY") || "";
     var lifeTime = this.jwtHelper.isTokenExpired(token);
@@ -43,6 +46,7 @@ export class AuthDataService {
     
   }
   logOut() {
+    this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
     clearTimeout(this.refreshTimer);
     localStorage.removeItem("COMMUNICATION_ACCESS_TOKEN_KEY");
     localStorage.removeItem("CURRENT_COMMUNICATION_EMAIL");

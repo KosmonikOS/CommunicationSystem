@@ -49,6 +49,7 @@ namespace CommunicationSystem.Controllers
                             To = m.To,
                             Content = m.Type == MessageTypes.Image ? "Изображение" : m.Content,
                             Date = m.Date,
+                            UserActivity = UserActivity(u.EnterTime, u.LeaveTime),
                             NotViewed = db.Messages.Where(m => (m.From == u.Id && m.To == id) && m.ViewStatus == ViewStatus.isntViewed).Count()
                         }).ToList().Concat((from utg in db.UsersToGroups
                                             join g in db.Groups on utg.GroupId equals g.Id
@@ -89,6 +90,7 @@ namespace CommunicationSystem.Controllers
                         To = (g1 == null ? g2 == null ? 0 : g2.To : g1.To),
                         Content = (g1 == null ? g2 == null ? "" : g2.Content : g1.Content),
                         Date = (g1 == null ? g2 == null ? null : g2.Date : g1.Date),
+                        UserActivity = UserActivity(u.EnterTime, u.LeaveTime),
                         NotViewed = db.Messages.Where(m => (m.From == u.Id && m.To == id) && m.ViewStatus == ViewStatus.isntViewed).Count()
                     }).ToList().Concat((from utg in db.UsersToGroups
                                         join g in db.Groups on utg.GroupId equals g.Id
@@ -196,22 +198,22 @@ namespace CommunicationSystem.Controllers
             return BadRequest();
         }
         [HttpDelete("{id}/{email}")]
-        public async Task<IActionResult> Delete(int id,string email)
+        public async Task<IActionResult> Delete(int id, string email)
         {
-            if(id != 0)
+            if (id != 0)
             {
                 try
                 {
                     var message = db.Messages.SingleOrDefault(m => m.Id == id);
-                        message.Content = "Сообщение удалено";
-                        message.Type = MessageTypes.Text;
-                        message.ToEmail = email;
-                        db.Messages.Update(message);
-                        await db.SaveChangesAsync();
-                        await SendMessage(message);
-                    return Ok(new {message = message });
+                    message.Content = "Сообщение удалено";
+                    message.Type = MessageTypes.Text;
+                    message.ToEmail = email;
+                    db.Messages.Update(message);
+                    await db.SaveChangesAsync();
+                    await SendMessage(message);
+                    return Ok(new { message = message });
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return BadRequest(e);
                 }
@@ -315,6 +317,12 @@ namespace CommunicationSystem.Controllers
                 }
             }
             return BadRequest();
+        }
+        private static string UserActivity(DateTime enter, DateTime leave)
+        {
+            var type = leave.Date == DateTime.Today ? "t": leave.Year == DateTime.Now.Year ? "M" : "d";
+            var seporator = leave.Date == DateTime.Today ? " в" : ":"; 
+            return enter > leave ? "В сети" : $"Был(a) в сети{seporator} {leave.ToString(type)}";
         }
     }
 }

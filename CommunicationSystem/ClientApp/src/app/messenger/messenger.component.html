@@ -1,5 +1,5 @@
 <div class="container-fluide pt-3 px-4 vh-100">
-  <div class="row rounded-lg overflow-hidden shadow">    
+  <div class="row rounded-lg overflow-hidden shadow">
     <div class="col-md-3 cl-12 vh-100 d-md-block" [ngClass]="{'d-none':!isOpen}">
       <div class="rounded input-group">
         <input type="search" class="form-control rounded" placeholder="Поиск по Никнейму" [(ngModel)]="search" (keyup.enter)="searchUsers()" />
@@ -31,12 +31,20 @@
 
     </div>
     <div class="col-md-9 col-12 vh-100 d-md-block" [ngClass]="{'d-none':isOpen}">
-      <div class="rounded row text-white" style="min-height: 35px;position:relative; font-size: 18px; line-height: 35px; background-color: #0275d8">
-        <div class="col-6">
-          <i class="d-md-none bi bi-caret-left" (click)="openUserList()"></i>
-          {{currentUser.nickName}}
+      <div class="rounded row text-white" style="min-height: 35px;position:relative; font-size: 18px; background-color: #0275d8">
+        <div class="col-6" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          <div class="row">
+            <div class="col-1" style="line-height:35px">
+              <i class="d-md-none bi bi-caret-left" (click)="openUserList()"></i>
+            </div>
+            <div class="col-10" [style.line-height]="currentUser.email == 'Group'? '35px':'18px'">
+              <span>{{currentUser.nickName}}</span>
+              <br />
+              <span style="font-size:12px">{{currentUser.userActivity}}</span>
+            </div>
+          </div>
         </div>
-        <div class="col-6 text-end action-bar">
+        <div class="col-6 text-end action-bar" style="line-height: 35px;">
           <i *ngIf="!videochatDataService.callState" class="bi bi-telephone" (click)="videochatDataService.startCall(currentUser)"></i>
           <i *ngIf="videochatDataService.callState" class="bi bi-x-lg" (click)="videochatDataService.resetCall()"></i>
           <i *ngIf="currentUser.email == 'Group'" class="bi bi-gear" (click)="openGroupSettings(currentUser.id,groupModal)"></i>
@@ -59,7 +67,7 @@
           </div>
 
 
-          
+
           <div class="media ml-auto mb-3" *ngIf="!message.nickName">
             <div class="media-body message-container" style="width:100%" [ngClass]="{'image-message':message.type == 1,'text-message':message.type != 1}">
               <div class="bg-primary rounded mb-2" align="{{message.type == 1 ? 'center':''}}" [ngClass]="{'py-2 px-3':message.type != 1}">
@@ -84,7 +92,10 @@
                 <button id="button-addon2" type="submit" class="btn btn-lg btn-link">
                   <i (click)="openFileInput()" class="bi bi-card-image"></i>
                   <!--<span *ngIf="currentFilesLength > 0" class="rounded-circle bg-primary text-white">{{currentFilesLength}}</span>-->
+
+
                 </button>
+
                 <button id="button-addon2" type="submit" class="btn btn-lg btn-link"><i (click)="sendMessage()" class="bi bi-cursor-fill"></i></button>
               </div>
             </div>

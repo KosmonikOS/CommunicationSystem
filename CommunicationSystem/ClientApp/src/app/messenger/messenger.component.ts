@@ -43,6 +43,7 @@ export class MessengerComponent implements OnInit {
   }
   searchUsers() {
     this.dataService.getUsers(this.search).subscribe((data: any) => {
+      console.log(data);
       this.usersList = data;
       this.toGroupUsersList(data);
     });

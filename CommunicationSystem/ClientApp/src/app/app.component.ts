@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { AuthDataService } from "./auth/auth.data.service";
 import { ToastService } from "./toast.service"
 import { Account } from "./account/account"
@@ -21,7 +21,8 @@ export class AppComponent implements OnInit {
   isNavOpen: boolean = false;
   dismissType: boolean = true;
   @ViewChild("callModal") callModal: ElementRef = new ElementRef("");
-  constructor(private authDataService: AuthDataService, public toastService: ToastService, public accountDataService: AccountDataService, private router: Router, public videochatDataService: VideochatDataService, private audioService: AudioService, private modalService: NgbModal) { }
+  constructor(private authDataService: AuthDataService, public toastService: ToastService, public accountDataService: AccountDataService, private router: Router, public videochatDataService: VideochatDataService, private audioService: AudioService, private modalService: NgbModal, private utilitesService: UtilitesService) { }
+
   openNav() {
     this.isNavOpen = !this.isNavOpen;
   }
@@ -50,7 +51,11 @@ export class AppComponent implements OnInit {
     }
     if (this.checkAuth()) {
       this.authDataService.setRefreshTimer();
+      this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "enter");
     }
+    window.addEventListener("beforeunload", () => {
+      this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
+    });
     this.videochatDataService.addConnectionListener("CallRequest", (caller: any,members:any) => {
       this.dismissType = true;
       this.videochatDataService.members = members;
@@ -86,5 +91,4 @@ export class AppComponent implements OnInit {
       this.videochatDataService.checkConnection();
     }
   }
-
 }

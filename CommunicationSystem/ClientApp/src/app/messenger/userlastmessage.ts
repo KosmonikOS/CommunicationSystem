@@ -10,5 +10,6 @@ export class UserLastMessage {
     public content: string,
     public notViewed: number,
     public date?: Date,
+    public userActivity?:string
   ) { }
 }

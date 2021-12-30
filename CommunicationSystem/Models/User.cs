@@ -20,7 +20,7 @@ namespace CommunicationSystem.Models
         [Required(ErrorMessage = "Это поле обязательное")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Введите от 2 до 50 символов")]
         public string NickName { get; set; }
-        [StringLength(50,MinimumLength =2, ErrorMessage ="Введите от 2 до 50 символов")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "Введите от 2 до 50 символов")]
         public string FirstName { get; set; }
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Введите от 2 до 50 символов")]
         public string MiddleName { get; set; }
@@ -33,8 +33,10 @@ namespace CommunicationSystem.Models
         public string RoleName { get; set; }
         public string IsConfirmed { get; set; }
         public string accountImage { get; set; } = "/assets/user.png";
-        [Phone(ErrorMessage ="Некорректный формат телефона")]
+        [Phone(ErrorMessage = "Некорректный формат телефона")]
         public string Phone { get; set; }
         public string RefreshToken { get; set; }
+        public DateTime EnterTime { get; set; }
+        public DateTime LeaveTime { get; set; }
     }
 }
