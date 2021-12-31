@@ -2,12 +2,15 @@
   <div class="row rounded-lg overflow-hidden shadow">
     <div class="col-md-3 cl-12 vh-100 d-md-block" [ngClass]="{'d-none':!isOpen}">
       <div class="rounded input-group">
-        <input type="search" class="form-control rounded" placeholder="Поиск по Никнейму" [(ngModel)]="search" (keyup.enter)="searchUsers()" />
+        <input type="search" class="form-control rounded" placeholder="Поиск по Никнейму" [(ngModel)]="search" (keyup.enter)="searchUsers(true)" />
         <span class="input-group-text border-0" id="search-addon">
-          <i class="bi bi-search" style="cursor:pointer" (click)="searchUsers()"></i>
+          <i class="bi bi-search" style="cursor:pointer" (click)="searchUsers(true)"></i>
         </span>
         <span class="input-group-text border-0" id="search-addon">
           <i style="cursor:pointer" class="bi bi-plus-lg" (click)="openGroupModal(groupModal)"></i>
+        </span>
+        <span class="input-group-text border-0" id="search-addon">
+          <i class="bi bi-arrow-clockwise" (click)="searchUsers(false)"></i>
         </span>
       </div>
       <div class="bg-white" style="overflow-y:auto;height:80%">
@@ -34,10 +37,10 @@
       <div class="rounded row text-white" style="min-height: 35px;position:relative; font-size: 18px; background-color: #0275d8">
         <div class="col-6" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
           <div class="row">
-            <div class="col-1" style="line-height:35px">
+            <div class="col-1 d-md-none" style="line-height:35px">
               <i class="d-md-none bi bi-caret-left" (click)="openUserList()"></i>
             </div>
-            <div class="col-10" [style.line-height]="currentUser.email == 'Group'? '35px':'18px'">
+            <div class="col-10 col-md-12" [style.line-height]="currentUser.email == 'Group'? '35px':'18px'">
               <span>{{currentUser.nickName}}</span>
               <br />
               <span style="font-size:12px">{{currentUser.userActivity}}</span>

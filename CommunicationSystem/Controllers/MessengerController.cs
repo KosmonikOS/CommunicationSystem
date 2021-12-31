@@ -318,11 +318,15 @@ namespace CommunicationSystem.Controllers
             }
             return BadRequest();
         }
-        private static string UserActivity(DateTime enter, DateTime leave)
+        private static string UserActivity(DateTime? enter, DateTime? leave)
         {
-            var type = leave.Date == DateTime.Today ? "t": leave.Year == DateTime.Now.Year ? "M" : "d";
-            var seporator = leave.Date == DateTime.Today ? " в" : ":"; 
-            return enter > leave ? "В сети" : $"Был(a) в сети{seporator} {leave.ToString(type)}";
+            if (enter != null && leave != null)
+            {
+                var type = leave?.Date == DateTime.Today ? "t" : leave?.Year == DateTime.Now.Year ? "M" : "d";
+                var seporator = leave?.Date == DateTime.Today ? " в" : ":";
+                return enter > leave ? "В сети" : $"Был(a) в сети{seporator} {leave?.ToString(type)}";
+            }
+            return "Не в сети";
         }
     }
 }

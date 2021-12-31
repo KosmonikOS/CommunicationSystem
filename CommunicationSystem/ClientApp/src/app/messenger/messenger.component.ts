@@ -41,9 +41,8 @@ export class MessengerComponent implements OnInit {
   openUserList() {
     this.isOpen = true;
   }
-  searchUsers() {
-    this.dataService.getUsers(this.search).subscribe((data: any) => {
-      console.log(data);
+  searchUsers(withSearch: boolean) {
+    this.dataService.getUsers(withSearch ?this.search: "").subscribe((data: any) => {
       this.usersList = data;
       this.toGroupUsersList(data);
     });
@@ -178,7 +177,7 @@ export class MessengerComponent implements OnInit {
     this.dataService.postGroup(this.newGroup).subscribe(result => {
       this.modalService.dismissAll();
       this.newGroup = new Group([]);
-      this.searchUsers();
+      this.searchUsers(false);
     });
   }
   openGroupSettings(id: number, modal: any) {

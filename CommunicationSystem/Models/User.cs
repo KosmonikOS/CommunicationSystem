@@ -36,7 +36,7 @@ namespace CommunicationSystem.Models
         [Phone(ErrorMessage = "Некорректный формат телефона")]
         public string Phone { get; set; }
         public string RefreshToken { get; set; }
-        public DateTime EnterTime { get; set; }
-        public DateTime LeaveTime { get; set; }
+        public DateTime? EnterTime { get; set; }
+        public DateTime? LeaveTime { get; set; }
     }
 }

@@ -4,13 +4,14 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
+import { AccountDataService } from "../account/account.data.service"
 
 @Injectable()
 export class AuthDataService {
   url: string = "/api/auth/";
   currentUserEmail = "";
   refreshTimer: any = null;
-  constructor(public http: HttpClient, public jwtHelper: JwtHelperService, public router: Router) { }
+  constructor(public http: HttpClient, public jwtHelper: JwtHelperService, public router: Router, private accountDataService: AccountDataService) { }
   getToken(email: string, password: string) {
     return this.http.post<any>(this.url, { email, password }).pipe(
       tap(token => {
@@ -19,7 +20,6 @@ export class AuthDataService {
         localStorage.setItem("CURRENT_COMMUNICATION_EMAIL", email);
         localStorage.setItem("CURRENT_COMMUNICATION_ID", token.current_account_id);
         this.currentUserEmail = email;
-        this.setRefreshTimer();
       })
     );
   }
@@ -45,13 +45,20 @@ export class AuthDataService {
     return token && !lifeTime;
     
   }
+  logIn(email:string) {
+    this.setRefreshTimer();
+    this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "enter");
+    this.accountDataService.getAccount(email);
+  }
   logOut() {
-    this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
-    clearTimeout(this.refreshTimer);
-    localStorage.removeItem("COMMUNICATION_ACCESS_TOKEN_KEY");
-    localStorage.removeItem("CURRENT_COMMUNICATION_EMAIL");
-    localStorage.removeItem("CURRENT_COMMUNICATION_ID");
-    this.router.navigate(['']);
+    if (this.isAuthenticated()) {
+      this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
+      clearTimeout(this.refreshTimer);
+      localStorage.removeItem("COMMUNICATION_ACCESS_TOKEN_KEY");
+      localStorage.removeItem("CURRENT_COMMUNICATION_EMAIL");
+      localStorage.removeItem("CURRENT_COMMUNICATION_ID");
+      this.router.navigate(['']);
+    }
   }
   saveUserData(email: string, password: string) {
     localStorage.setItem("COMMUNICATION_EMAIL", email);

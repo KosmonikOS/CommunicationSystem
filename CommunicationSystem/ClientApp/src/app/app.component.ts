@@ -45,16 +45,15 @@ export class AppComponent implements OnInit {
     this.videochatDataService.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), "DenyCall", { Email: this.videochatDataService.caller.email});
   }
   ngOnInit(): void {
-    this.accountDataService.getAccount(localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") || "");
     if (localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") && window.location.pathname == "/") {
       this.router.navigate(["/messenger"]);
     }
     if (this.checkAuth()) {
-      this.authDataService.setRefreshTimer();
-      this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "enter");
+      this.authDataService.logIn(localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") || "");
     }
     window.addEventListener("beforeunload", () => {
-      this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
+      this.logOut();
+      //this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
     });
     this.videochatDataService.addConnectionListener("CallRequest", (caller: any,members:any) => {
       this.dismissType = true;
