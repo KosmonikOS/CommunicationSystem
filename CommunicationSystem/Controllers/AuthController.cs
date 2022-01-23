@@ -62,11 +62,11 @@ namespace CommunicationSystem.Controllers
             if(user != null)
             {
                 var claims = new List<Claim>()
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType,user.Email),
-                new Claim(JwtRegisteredClaimNames.Sub,user.Password),
-                new Claim("role",user.Role.ToString())
-            };
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType,user.Email),
+                    new Claim(JwtRegisteredClaimNames.Sub,user.Password),
+                    new Claim("role",user.Role.ToString())
+                };
                 var token = GenerateJWT(claims);
                 var rt = GenerateRT(login.Email) ;
                 return Ok(

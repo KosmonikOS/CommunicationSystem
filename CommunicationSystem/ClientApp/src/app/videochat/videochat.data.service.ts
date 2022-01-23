@@ -53,9 +53,7 @@ export class VideochatDataService {
     this.hubConnection.off("DestroyConnection");
     this.hubConnection.off("ToggleVideo");
     this.hubConnection.off("ToggleAudio");
-    //this.hubConnection.stop().then(() => {
-    //  this.connectionStatus = false;
-    //});
+    //this.hubConnection.stop();
   }
   checkConnection() {
     return new Promise((resolve, reject) => {

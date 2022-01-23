@@ -102,7 +102,7 @@ export class VideochatComponent implements OnInit, OnDestroy {
         navigator.mediaDevices.getUserMedia(this.mediaConfig).then((stream) => {
           this.chatRoom["myself"]["remoteStream"] = stream
           resolve("");
-        }).catch(() => {});
+        }).catch(() => { });
       } else {
         resolve("");
       }
@@ -110,11 +110,10 @@ export class VideochatComponent implements OnInit, OnDestroy {
   }
   createInitiatorPeer(email: string) {
     var peer = new SimplePeer({ "initiator": true });
-    this.CheckVideo().then(() => {
-      peer.addStream(this.chatRoom["myself"].remoteStream);
-    })
+    peer.addStream(this.chatRoom["myself"].remoteStream);    
     peer.on("error", (error: any) => { });
     peer.on("connect", () => {
+      console.log("localPeer connected");
       peer.send(this.accountDataService.currentAccount.accountImage + "@img@" + this.accountDataService.currentAccount.nickName);
     })
     peer.on("signal", (data: any) => {
@@ -124,7 +123,7 @@ export class VideochatComponent implements OnInit, OnDestroy {
   }
   createRemotePeer(email: string) {
     var peer = new SimplePeer({ initiator: false });
-    peer.on("error", (error: any) => { });
+    peer.on("error", (error: any) => { console.error(error); });
     peer.on("signal", (data: any) => {
       this.dataService.hubConnection.invoke("StartCall", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), { Email: email }, { Data: data, Dst: "LocalPeer" });
     });
@@ -195,6 +194,7 @@ export class VideochatComponent implements OnInit, OnDestroy {
       if (this.dataService.calling == null) {
         this.dataService.calling = { Email: caller, Caller: false };
       }
+      console.log(data);
       if (data.Dst == "RemotePeer") {
         this.chatRoom[caller]["remotePeer"].signal(data.Data);
       } else {
@@ -204,10 +204,14 @@ export class VideochatComponent implements OnInit, OnDestroy {
     this.dataService.addConnectionListener("ToggleState", async (caller: string, type: string) => {
       switch (type) {
         case "audioState":
-          this.chatRoom[caller]["audioState"] = !this.chatRoom[caller]["audioState"];
+          if (this.chatRoom[caller] != undefined) {
+            this.chatRoom[caller]["audioState"] = !this.chatRoom[caller]["audioState"];
+          };
           break;
         case "videoState":
-          this.chatRoom[caller]["videoState"] = !this.chatRoom[caller]["videoState"];
+          if (this.chatRoom[caller] != undefined) {
+            this.chatRoom[caller]["videoState"] = !this.chatRoom[caller]["videoState"];
+          };
           break;
         case "screenState":
           var video = this.screenVideo.nativeElement;
@@ -243,8 +247,8 @@ export class VideochatComponent implements OnInit, OnDestroy {
           if (this.chatRoom[caller].remoteStream.getTracks().length > 2) {
             this.screenState = false;
             this.screenStream = new MediaStream();
-          }
-          this.chatRoom[caller] = new Member;
+          };
+          delete this.chatRoom[caller];
           this.currentQuantity--;
           this.calculateSize();
           break;
@@ -259,14 +263,19 @@ export class VideochatComponent implements OnInit, OnDestroy {
     this.dataService.addConnectionListener("AddMember", (email: string) => {
       var members = Object.keys(this.chatRoom);
       members.shift();
+      console.log("add");
       this.dataService.hubConnection.invoke("NeedToConnect", email, members).then(() => {
         this.createChatMember(email);
       })
     });
     this.dataService.addConnectionListener("OfferToConnect", (members: string[]) => {
       setTimeout(() => {
+        console.log("offer");
         members.forEach((email) => {
           if (this.chatRoom[email]?.localPeer == null) {
+            if (this.chatRoom[email] == undefined) {
+              this.chatRoom[email] = new Member();
+            }
             var peer = this.createInitiatorPeer(email);
             this.chatRoom[email]["localPeer"] = peer;
           }
@@ -278,7 +287,7 @@ export class VideochatComponent implements OnInit, OnDestroy {
   createChatMember(email: string) {
     var remotePeer = this.createRemotePeer(email);
     var localPeer = this.createInitiatorPeer(email);
-    this.chatRoom[email] = new Member(false, localPeer, remotePeer, this.chatRoom["myself"]?.remoteStream);
+    this.chatRoom[email] = new Member(false, localPeer, remotePeer, this.chatRoom["myself"]["remoteStream"]);
   }
   createRemotePeers() {
     this.dataService.members.filter((member) => member.email != localStorage.getItem("CURRENT_COMMUNICATION_EMAIL")).forEach((member) => {
@@ -287,7 +296,11 @@ export class VideochatComponent implements OnInit, OnDestroy {
       this.chatRoom[email] = new Member(false, null, remotePeer);
     })
   }
+  show() {
+    console.log(this.chatRoom);
+  }
   ngOnInit(): void {
+    console.log(this.chatRoom);
     this.subscribeHubEvents();
     if (this.dataService.calling == null) {
       this.createRemotePeers();
@@ -301,9 +314,9 @@ export class VideochatComponent implements OnInit, OnDestroy {
     this.calculateSize();
   }
   ngOnDestroy(): void {
-    var dcst = Object.keys(this.chatRoom).length > 2 || this.dataService?.calling?.email == "Group" ? "disconnect" : "disconnectAll";
+    var dcst = (Object.keys(this.chatRoom).filter(value => this.chatRoom[value]["localPeer"] != null)).length > 2 ? "disconnect" : "disconnectAll";
     this.toggleState(dcst).then(() => {
-      this.destroyPeers();
+      this.destroyPeers().then(() => { console.log(this.chatRoom); });
     });
   }
 }

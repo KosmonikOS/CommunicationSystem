@@ -52,8 +52,8 @@ export class AppComponent implements OnInit {
       this.authDataService.logIn(localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") || "");
     }
     window.addEventListener("beforeunload", () => {
-      this.logOut();
-      //this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
+      //this.logOut();
+      this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
     });
     this.videochatDataService.addConnectionListener("CallRequest", (caller: any,members:any) => {
       this.dismissType = true;
