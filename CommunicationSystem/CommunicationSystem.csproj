@@ -65,6 +65,7 @@
     <None Remove="ClientApp\src\app\useredit\role.ts" />
     <None Remove="ClientApp\src\app\useredit\useredit.data.service.ts" />
     <None Remove="ClientApp\src\app\utilites.service.ts" />
+    <None Remove="ClientApp\src\app\videochat\devices.service.ts" />
     <None Remove="ClientApp\src\app\videochat\member.ts" />
     <None Remove="ClientApp\src\app\videochat\videochat.data.service.ts" />
     <None Remove="ClientApp\src\app\videochat\videoframe.component.ts" />
@@ -99,6 +100,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\useredit\role.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\useredit\useredit.data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\utilites.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\devices.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\videochat\videoframe.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\videochat\member.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\videochat\videochat.data.service.ts" />

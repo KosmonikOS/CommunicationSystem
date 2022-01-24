@@ -6,6 +6,7 @@ import { AccountDataService } from "./account/account.data.service"
 import { Router } from '@angular/router';
 import { VideochatDataService } from './videochat/videochat.data.service';
 import { AudioService } from "./audio.service"
+import { DevicesService } from "./devices.service"
 import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -14,14 +15,14 @@ import { UtilitesService } from "./utilites.service"
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [AuthDataService, ToastService, VideochatDataService, AudioService, UtilitesService]
+  providers: [AuthDataService, ToastService, VideochatDataService, AudioService, UtilitesService, DevicesService]
 })
 export class AppComponent implements OnInit {
   title = 'ClientApp';
   isNavOpen: boolean = false;
   dismissType: boolean = true;
   @ViewChild("callModal") callModal: ElementRef = new ElementRef("");
-  constructor(private authDataService: AuthDataService, public toastService: ToastService, public accountDataService: AccountDataService, private router: Router, public videochatDataService: VideochatDataService, private audioService: AudioService, private modalService: NgbModal, private utilitesService: UtilitesService) { }
+  constructor(private authDataService: AuthDataService, public toastService: ToastService, public accountDataService: AccountDataService, private router: Router, public videochatDataService: VideochatDataService, private audioService: AudioService, private modalService: NgbModal, private utilitesService: UtilitesService, private devicesService: DevicesService) { }
 
   openNav() {
     this.isNavOpen = !this.isNavOpen;
@@ -34,12 +35,14 @@ export class AppComponent implements OnInit {
     this.authDataService.logOut();
   }
   acceptCall() {
-    this.router.navigate(["/videochat"]).then(() => {
-      this.audioService.stopAudio();
-      setTimeout(() => {
-        this.videochatDataService.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), !this.videochatDataService.caller.groupId?"AcceptCall":"AddMember", { Email: this.videochatDataService.caller.email});
-      }, 1000);
-    })
+    this.devicesService.checkDevices().then(() => {
+      this.router.navigate(["/videochat"]).then(() => {
+        this.audioService.stopAudio();
+        setTimeout(() => {
+          this.videochatDataService.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), !this.videochatDataService.caller.groupId ? "AcceptCall" : "AddMember", { Email: this.videochatDataService.caller.email });
+        }, 500);
+      })
+    });
   }
   denyCall() {
     this.videochatDataService.hubConnection.invoke("React", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), "DenyCall", { Email: this.videochatDataService.caller.email});

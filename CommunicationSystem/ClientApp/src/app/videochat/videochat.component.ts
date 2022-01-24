@@ -8,6 +8,7 @@ import { ToastService } from '../toast.service';
 import { decode } from 'punycode';
 import { Member } from './member';
 import { AudioService } from '../audio.service';
+import { DevicesService } from '../devices.service';
 @Component({
   selector: 'app-videochat',
   templateUrl: './videochat.component.html',
@@ -26,7 +27,7 @@ export class VideochatComponent implements OnInit, OnDestroy {
     width: 0
   };
   currentQuantity: number = 1;
-  constructor(private dataService: VideochatDataService, public accountDataService: AccountDataService, public router: Router, private toastService: ToastService, private audioService: AudioService) { }
+  constructor(private dataService: VideochatDataService, public accountDataService: AccountDataService, public router: Router, private toastService: ToastService, private audioService: AudioService, private devicesService: DevicesService) { }
   getConnectedMembers() {
     var members = Object.keys(this.chatRoom);
     return members.filter((key) => key != "myself" && this.chatRoom[key]["remoteStream"] != null);
@@ -82,23 +83,11 @@ export class VideochatComponent implements OnInit, OnDestroy {
       };
     })
   }
-  checkMedia(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      navigator.mediaDevices.enumerateDevices().then((devices) => {
-        var video = false;
-        var audio = false;
-        devices.forEach(function (device) {
-          video = video || device.kind.indexOf("video") > -1 ? true : false;
-          audio = audio || device.kind.indexOf("audio") > -1 ? true : false;
-        });
-        resolve({ video: video, audio: audio });
-      });
-    })
-  }
+  
   CheckVideo() {
     return new Promise(async (resolve, reject) => {
       if (this.chatRoom["myself"]?.remoteStream == null) {
-        this.mediaConfig = await this.checkMedia();
+        this.mediaConfig = await this.devicesService.checkMedia();
         navigator.mediaDevices.getUserMedia(this.mediaConfig).then((stream) => {
           this.chatRoom["myself"]["remoteStream"] = stream
           resolve("");
