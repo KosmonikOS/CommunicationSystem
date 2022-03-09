@@ -115,6 +115,7 @@ export class CreatetestsComponent implements OnInit {
   createTest() {
     this.search = "";
     this.currentTest = new Test(-1);
+    this.userList = [];
     this.openModal(this.testModal);
   }
   editTest() {
