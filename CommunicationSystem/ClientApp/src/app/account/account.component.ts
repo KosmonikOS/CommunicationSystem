@@ -25,7 +25,13 @@ export class AccountComponent {
   }
   fileSelected(event: any) {
     var file = <File>event.target.files[0];
-    this.dataService.putImage(file, this.dataService.currentAccount.id).subscribe(result => { this.toastService.showSuccess("Файл загружен") }, error => { this.toastService.showError("Ошибка загрузки") });
+    this.dataService.putImage(file, this.dataService.currentAccount.id).subscribe((result:any) => {
+      this.toastService.showSuccess("Файл загружен");
+      console.log(result.path);
+      this.dataService.currentAccount.accountImage = result.path;
+    }, error => {
+      this.toastService.showError("Ошибка загрузки")
+    });
   }
   saveAccount() {
     this.dataService.postAccount().subscribe(result => {

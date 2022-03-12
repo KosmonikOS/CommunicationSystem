@@ -1,11 +1,13 @@
 ﻿using CommunicationSystem.Hubs;
 using CommunicationSystem.Models;
+using CommunicationSystem.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,11 +24,14 @@ namespace CommunicationSystem.Controllers
         private readonly CommunicationContext db;
         private readonly IHubContext<MessengerHub> hubContext;
         private readonly IWebHostEnvironment env;
-        public MessengerController(CommunicationContext context, IHubContext<MessengerHub> hubcontext, IWebHostEnvironment environment)
+        private readonly PathOptions options;
+
+        public MessengerController(CommunicationContext context, IHubContext<MessengerHub> hubcontext, IWebHostEnvironment environment, Microsoft.Extensions.Options.IOptions<PathOptions> options)
         {
             db = context;
             hubContext = hubcontext;
             env = environment;
+            this.options = options.Value;
         }
         [HttpGet("{id}/{nickName?}")]
         public IEnumerable<UserLastMessage> Get(int id, string nickName)
@@ -116,7 +121,7 @@ namespace CommunicationSystem.Controllers
         [HttpGet("getmessages/{accountid}/{userid}/{togroup}")]
         public IEnumerable<MessageBewteenUsers> Get(int accountid, int userid, int togroup)
         {
-            foreach (var message in db.Messages.Where(m => m.ViewStatus == ViewStatus.isntViewed && ((m.From == userid && m.To == accountid) || m.ToGroup == togroup)))
+            foreach (var message in db.Messages.Where(m => m.ViewStatus == ViewStatus.isntViewed && ((m.From == userid && m.To == accountid) || (m.To == 0 && m.ToGroup == togroup))))
             {
                 message.ViewStatus = ViewStatus.isViewed;
                 db.Messages.Update(message);
@@ -175,12 +180,11 @@ namespace CommunicationSystem.Controllers
                 {
                     foreach (var file in files)
                     {
-                        var path = "/assets/" + DateTime.Now.TimeOfDay.TotalMilliseconds + file.FileName.ToString();
+                        var path = options.AssetsFolder + DateTime.Now.TimeOfDay.TotalMilliseconds + file.FileName.ToString();
                         message.Content = path;
-                        //message.To = message.ToGroup != 0 ? 0 : message.To;
                         message.Date = DateTime.Now;
                         db.Messages.Add(message);
-                        using (var filestr = new FileStream(env.ContentRootPath + "/ClientApp/src" + path, FileMode.Create))
+                        using (var filestr = new FileStream(Path.Combine(env.ContentRootPath + options.AssetsPath + path), FileMode.Create))
                         {
                             await file.CopyToAsync(filestr);
                         }
@@ -304,8 +308,9 @@ namespace CommunicationSystem.Controllers
             {
                 try
                 {
-                    var path = "/assets/" + DateTime.Now.TimeOfDay.TotalMilliseconds + GroupImage.FileName.ToString();
-                    using (var filestr = new FileStream(env.ContentRootPath + "/ClientApp/src" + path, FileMode.Create))
+                    var path = options.AssetsFolder + DateTime.Now.TimeOfDay.TotalMilliseconds + GroupImage.FileName.ToString();
+                    Console.WriteLine(path);
+                    using (var filestr = new FileStream(Path.Combine(env.ContentRootPath + options.AssetsPath + path), FileMode.Create))
                     {
                         await GroupImage.CopyToAsync(filestr);
                     }

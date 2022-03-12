@@ -29,6 +29,7 @@ namespace CommunicationSystem
         {
             services.AddCors();
             services.Configure<AuthOptions>(Configuration.GetSection("Auth"));
+            services.Configure<PathOptions>(Configuration.GetSection("Path"));
             var authOptions = Configuration.GetSection("Auth").Get<AuthOptions>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 options =>
@@ -88,7 +89,7 @@ namespace CommunicationSystem
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {

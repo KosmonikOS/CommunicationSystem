@@ -18,7 +18,7 @@
           <div class="media">
             <img src="{{user.accountImage}}" alt="user" width="30" class="rounded-circle text">
             <i *ngIf="!user.accountImage" class="bi bi-person-circle" style="font-size: 25px;"></i>
-            <div *ngIf="selectedUser != i && user.notViewed != 0" style="width: 27px;position:absolute;top:5px;right:10px" class="text-center small text-white font-weight-bold p-1 bg-primary rounded-circle">{{user.notViewed}}</div>
+            <div *ngIf="((currentMessage.auto && selectedUser == i) || selectedUser != i) && user.notViewed != 0" style="width: 27px;position:absolute;top:5px;right:10px" class="text-center small text-white font-weight-bold p-1 bg-primary rounded-circle">{{user.notViewed}}</div>
             <div class="media-body ml-4">
               <div class="d-flex align-items-center justify-content-between mb-1">
                 <h6 class="mb-0">

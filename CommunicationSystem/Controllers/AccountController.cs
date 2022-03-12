@@ -1,8 +1,10 @@
 ﻿using CommunicationSystem.Models;
+using CommunicationSystem.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,9 +20,12 @@ namespace CommunicationSystem.Controllers
     {
         private readonly CommunicationContext db;
         private readonly IWebHostEnvironment env;
-        public AccountController(CommunicationContext context, IWebHostEnvironment environment)
+        private readonly PathOptions options;
+
+        public AccountController(CommunicationContext context, IWebHostEnvironment environment,IOptions<PathOptions> options)
         {
             env = environment;
+            this.options = options.Value;
             db = context;
         }
         [HttpGet("{email}")]
@@ -35,8 +40,8 @@ namespace CommunicationSystem.Controllers
             {
                 try
                 {
-                    var path = "/assets/" + DateTime.Now.TimeOfDay.TotalMilliseconds + imageToSave.FileName.ToString();
-                    using (var filestr = new FileStream(env.ContentRootPath + "/ClientApp/src" + path, FileMode.Create))
+                    var path = options.AssetsFolder + DateTime.Now.TimeOfDay.TotalMilliseconds + imageToSave.FileName.ToString();
+                    using (var filestr = new FileStream(Path.Combine(env.ContentRootPath + options.AssetsPath + path), FileMode.Create))
                     {
                         await imageToSave.CopyToAsync(filestr);
                     }
@@ -44,7 +49,7 @@ namespace CommunicationSystem.Controllers
                     user.accountImage = path;
                     db.Users.Update(user);
                     await db.SaveChangesAsync();
-                    return Ok();
+                    return Ok(new {path =  path });
                 }
                 catch (Exception e)
                 {

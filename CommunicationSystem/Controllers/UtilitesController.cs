@@ -1,8 +1,10 @@
 ﻿using CommunicationSystem.Models;
+using CommunicationSystem.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,10 +19,12 @@ namespace CommunicationSystem.Controllers
     public class UtilitesController : ControllerBase
     {
         private readonly IWebHostEnvironment env;
-        public UtilitesController(IWebHostEnvironment environment)
+        private readonly PathOptions options;
+
+        public UtilitesController(IWebHostEnvironment environment,IOptions<PathOptions> options)
         {
             env = environment;
-            
+            this.options = options.Value;
         }
         [HttpPut("saveimage")]
         public async Task<IActionResult> Put(IFormFile imageToSave)
@@ -29,8 +33,8 @@ namespace CommunicationSystem.Controllers
             {
                 try
                 {
-                    var path = "/assets/" + DateTime.Now.TimeOfDay.TotalMilliseconds + imageToSave.FileName.ToString();
-                    using (var filestr = new FileStream(env.ContentRootPath + "/ClientApp/src" + path, FileMode.Create))
+                    var path = options.AssetsFolder + DateTime.Now.TimeOfDay.TotalMilliseconds + imageToSave.FileName.ToString();
+                    using (var filestr = new FileStream(Path.Combine(env.ContentRootPath + options.AssetsPath + path), FileMode.Create))
                     {
                         await imageToSave.CopyToAsync(filestr);
                     }

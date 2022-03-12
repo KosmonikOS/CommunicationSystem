@@ -7,6 +7,7 @@ import { ToastService } from "../toast.service"
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Group } from './group';
 import { VideochatDataService } from '../videochat/videochat.data.service';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-messenger',
@@ -39,6 +40,7 @@ export class MessengerComponent implements OnInit {
   constructor(private dataService: MessengerDataService, private toastService: ToastService, private modalService: NgbModal, public videochatDataService: VideochatDataService) { }
   ///////////////////////////////////////////////////////////////USERS///////////////////////////////////////////////////////////////////////////////////////////////////////
   openUserList() {
+    this.currentMessage = new MessageBetweenUsers(Number(window.localStorage.getItem("CURRENT_COMMUNICATION_ID")));
     this.isOpen = true;
   }
   searchUsers(withSearch: boolean) {
@@ -51,6 +53,7 @@ export class MessengerComponent implements OnInit {
     this.isOpen = false;
     this.selectedUser = index;
     this.currentUser = user
+    this.currentMessage.auto = false;
     if (user.email == "Group") {
       this.currentMessage.togroup = user.id;
       this.currentMessage.to = 0;
@@ -93,7 +96,13 @@ export class MessengerComponent implements OnInit {
         val.date = message.date;
       }
       if (type == "from" && (val.id == (message.to == 0 ? message.toGroup : message.from))) {
-        val.notViewed += (this.currentMessage.to != message.from && message.toEmail != "Group") || (this.currentMessage.togroup != message.toGroup)? 1 : 0;
+        if (message.toGroup != 0 && val.email != message.toEmail) {
+          continue;
+        }
+        console.log(this.currentMessage);
+        console.log((this.currentMessage.to != message.from && message.toEmail != "Group") || (this.currentMessage.togroup != message.toGroup) || this.currentMessage.auto);
+        val.notViewed += (this.currentMessage.to != message.from && message.toEmail != "Group") || (this.currentMessage.togroup != message.toGroup) || this.currentMessage.auto ? 1 : 0;
+        console.log(val.notViewed);
         val.content = message.content;
         val.date = message.date;
       }
@@ -200,6 +209,10 @@ export class MessengerComponent implements OnInit {
         this.currentMessage.togroup = data[0].id;
       }
       this.currentMessage.toEmail = data[0].email;
+      if (window.innerWidth < 678) {
+        console.log("less");
+        this.currentMessage.auto = true;
+      }
       this.toGroupUsersList(data);
       this.currentUser = data[0];
     });
