@@ -51,9 +51,6 @@ export class AppComponent implements OnInit {
     if (localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") && window.location.pathname == "/") {
       this.router.navigate(["/messenger"]);
     }
-    if (this.checkAuth()) {
-      this.authDataService.logIn(localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") || "");
-    }
     window.addEventListener("beforeunload", () => {
       //this.logOut();
       this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
@@ -90,6 +87,7 @@ export class AppComponent implements OnInit {
       this.modalService.dismissAll();
     })
     if (this.checkAuth()) {
+      this.authDataService.logIn(localStorage.getItem("CURRENT_COMMUNICATION_EMAIL") || "");
       this.videochatDataService.checkConnection();
     }
   }

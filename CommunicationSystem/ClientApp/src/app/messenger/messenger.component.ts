@@ -216,7 +216,8 @@ export class MessengerComponent implements OnInit {
       this.toGroupUsersList(data);
       this.currentUser = data[0];
     });
-    this.dataService.startConnection();
+    //this.dataService.startConnection();
+    this.dataService.checkConnection();
     this.dataService.addConnectionListener("Recive", (message: any) => {
       if (message.id >= (this.messagesList[this.messagesList.length - 1].id || 0)) {
         this.updateUserLastMessage(message, "from");

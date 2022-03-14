@@ -8,7 +8,6 @@ import { MessageBetweenUsers } from "./messagebetweenusers";
 export class MessengerDataService {
   url = "/api/messenger/";
   hubConnection: signalR.HubConnection = new signalR.HubConnectionBuilder().withUrl("/messengerhub", { accessTokenFactory: () => window.localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY") || "" }).build();
-  connectionStatus: boolean = false;
   constructor(private http: HttpClient, private accountDataService: AccountDataService) { }
   getUsers(nickname: string) {
     return this.http.get(this.url + localStorage.getItem("CURRENT_COMMUNICATION_ID") + "/" + nickname);
@@ -46,14 +45,13 @@ export class MessengerDataService {
     return this.http.delete(this.url + id + "/" + email);
   }
   startConnection() {
-    this.hubConnection.start().then(() => this.connectionStatus = true).catch((err => console.log(err)));
-    this.hubConnection.onclose(() => this.connectionStatus = false);
+      this.hubConnection.start().catch((err => console.log(err)));
   }
   addConnectionListener(name: string, func: any) {
     this.hubConnection.on(name, func);
   }
   checkConnection() {
-    if (!this.connectionStatus) {
+    if (this.hubConnection.state == "Disconnected") {
       this.startConnection();
     }
   }

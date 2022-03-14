@@ -19,15 +19,15 @@ export class DevicesService {
   checkDevices() {
     return new Promise(async (resolve, reject) => {
       var mediaConfig = await this.checkMedia();
-      var video = await navigator.permissions.query({ name: "camera" }).then((res) => res.state == "granted");
-      var audio = await navigator.permissions.query({ name: "microphone" }).then((res) => res.state == "granted");
-      if ((mediaConfig.video && !video) || (mediaConfig.audio && !audio)) {
-        await navigator.mediaDevices.getUserMedia({ video: !video, audio: !audio }).then((stream) => {
+      //var video = await navigator.permissions.query({ name: "camera" }).then((res) => res.state == "granted");
+      //var audio = await navigator.permissions.query({ name: "microphone" }).then((res) => res.state == "granted");
+      //if ((mediaConfig.video && !video) || (mediaConfig.audio && !audio)) {
+        await navigator.mediaDevices.getUserMedia({ video: mediaConfig.video, audio: mediaConfig.audio }).then((stream) => {
           stream.getTracks()?.forEach(function (track: any) {
             track?.stop();
           });
         });
-      }
+      //}
       resolve("");
     });
   }

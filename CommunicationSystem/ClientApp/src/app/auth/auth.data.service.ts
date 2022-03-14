@@ -25,16 +25,20 @@ export class AuthDataService {
   }
   setRefreshTimer() {
     var time = JSON.parse(atob(localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY")!.split('.')[1])).exp * 1000 - new Date().getTime() - 60000;
-    this.refreshTimer = setTimeout(() => {
-      this.http.post<any>(this.url + "refresh", { "JWT": localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY"), "RT": localStorage.getItem("COMMUNICATION_REFRESH_TOKEN") }).subscribe((token: any) => {
-        localStorage.setItem("COMMUNICATION_ACCESS_TOKEN_KEY", token.access_token);
-        localStorage.setItem("COMMUNICATION_REFRESH_TOKEN", token.refresh_token);
-        this.setRefreshTimer();
-      })
-    }, time);
+    if (time > 0) {
+      this.refreshTimer = setTimeout(() => {
+        this.http.post<any>(this.url + "refresh", { "JWT": localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY"), "RT": localStorage.getItem("COMMUNICATION_REFRESH_TOKEN") }).subscribe((token: any) => {
+          localStorage.setItem("COMMUNICATION_ACCESS_TOKEN_KEY", token.access_token);
+          localStorage.setItem("COMMUNICATION_REFRESH_TOKEN", token.refresh_token);
+          this.setRefreshTimer();
+        })
+      }, time);
+    }
   }
   setTime(id: number, action: string) {
-    return this.http.get(this.url + "settime/" + id + "/" + action).subscribe(() => { });
+    if (this.isAuthenticated()) {
+      return this.http.get(this.url + "settime/" + id + "/" + action).subscribe(() => { });
+    }
   }
   isAuthenticated() {
     var token = localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY") || "";
@@ -54,11 +58,12 @@ export class AuthDataService {
     if (this.isAuthenticated()) {
       this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
       clearTimeout(this.refreshTimer);
+    }
       localStorage.removeItem("COMMUNICATION_ACCESS_TOKEN_KEY");
       localStorage.removeItem("CURRENT_COMMUNICATION_EMAIL");
       localStorage.removeItem("CURRENT_COMMUNICATION_ID");
+      localStorage.removeItem("COMMUNICATION_REFRESH_TOKEN");
       this.router.navigate(['']);
-    }
   }
   saveUserData(email: string, password: string) {
     localStorage.setItem("COMMUNICATION_EMAIL", email);
