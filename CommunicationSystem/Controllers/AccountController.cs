@@ -1,4 +1,5 @@
-﻿using CommunicationSystem.Models;
+﻿using CommunicationSystem.Services.Interfaces;
+using CommunicationSystem.Models;
 using CommunicationSystem.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CommunicationSystem.Repositories.Interfaces;
 
 namespace CommunicationSystem.Controllers
 {
@@ -18,20 +20,30 @@ namespace CommunicationSystem.Controllers
     [Authorize]
     public class AccountController : ControllerBase
     {
-        private readonly CommunicationContext db;
-        private readonly IWebHostEnvironment env;
-        private readonly PathOptions options;
+        private readonly IFileSaver file;
+        private readonly IAccountRepository repository;
 
-        public AccountController(CommunicationContext context, IWebHostEnvironment environment,IOptions<PathOptions> options)
+        public AccountController(IFileSaver file,IAccountRepository repository)
         {
-            env = environment;
-            this.options = options.Value;
-            db = context;
+            this.file = file;
+            this.repository = repository;
         }
         [HttpGet("{email}")]
-        public User Get(string email)
+        public ActionResult<User> Get(string email)
         {
-            return db.Users.SingleOrDefault(u => u.Email == email);
+            try
+            {
+                var user = repository.GetUserByEmail(email);
+                if (user != null)
+                {
+                    return Ok(user);
+                }
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
+            return BadRequest();
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(IFormFile imageToSave, int id)
@@ -40,15 +52,8 @@ namespace CommunicationSystem.Controllers
             {
                 try
                 {
-                    var path = options.AssetsFolder + DateTime.Now.TimeOfDay.TotalMilliseconds + imageToSave.FileName.ToString();
-                    using (var filestr = new FileStream(Path.Combine(env.ContentRootPath + options.AssetsPath + path), FileMode.Create))
-                    {
-                        await imageToSave.CopyToAsync(filestr);
-                    }
-                    var user = db.Users.SingleOrDefault(u => u.Id == id);
-                    user.accountImage = path;
-                    db.Users.Update(user);
-                    await db.SaveChangesAsync();
+                    var path = await file.SaveFile(imageToSave);
+                    await repository.UpdateImage(id, path);
                     return Ok(new {path =  path });
                 }
                 catch (Exception e)
@@ -59,14 +64,13 @@ namespace CommunicationSystem.Controllers
             return BadRequest();
         }
         [HttpPost]
-        public IActionResult Post(User user)
+        public async Task<IActionResult> Post(User user)
         {
             if(user != null)
             {
                 try
                 {
-                    db.Users.Update(user);
-                    db.SaveChanges();
+                    await repository.UpdateUser(user);
                     return Ok();
                 }
                 catch(Exception e)

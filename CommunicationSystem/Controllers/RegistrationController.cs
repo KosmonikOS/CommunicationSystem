@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CommunicationSystem.Services;
 using System.Text;
 using Microsoft.AspNetCore.Hosting;
+using CommunicationSystem.Services.Interfaces;
 
 namespace CommunicationSystem.Controllers
 {
@@ -17,10 +18,13 @@ namespace CommunicationSystem.Controllers
     {
         private readonly CommunicationContext db;
         private readonly IWebHostEnvironment env;
-        public RegistrationController(CommunicationContext context, IWebHostEnvironment environment)
+        private readonly IMailSender mail;
+
+        public RegistrationController(CommunicationContext context, IWebHostEnvironment environment,IMailSender mail)
         {
             db = context;
             env = environment;
+            this.mail = mail;
         }
         [HttpGet("{token}")]
         public IActionResult Get(string token)
@@ -48,11 +52,15 @@ namespace CommunicationSystem.Controllers
             {
                 try
                 {
-                    var token = Convert.ToBase64String(Encoding.ASCII.GetBytes(user.Email)) + "@d@" + Convert.ToBase64String(Encoding.ASCII.GetBytes(DateTime.Now.ToString()));
-                    db.Users.Add(new User() { Email = user.Email,NickName = user.NickName,Password = user.Password,IsConfirmed = token });
-                    db.SaveChanges();
-                    await MailService.SendRegistrationmail(user.Email,token, $"{this.Request.Scheme}://{this.Request.Host.Value}");
-                    return Ok();
+                    var email = db.Users.SingleOrDefault(u => u.Email == user.Email);
+                    if (email == null) {
+                        var token = Convert.ToBase64String(Encoding.ASCII.GetBytes(user.Email)) + "@d@" + Convert.ToBase64String(Encoding.ASCII.GetBytes(DateTime.Now.ToString()));
+                        db.Users.Add(new User() { Email = user.Email, NickName = user.NickName, Password = user.Password, IsConfirmed = token });
+                        db.SaveChanges();
+                        await mail.SendRegistrationmail(user.Email, token, $"{this.Request.Scheme}://{this.Request.Host.Value}");
+                        return Ok();
+                    }
+                    return BadRequest("Почта уже используется");
                 }
                 catch(Exception e)
                 {

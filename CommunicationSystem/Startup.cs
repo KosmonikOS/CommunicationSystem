@@ -1,6 +1,8 @@
 using CommunicationSystem.Hubs;
+using CommunicationSystem.Services.Interfaces;
 using CommunicationSystem.Models;
 using CommunicationSystem.Options;
+using CommunicationSystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
+using CommunicationSystem.Repositories.Interfaces;
+using CommunicationSystem.Repositories;
 
 namespace CommunicationSystem
 {
@@ -27,10 +31,14 @@ namespace CommunicationSystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            var authOptions = Configuration.GetSection("Auth").Get<AuthOptions>();
+            var connection = Configuration.GetConnectionString("PostgreSQL");
+
+            //Configuring options
             services.Configure<AuthOptions>(Configuration.GetSection("Auth"));
             services.Configure<PathOptions>(Configuration.GetSection("Path"));
-            var authOptions = Configuration.GetSection("Auth").Get<AuthOptions>();
+            services.Configure<SmtpOptions>(Configuration.GetSection("SmtpClient"));
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 options =>
                 {
@@ -50,13 +58,12 @@ namespace CommunicationSystem
                         OnMessageReceived = context =>
                         {
                             var accessToken = context.Request.Query["access_token"];
-
-                            // если запрос направлен хабу
+                            // if hub is requested
                             var path = context.HttpContext.Request.Path;
                             if (!string.IsNullOrEmpty(accessToken) &&
                                 ((path.StartsWithSegments("/messengerhub")) || (path.StartsWithSegments("/videochathub"))))
                             {
-                                // получаем токен из строки запроса
+                                // getting token from request
                                 context.Token = accessToken;
                             }
                             return Task.CompletedTask;
@@ -65,10 +72,20 @@ namespace CommunicationSystem
 
                 });
             services.AddSignalR();
+
+            //services.AddCors(); // Узнать где используется
+
+            //Adding custom services
+
             services.AddSingleton<IUserIdProvider, EmailUserIdProvider>();
-            var connection = Configuration.GetConnectionString("PostgreSQL");
+            services.AddScoped<IMailSender, MailService>();
+            services.AddScoped<IFileSaver, FileService>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+
             services.AddDbContextPool<CommunicationContext>(options => options.UseNpgsql(connection));
+
             services.AddControllersWithViews();
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
@@ -85,22 +102,21 @@ namespace CommunicationSystem
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
 
-            //app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
+                app.UseHsts();
+
                 app.UseSpaStaticFiles();
             }
+            app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseCors(builder => builder.AllowAnyOrigin());
+
+            //app.UseCors(builder => builder.AllowAnyOrigin());
 
             app.UseAuthentication();
+
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<VideoChatHub>("/videochathub");

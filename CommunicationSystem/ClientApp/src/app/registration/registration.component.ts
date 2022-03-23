@@ -15,19 +15,19 @@ export class RegistrationComponent {
   //approval: boolean = false;
   constructor(private dataService: RegistrationDataService, private router: Router, private toastService: ToastService) { };
   Register() {
-    //if (this.approval) {
       this.dataService.postRegistration(this.registration).subscribe(
         result => {
           this.toastService.showSuccess("Проверьте свою почту");
           this.router.navigate([""])
         },
         error => {
+          console.log(error.status);
+          if (error.status == 400) {
+            this.toastService.showError("Почта уже используется");
+          }
           this.errors = error.error.errors;
         }
       )
-   // } else {
-   //   this.toastService.showAlert("Подтвердите согласие");
-    //}
   }
   redirectToAuth() {
     this.router.navigate([""]);

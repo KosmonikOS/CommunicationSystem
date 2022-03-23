@@ -30,7 +30,7 @@ export class AuthComponent implements OnInit {
       this.dataService.logIn(this.login.email);
     },
       error => {
-        if (error.error.status == 401) {
+        if (error.status == 401) {
           this.toastService.showError("Не верные данные");
         }
         this.errors = error.error.errors;
