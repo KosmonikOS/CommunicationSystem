@@ -52,8 +52,8 @@ namespace CommunicationSystem.Controllers
             {
                 try
                 {
-                    var path = await file.SaveFile(imageToSave);
-                    await repository.UpdateImage(id, path);
+                    var path = await file.SaveFileAsync(imageToSave);
+                    await repository.UpdateImageAsync(id, path);
                     return Ok(new {path =  path });
                 }
                 catch (Exception e)
@@ -70,7 +70,7 @@ namespace CommunicationSystem.Controllers
             {
                 try
                 {
-                    await repository.UpdateUser(user);
+                    await repository.UpdateUserAsync(user);
                     return Ok();
                 }
                 catch(Exception e)

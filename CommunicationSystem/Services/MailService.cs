@@ -18,7 +18,7 @@ namespace CommunicationSystem.Services
         {
             this.options = options.Value;
         }
-        public async Task SendRegistrationmail(string email,string token,string appurl)
+        public async Task SendRegistrationmailAsync(string email,string token,string appurl)
         {
             var emailMessage = new MimeMessage();
 

@@ -4,6 +4,6 @@ namespace CommunicationSystem.Services.Interfaces
 {
     public interface IMailSender
     {
-        public Task SendRegistrationmail(string email, string token, string appurl);
+        public Task SendRegistrationmailAsync(string email, string token, string appurl);
     }
 }

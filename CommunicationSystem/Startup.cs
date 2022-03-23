@@ -81,6 +81,8 @@ namespace CommunicationSystem
             services.AddScoped<IMailSender, MailService>();
             services.AddScoped<IFileSaver, FileService>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
 
             services.AddDbContextPool<CommunicationContext>(options => options.UseNpgsql(connection));
 

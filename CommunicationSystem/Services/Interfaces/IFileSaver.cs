@@ -5,6 +5,6 @@ namespace CommunicationSystem.Services.Interfaces
 {
     public interface IFileSaver
     {
-        public Task<string> SaveFile(IFormFile file);
+        public Task<string> SaveFileAsync(IFormFile file);
     }
 }

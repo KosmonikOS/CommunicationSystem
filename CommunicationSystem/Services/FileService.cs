@@ -19,7 +19,7 @@ namespace CommunicationSystem.Services
             this.env = environment;
             this.options = options.Value;
         }
-        public async Task<string> SaveFile(IFormFile file)
+        public async Task<string> SaveFileAsync(IFormFile file)
         {
             try
             {

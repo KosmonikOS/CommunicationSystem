@@ -57,7 +57,7 @@ namespace CommunicationSystem.Controllers
                         var token = Convert.ToBase64String(Encoding.ASCII.GetBytes(user.Email)) + "@d@" + Convert.ToBase64String(Encoding.ASCII.GetBytes(DateTime.Now.ToString()));
                         db.Users.Add(new User() { Email = user.Email, NickName = user.NickName, Password = user.Password, IsConfirmed = token });
                         db.SaveChanges();
-                        await mail.SendRegistrationmail(user.Email, token, $"{this.Request.Scheme}://{this.Request.Host.Value}");
+                        await mail.SendRegistrationmailAsync(user.Email, token, $"{this.Request.Scheme}://{this.Request.Host.Value}");
                         return Ok();
                     }
                     return BadRequest("Почта уже используется");

@@ -19,7 +19,7 @@ namespace CommunicationSystem.Repositories
             return db.Users.SingleOrDefault(u => u.Email == email);
         }
 
-        public async Task UpdateImage(int id, string path)
+        public async Task UpdateImageAsync(int id, string path)
         {
             var user = db.Users.SingleOrDefault(u => u.Id == id);
             user.accountImage = path;
@@ -27,7 +27,7 @@ namespace CommunicationSystem.Repositories
             await db.SaveChangesAsync();
         }
 
-        public async Task UpdateUser(User user)
+        public async Task UpdateUserAsync(User user)
         {
             db.Users.Update(user);
             await db.SaveChangesAsync();
