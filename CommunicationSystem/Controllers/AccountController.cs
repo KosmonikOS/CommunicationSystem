@@ -29,7 +29,7 @@ namespace CommunicationSystem.Controllers
             this.repository = repository;
         }
         [HttpGet("{email}")]
-        public ActionResult<User> Get(string email)
+        public ActionResult<User> GetUser(string email)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace CommunicationSystem.Controllers
             return BadRequest();
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(IFormFile imageToSave, int id)
+        public async Task<IActionResult> UpdateUserImage(IFormFile imageToSave, int id)
         {
             if (imageToSave != null)
             {
@@ -64,7 +64,7 @@ namespace CommunicationSystem.Controllers
             return BadRequest();
         }
         [HttpPost]
-        public async Task<IActionResult> Post(User user)
+        public async Task<IActionResult> UpdateUser(User user)
         {
             if(user != null)
             {

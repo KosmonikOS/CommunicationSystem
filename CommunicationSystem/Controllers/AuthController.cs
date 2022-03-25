@@ -47,7 +47,7 @@ namespace CommunicationSystem.Controllers
             return BadRequest();
         }
         [HttpPost]
-        public async Task<IActionResult> Post(Login login)
+        public async Task<IActionResult> Enter(Login login)
         {
             try
             {

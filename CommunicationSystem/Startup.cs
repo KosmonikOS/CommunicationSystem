@@ -80,8 +80,13 @@ namespace CommunicationSystem
             services.AddSingleton<IUserIdProvider, EmailUserIdProvider>();
             services.AddScoped<IMailSender, MailService>();
             services.AddScoped<IFileSaver, FileService>();
-            services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IConfirmationToken, ConfirmationTokenService>();
+            services.AddScoped<IRegistration, RegistrationService>();
+
+            //Adding repositories
+
+            services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
 
             services.AddDbContextPool<CommunicationContext>(options => options.UseNpgsql(connection));
