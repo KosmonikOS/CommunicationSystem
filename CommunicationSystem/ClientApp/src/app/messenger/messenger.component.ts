@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Group } from './group';
 import { VideochatDataService } from '../videochat/videochat.data.service';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { group } from 'console';
 
 @Component({
   selector: 'app-messenger',
@@ -44,7 +45,7 @@ export class MessengerComponent implements OnInit {
     this.isOpen = true;
   }
   searchUsers(withSearch: boolean) {
-    this.dataService.getUsers(withSearch ?this.search: "").subscribe((data: any) => {
+    this.dataService.getUsers(withSearch ? this.search : "").subscribe((data: any) => {
       this.usersList = data;
       this.toGroupUsersList(data);
     });
@@ -184,6 +185,9 @@ export class MessengerComponent implements OnInit {
       this.newGroup.users.push({ "id": Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "itemName": "Me" });
     }
     this.dataService.postGroup(this.newGroup).subscribe(result => {
+      if (window.innerWidth >= 678) {
+        this.selectUser(this.selectedUser + 1, this.currentUser);
+      }
       this.modalService.dismissAll();
       this.newGroup = new Group([]);
       this.searchUsers(false);
@@ -210,7 +214,6 @@ export class MessengerComponent implements OnInit {
       }
       this.currentMessage.toEmail = data[0].email;
       if (window.innerWidth < 678) {
-        console.log("less");
         this.currentMessage.auto = true;
       }
       this.toGroupUsersList(data);
@@ -219,10 +222,12 @@ export class MessengerComponent implements OnInit {
     //this.dataService.startConnection();
     this.dataService.checkConnection();
     this.dataService.addConnectionListener("Recive", (message: any) => {
+      console.log(this.currentMessage);
+      console.log(message);
       if (message.id >= (this.messagesList[this.messagesList.length - 1].id || 0)) {
         this.updateUserLastMessage(message, "from");
       }
-      if ((this.currentMessage.to == message.from && message.toEmail != "Group") || (this.currentMessage.togroup == message.toGroup)) {
+      if ((this.currentMessage.to == message.from && message.toEmail != "Group") || (this.currentMessage.togroup == message.toGroup && message.to == 0 && this.currentMessage.togroup != 0 && message.toGroup != 0)) {
         this.getMessages(message.from, message.toGroup);
       }
     });

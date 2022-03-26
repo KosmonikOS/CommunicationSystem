@@ -6,7 +6,6 @@ using CommunicationSystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using CommunicationSystem.Repositories.Interfaces;
 using CommunicationSystem.Repositories;
+using Newtonsoft.Json;
 
 namespace CommunicationSystem
 {
@@ -71,6 +71,7 @@ namespace CommunicationSystem
                     };
 
                 });
+
             services.AddSignalR();
 
             //services.AddCors(); // Узнать где используется
@@ -83,16 +84,27 @@ namespace CommunicationSystem
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IConfirmationToken, ConfirmationTokenService>();
             services.AddScoped<IRegistration, RegistrationService>();
+            services.AddScoped<IUserActivity, UserActivityService>();
+            services.AddScoped<IMessage, MessageService>();
 
             //Adding repositories
 
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<ICreateTestRepository, CreateTestRepository>();
+            services.AddScoped<IMessengerRepository, MessengerRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
 
-            services.AddDbContextPool<CommunicationContext>(options => options.UseNpgsql(connection));
+            services.AddDbContext<CommunicationContext>(options =>
+                        options.UseNpgsql(connection),
+                        ServiceLifetime.Transient);
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(
+                    options =>
+                    {
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    });
 
             services.AddSpaStaticFiles(configuration =>
             {
