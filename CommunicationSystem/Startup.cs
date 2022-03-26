@@ -88,6 +88,7 @@ namespace CommunicationSystem
 
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<ICreateTestRepository, CreateTestRepository>();
 
             services.AddDbContextPool<CommunicationContext>(options => options.UseNpgsql(connection));
 

@@ -38,5 +38,8 @@ namespace CommunicationSystem.Models
         public string RefreshToken { get; set; }
         public DateTime? EnterTime { get; set; }
         public DateTime? LeaveTime { get; set; }
+
+        public string GetFullName => LastName + " " + FirstName + " " + MiddleName;
+        public string GetFullGrade => Grade + " " + GradeLetter;
     }
 }

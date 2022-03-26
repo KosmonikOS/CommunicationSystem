@@ -40,7 +40,7 @@
           <td class="d-none d-md-table-cell">{{test.questions}}</td>
           <td class="d-none d-md-table-cell">{{test.time}}</td>
           <td class="d-none d-md-table-cell" scope="col" *ngIf="accountDataService.currentAccount.role == 3">{{test.creatorName}}</td>
-          <td class="d-none d-md-table-cell">{{test.date | date:'MM.dd.yyyy'}}</td>
+          <td class="d-none d-md-table-cell">{{test.date | date:'dd.MM.yyyy'}}</td>
         </tr>
       </tbody>
     </table>
