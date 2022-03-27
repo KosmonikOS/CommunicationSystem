@@ -23,7 +23,7 @@ namespace CommunicationSystem.Controllers
         private readonly IFileSaver file;
         private readonly IAccountRepository repository;
 
-        public AccountController(IFileSaver file,IAccountRepository repository)
+        public AccountController(IFileSaver file, IAccountRepository repository)
         {
             this.file = file;
             this.repository = repository;
@@ -39,7 +39,7 @@ namespace CommunicationSystem.Controllers
                     return Ok(user);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(e);
             }
@@ -53,8 +53,11 @@ namespace CommunicationSystem.Controllers
                 try
                 {
                     var path = await file.SaveFileAsync(imageToSave);
-                    await repository.UpdateImageAsync(id, path);
-                    return Ok(new {path =  path });
+                    if (path != null)
+                    {
+                        await repository.UpdateImageAsync(id, path);
+                        return Ok(new { path = path });
+                    }
                 }
                 catch (Exception e)
                 {
@@ -66,14 +69,14 @@ namespace CommunicationSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(User user)
         {
-            if(user != null)
+            if (user != null)
             {
                 try
                 {
                     await repository.UpdateUserAsync(user);
                     return Ok();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return BadRequest(e);
                 }

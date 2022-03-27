@@ -21,18 +21,22 @@ namespace CommunicationSystem.Services
         }
         public async Task<string> SaveFileAsync(IFormFile file)
         {
-            try
+            if (file != null)
             {
-                var path = options.AssetsFolder + DateTime.Now.TimeOfDay.TotalMilliseconds + file.FileName.ToString();
-                using (var filestr = new FileStream(Path.Combine(env.ContentRootPath + options.AssetsPath + path), FileMode.Create))
+                try
                 {
-                    await file.CopyToAsync(filestr);
+                    var path = options.AssetsFolder + DateTime.Now.TimeOfDay.TotalMilliseconds + file.FileName.ToString();
+                    using (var filestr = new FileStream(Path.Combine(env.ContentRootPath + options.AssetsPath + path), FileMode.Create))
+                    {
+                        await file.CopyToAsync(filestr);
+                    }
+                    return path;
+
                 }
-                return path;
+                catch (Exception e)
+                {
+                    return null;
                 }
-            catch (Exception e)
-            {
-                return null;
             }
         }
     }
