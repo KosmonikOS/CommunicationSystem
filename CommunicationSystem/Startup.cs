@@ -86,6 +86,7 @@ namespace CommunicationSystem
             services.AddScoped<IRegistration, RegistrationService>();
             services.AddScoped<IUserActivity, UserActivityService>();
             services.AddScoped<IMessage, MessageService>();
+            services.AddScoped<ITest, TestService>();
 
             //Adding repositories
 
@@ -94,6 +95,7 @@ namespace CommunicationSystem
             services.AddScoped<ICreateTestRepository, CreateTestRepository>();
             services.AddScoped<IMessengerRepository, MessengerRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<ITestRepository, TestRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();
 
             services.AddDbContext<CommunicationContext>(options =>
