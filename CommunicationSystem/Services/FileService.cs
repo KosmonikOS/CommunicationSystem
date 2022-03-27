@@ -38,6 +38,7 @@ namespace CommunicationSystem.Services
                     return null;
                 }
             }
+            return null;
         }
     }
 }

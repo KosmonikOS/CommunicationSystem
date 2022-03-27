@@ -1,4 +1,5 @@
 ﻿using CommunicationSystem.Models;
+using CommunicationSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -11,22 +12,17 @@ namespace CommunicationSystem.Hubs
     [Authorize]
     public class VideoChatHub : Hub
     {
-        private readonly CommunicationContext db;
-        public VideoChatHub(CommunicationContext context)
+        private readonly IClientsOfHub clients;
+
+        public VideoChatHub(IClientsOfHub clients)
         {
-            db = context;
+            this.clients = clients;
         }
         public async Task StartCall(string caller, UserLastMessage calling, object data)
         {
             if (calling.Email == "Group")
             {
-                var members = (from utg in db.UsersToGroups
-                               join u in db.Users on utg.UserId equals u.Id
-                               where utg.GroupId == calling.Id && u.Email != caller
-                               select new
-                               {
-                                   Email = u.Email
-                               });
+                var members = clients.GetVideoChatClientsWithOutMyself(caller, calling);
                 foreach (var member in members)
                 {
                     await this.Clients.User(member.Email).SendAsync("Accept", caller, data);
@@ -41,14 +37,8 @@ namespace CommunicationSystem.Hubs
         {
             if (calling.Email == "Group")
             {
-                var callerName = db.Groups.SingleOrDefault(g => g.Id == calling.Id).Name;
-                var members = (from utg in db.UsersToGroups
-                               join u in db.Users on utg.UserId equals u.Id
-                               where utg.GroupId == calling.Id
-                               select new
-                               {
-                                   Email = u.Email
-                               }).ToList(); ;
+                var callerName = clients.GetGroupName(calling.Id);
+                var members = clients.GetVideoChatClients(calling);
                 foreach (var member in members.Where(m => m.Email != caller))
                 {
                     await this.Clients.User(member.Email).SendAsync("CallRequest", new { email = caller, name = callerName, groupId = calling.Id }, members);
@@ -56,7 +46,7 @@ namespace CommunicationSystem.Hubs
             }
             else if (calling.Email != null)
             {
-                var callerName = db.Users.SingleOrDefault(u => u.Email == caller).NickName;
+                var callerName = clients.GetCallerNickName(caller);
                 await this.Clients.User(calling.Email).SendAsync("CallRequest", new { email = caller, name = callerName }, new List<object> { new { Email = caller } });
             }
         }

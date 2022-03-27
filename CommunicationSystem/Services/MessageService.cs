@@ -11,23 +11,19 @@ namespace CommunicationSystem.Services
     {
         private readonly IHubContext<MessengerHub> hubContext;
         private readonly CommunicationContext db;
+        private readonly IClientsOfHub clients;
 
-        public MessageService(IHubContext<MessengerHub> hubcontext,CommunicationContext db)
+        public MessageService(IHubContext<MessengerHub> hubcontext,CommunicationContext db,IClientsOfHub clients)
         {
             this.hubContext = hubcontext;
             this.db = db;
+            this.clients = clients;
         }
         public async Task SendMessage(Message message)
         {
             if (message.ToGroup != 0)
             {
-                var members = (from utg in db.UsersToGroups
-                               join u in db.Users on utg.UserId equals u.Id
-                               where utg.GroupId == message.ToGroup
-                               select new
-                               {
-                                   Email = u.Email
-                               });
+                var members = clients.GetMessengerClients(message);
                 foreach (var member in members)
                 {
                     await hubContext.Clients.User(member.Email).SendAsync("Recive", message);

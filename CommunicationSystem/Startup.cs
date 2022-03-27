@@ -87,6 +87,7 @@ namespace CommunicationSystem
             services.AddScoped<IUserActivity, UserActivityService>();
             services.AddScoped<IMessage, MessageService>();
             services.AddScoped<ITest, TestService>();
+            services.AddScoped<IClientsOfHub, HubClientsService>();
 
             //Adding repositories
 
