@@ -56,9 +56,9 @@ namespace CommunicationSystem.Repositories
                                                                        QuestionId = o.QuestionId,
                                                                        Text = o.Text
 
-                                                                   }).ToList()
-                                                    }).ToList()
-                               }).ToListAsync();
+                                                                   }).AsNoTracking().ToList()
+                                                    }).AsNoTracking().ToList()
+                               }).AsNoTracking().ToListAsync();
             return tests;
         }
 

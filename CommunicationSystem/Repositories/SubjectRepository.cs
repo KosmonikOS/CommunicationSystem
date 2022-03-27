@@ -27,7 +27,7 @@ namespace CommunicationSystem.Repositories
 
         public async Task<List<Subject>> GetSubjectsAsync()
         {
-            var subjects = await db.Subjects.ToListAsync();
+            var subjects = await db.Subjects.AsNoTracking().ToListAsync();
             return subjects;
         }
 

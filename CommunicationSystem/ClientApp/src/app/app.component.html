@@ -41,9 +41,9 @@
 
 <header class="header border" id="header" [ngClass]="{'head-pb':isNavOpen}" *ngIf="checkAuth()">
   <div class="header-toggle" (click)="openNav()"> <i class="bi bi-list" [ngClass]="{'bi-x-lg':isNavOpen,'bi-grid-3x3-gap':!isNavOpen}"></i> </div>
-  <div class="nav_button" style="padding-top: 0px; margin-right: 20px; cursor: pointer;">
-    <a routerLink="/account" class="header_img text-dark ">
-      <span class="align-middle" style="line-height:40px;margin-right:10px;font-size:18px">{{accountDataService.currentAccount.nickName}}</span>
+  <div class="nav_button d-flex" style="padding-top: 0px; cursor: pointer;">
+    <div class="align-middle" style="line-height:40px;margin-right:10px;font-size:18px;width:130px;overflow:hidden;text-overflow:ellipsis">{{accountDataService.currentAccount.nickName}}</div>
+    <a routerLink="/account" class="header_img text-dark">
       <img src="{{accountDataService.currentAccount.accountImage }}" alt="" />
     </a>
   </div>

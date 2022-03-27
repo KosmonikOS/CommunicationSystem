@@ -1,4 +1,5 @@
 ﻿using CommunicationSystem.Models;
+using CommunicationSystem.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,84 +16,47 @@ namespace CommunicationSystem.Controllers
     [Authorize]
     public class UserEditController : ControllerBase
     {
-        private CommunicationContext db;
-        public UserEditController(CommunicationContext context)
+        private readonly IUserEditRepository repository;
+
+        public UserEditController(IUserEditRepository repository)
         {
-            db = context;
+            this.repository = repository;
         }
         [HttpGet]
-        public List<User> Get()
+        public async Task<List<User>> GetUsers()
         {
-            return (from u in db.Users
-                    join r in db.Roles on u.Role equals r.Id
-                    orderby u.Role descending
-                    select new User() { 
-                        Id = u.Id,
-                        Role = u.Role,
-                        RoleName = r.Name,
-                        FirstName = u.FirstName,
-                        accountImage = u.accountImage,
-                        Email = u.Email,
-                        Grade = u.Grade,
-                        GradeLetter = u.GradeLetter,
-                        IsConfirmed = u.IsConfirmed,
-                        LastName = u.LastName,
-                        MiddleName = u.MiddleName,
-                        NickName = u.NickName,
-                        Password = u.Password,
-                        Phone = u.Phone
-                    }
-                ).ToList();
+            return await repository.GetUsersAsync();
         }
         [HttpGet("getroles")]
-        public List<Role> GetRoles()
+        public async Task<List<Role>> GetRoles()
         {
-            return db.Roles.ToList();
+            return await repository.GetRolesAsync();
         }
         [HttpPost]
-        public IActionResult Post(User user)
+        public async Task<IActionResult> SaveUser(User user)
         {
-            if(user != null)
+            try
             {
-                try
-                {
-                    if (user.Id != 0)
-                    {
-                        db.Users.Update(user);
-                    }
-                    else
-                    {
-                        user.IsConfirmed = "true";
-                        db.Users.Add(user);
-                    }
-                    db.SaveChanges();
-                    return Ok();
-                }
-                catch(Exception e)
-                {
-                    return BadRequest(e);
-                }
+                await repository.SaveUserAsync(user);
+                return Ok();
             }
-            return BadRequest();
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            if(id != 0) 
-            {
                 try
                 {
-                    var user = db.Users.SingleOrDefault(u => u.Id == id);
-                    db.Users.Remove(user);
-                    db.SaveChanges();
+                    await repository.DeleteUserAsync(id);
                     return Ok();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return BadRequest(e);
                 }
-            }
-            return BadRequest();
         }
     }
 }

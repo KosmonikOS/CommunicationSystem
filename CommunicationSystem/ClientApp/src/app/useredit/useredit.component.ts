@@ -36,7 +36,12 @@ export class UsereditComponent implements OnInit {
   }
   fileSelected(event: any) {
     var file = <File>event.target.files[0];
-    this.accountDataService.putImage(file, this.currentUser.id).subscribe(result => { this.toastService.showSuccess("Файл загружен") }, error => { this.toastService.showError("Ошибка загрузки") });
+    this.accountDataService.putImage(file, this.currentUser.id).subscribe((result:any) => {
+      this.toastService.showSuccess("Файл загружен");
+      this.currentUser.accountImage = result.path;
+    }, error => {
+      this.toastService.showError("Ошибка загрузки")
+    });
   }
   saveUser() {
     this.currentUser.role = Number(this.currentUser.role);
