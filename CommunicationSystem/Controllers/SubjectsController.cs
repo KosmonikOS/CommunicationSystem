@@ -1,4 +1,5 @@
 ﻿using CommunicationSystem.Models;
+using CommunicationSystem.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,59 +16,42 @@ namespace CommunicationSystem.Controllers
     [Authorize]
     public class SubjectsController : ControllerBase
     {
-        private readonly CommunicationContext db;
-        public SubjectsController(CommunicationContext context)
+        private readonly ISubjectRepository repository;
+
+        public SubjectsController(ISubjectRepository repository)
         {
-            db = context;
+            this.repository = repository;
         }
         [HttpGet]
-        public List<Subject> Get()
+        public async Task<List<Subject>> GetSubjects()
         {
-            return db.Subjects.ToList();
+            return await repository.GetSubjectsAsync();
         }
         [HttpPost]
-        public IActionResult Post(Subject subject)
+        public async Task<IActionResult> SaveSubject(Subject subject)
         {
-            if(subject != null)
+            try
             {
-                try
-                {
-                    if (subject.Id != 0)
-                    {
-                        db.Subjects.Update(subject);
-                    }
-                    else
-                    {
-                        db.Subjects.Add(subject);
-                    }
-                    db.SaveChanges();
-                    return Ok();
-                }
-                catch(Exception e)
-                {
-                    return BadRequest(e);
-                }
+                await repository.SaveSubjectAsync(subject);
+                return Ok();
             }
-            return BadRequest();
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteSubject(int id)
         {
-            if(id != 0) 
+            try
             {
-                try
-                {
-                    var subject = db.Subjects.SingleOrDefault(u => u.Id == id);
-                    db.Subjects.Remove(subject);
-                    db.SaveChanges();
-                    return Ok();
-                }
-                catch(Exception e)
-                {
-                    return BadRequest(e);
-                }
+                await repository.DeleteSubjectAsync(id);
+                return Ok();
             }
-            return BadRequest();
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 }

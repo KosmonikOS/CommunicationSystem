@@ -94,6 +94,7 @@ namespace CommunicationSystem
             services.AddScoped<ICreateTestRepository, CreateTestRepository>();
             services.AddScoped<IMessengerRepository, MessengerRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<ISubjectRepository, SubjectRepository>();
 
             services.AddDbContext<CommunicationContext>(options =>
                         options.UseNpgsql(connection),
