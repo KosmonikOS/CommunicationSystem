@@ -100,10 +100,7 @@ export class MessengerComponent implements OnInit {
         if (message.toGroup != 0 && val.email != message.toEmail) {
           continue;
         }
-        console.log(this.currentMessage);
-        console.log((this.currentMessage.to != message.from && message.toEmail != "Group") || (this.currentMessage.togroup != message.toGroup) || this.currentMessage.auto);
         val.notViewed += (this.currentMessage.to != message.from && message.toEmail != "Group") || (this.currentMessage.togroup != message.toGroup) || this.currentMessage.auto ? 1 : 0;
-        console.log(val.notViewed);
         val.content = message.content;
         val.date = message.date;
       }
@@ -122,7 +119,6 @@ export class MessengerComponent implements OnInit {
   openImage(image: string, modal: any) {
     this.currentImage = this.ImagesList.indexOf(image);
     this.modalService.open(modal, { size: 'xl' });
-    console.log(this.currentImage);
   }
   toggleImage(step: string) {
     var length = this.ImagesList.length;
@@ -222,8 +218,6 @@ export class MessengerComponent implements OnInit {
     //this.dataService.startConnection();
     this.dataService.checkConnection();
     this.dataService.addConnectionListener("Recive", (message: any) => {
-      console.log(this.currentMessage);
-      console.log(message);
       if (message.id >= (this.messagesList[this.messagesList.length - 1].id || 0)) {
         this.updateUserLastMessage(message, "from");
       }

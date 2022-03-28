@@ -15,7 +15,6 @@ export class VideoFrameComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.loadVideo();
-    console.log(this.member.remoteStream);
   }
   ngOnInit(): void {
     setTimeout(() => {
@@ -31,7 +30,7 @@ export class VideoFrameComponent implements OnInit, OnChanges {
       if (this.member.myself) {
         video.muted = true;
       } else {
-        video.muted = !this.member.audioState
+        video.muted = !this.member.audioState;
       }
     }
   }

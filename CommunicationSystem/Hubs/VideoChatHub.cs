@@ -58,9 +58,9 @@ namespace CommunicationSystem.Hubs
         {
             await this.Clients.User(calling).SendAsync("OfferToConnect", members);
         }
-        public async Task ToggleState(string caller, UserLastMessage calling, string type)
+        public async Task ToggleState(string caller, UserLastMessage calling, string type,bool state)
         {
-            await this.Clients.User(calling.Email).SendAsync("ToggleState", caller,type);
+            await this.Clients.User(calling.Email).SendAsync("ToggleState", caller,type,state);
         }
     }
 }
