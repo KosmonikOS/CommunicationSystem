@@ -22,8 +22,8 @@ namespace CommunicationSystem.Models
         [NotMapped]
         public string CreatorName { get; set; }
         [NotMapped]
-        public List<UsersToTests> Students { get; set; }
+        public List<UsersToTests> Students { get; set; } = new List<UsersToTests>();
         [NotMapped]
-        public List<Question> QuestionsList { get; set; }
+        public List<Question> QuestionsList { get; set; } = new List<Question>();
     }
 }

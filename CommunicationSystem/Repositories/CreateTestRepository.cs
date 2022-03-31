@@ -53,15 +53,14 @@ namespace CommunicationSystem.Repositories
 
         public async Task DeleteTestWithoutSavingAsync(int id)
         {
-            var test = db.Tests.SingleOrDefault(t => t.Id == id);
+            var test = db.Tests.AsNoTracking().SingleOrDefault(t => t.Id == id);
             var questions = await db.Questions.Where(q => q.TestId == test.Id).AsNoTracking().ToListAsync();
             foreach (var q in questions)
             {
-                var opts = db.Options.Where(o => o.QuestionId == q.Id).AsNoTracking().ToListAsync();
-                var answrs = db.StudentAnswers.Where(a => a.QuestionId == q.Id).AsNoTracking().ToListAsync();
-                await Task.WhenAll(opts, answrs);
-                db.Options.RemoveRange(opts.Result);
-                db.StudentAnswers.RemoveRange(answrs.Result);
+                var opts = await db.Options.Where(o => o.QuestionId == q.Id).AsNoTracking().ToListAsync();
+                var answrs = await db.StudentAnswers.Where(a => a.QuestionId == q.Id).AsNoTracking().ToListAsync();
+                db.Options.RemoveRange(opts);
+                db.StudentAnswers.RemoveRange(answrs);
             }
             db.Questions.RemoveRange(questions);
             db.Tests.Remove(test);
@@ -71,7 +70,7 @@ namespace CommunicationSystem.Repositories
         {
             param = param.ToLower();
             int grade;
-            var isGrade = Int32.TryParse(param,out grade);
+            var isGrade = Int32.TryParse(param, out grade);
             var students = await (from u in db.Users
                                   where ((isGrade && grade == u.Grade) || (u.LastName + " " + u.FirstName + " " + u.MiddleName).ToLower().Contains(param))
                                   && u.Role == 1
@@ -86,31 +85,31 @@ namespace CommunicationSystem.Repositories
             return students;
         }
 
-        public async Task<List<Question>> GetUsersAnswersAsync(int id,int testId)
+        public async Task<List<Question>> GetUsersAnswersAsync(int id, int testId)
         {
             var answers = await (from q in db.Questions
-                    where q.TestId == testId
-                    select new Question()
-                    {
-                        Id = q.Id,
-                        Image = q.Image,
-                        Points = q.Points,
-                        QuestionType = q.QuestionType,
-                        TestId = q.TestId,
-                        Text = q.Text,
-                        OpenAnswer = db.StudentAnswers.FirstOrDefault(a => a.UserId == id && a.QuestionId == q.Id).Answer ?? "",
-                        Options = (from o in db.Options
-                                   where o.QuestionId == q.Id
-                                   select new Option()
-                                   {
-                                       Id = o.Id,
-                                       Text = o.Text,
-                                       IsRightOption = o.IsRightOption,
-                                       QuestionId = o.QuestionId,
-                                       IsSelected = db.StudentAnswers.FirstOrDefault(a => a.Answer.ToLower() == (q.QuestionType == QuestionType.OpenWithCheck ? o.Text.ToLower() : o.Id.ToString()) && a.UserId == id && a.QuestionId == q.Id) != null,
-                                   }
-                        ).AsNoTracking().ToList()
-                    }
+                                 where q.TestId == testId
+                                 select new Question()
+                                 {
+                                     Id = q.Id,
+                                     Image = q.Image,
+                                     Points = q.Points,
+                                     QuestionType = q.QuestionType,
+                                     TestId = q.TestId,
+                                     Text = q.Text,
+                                     OpenAnswer = db.StudentAnswers.FirstOrDefault(a => a.UserId == id && a.QuestionId == q.Id).Answer ?? "",
+                                     Options = (from o in db.Options
+                                                where o.QuestionId == q.Id
+                                                select new Option()
+                                                {
+                                                    Id = o.Id,
+                                                    Text = o.Text,
+                                                    IsRightOption = o.IsRightOption,
+                                                    QuestionId = o.QuestionId,
+                                                    IsSelected = db.StudentAnswers.FirstOrDefault(a => a.Answer.ToLower() == (q.QuestionType == QuestionType.OpenWithCheck ? o.Text.ToLower() : o.Id.ToString()) && a.UserId == id && a.QuestionId == q.Id) != null,
+                                                }
+                                     ).AsNoTracking().ToList()
+                                 }
                 ).AsNoTracking().ToListAsync();
             return answers;
         }
@@ -175,53 +174,65 @@ namespace CommunicationSystem.Repositories
         {
             using (var transaction = await db.Database.BeginTransactionAsync())
             {
-                if (test.Id > 0)
+                if (test != null)
                 {
-                    db.Tests.Update(test);
-                    var prestudents = await db.UsersToTests.Where(s => s.TestId == test.Id).AsNoTracking().ToListAsync();
-                    db.UsersToTests.RemoveRange(prestudents);
-                }
-                else
-                {
-                    test.Date = DateTime.Now;
-                    test.Id = 0;
-                    db.Add(test);
-                    await db.SaveChangesAsync();
-                }
-                foreach (var question in test.QuestionsList)
-                {
-                    question.TestId = (int)test.Id;
-                    if (question.Id > 0)
+                    if (test.Id > 0)
                     {
-                        db.Questions.Update(question);
+                        db.Tests.Update(test);
+                        var prestudents = await db.UsersToTests.Where(s => s.TestId == test.Id).AsNoTracking().ToListAsync();
+                        db.UsersToTests.RemoveRange(prestudents);
                     }
                     else
                     {
-                        question.Id = 0;
-                        db.Questions.Add(question);
+                        test.Date = DateTime.Now;
+                        test.Id = 0;
+                        db.Add(test);
                         await db.SaveChangesAsync();
                     }
-                    foreach (var option in question.Options)
+                    if (test.QuestionsList != null)
                     {
-                        if (option.Id > 0)
+                        foreach (var question in test.QuestionsList)
                         {
-                            db.Options.Update(option);
-                        }
-                        else
-                        {
-                            option.QuestionId = question.Id;
-                            option.Id = 0;
-                            db.Options.Add(option);
+                            question.TestId = (int)test.Id;
+                            if (question.Id > 0)
+                            {
+                                db.Questions.Update(question);
+                            }
+                            else
+                            {
+                                question.Id = 0;
+                                db.Questions.Add(question);
+                                await db.SaveChangesAsync();
+                            }
+                            if (question.Options != null)
+                            {
+                                foreach (var option in question.Options)
+                                {
+                                    if (option.Id > 0)
+                                    {
+                                        db.Options.Update(option);
+                                    }
+                                    else
+                                    {
+                                        option.QuestionId = question.Id;
+                                        option.Id = 0;
+                                        db.Options.Add(option);
+                                    }
+                                }
+                            }
                         }
                     }
+                    if (test.Students != null)
+                    {
+                        foreach (var student in test.Students)
+                        {
+                            student.TestId = (int)test.Id;
+                            db.UsersToTests.Add(student);
+                        }
+                    }
+                    await db.SaveChangesAsync();
+                    await transaction.CommitAsync();
                 }
-                foreach (var student in test.Students)
-                {
-                    student.TestId = (int)test.Id;
-                    db.UsersToTests.Add(student);
-                }
-                await db.SaveChangesAsync();
-                await transaction.CommitAsync();
             }
         }
 

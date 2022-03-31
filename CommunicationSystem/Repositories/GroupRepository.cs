@@ -21,17 +21,20 @@ namespace CommunicationSystem.Repositories
         public Group GetGroup(int id)
         {
             Group group = db.Groups.SingleOrDefault(g => g.Id == id);
-            var users = (from utg in db.UsersToGroups
-                         join u in db.Users on utg.UserId equals u.Id
-                         where utg.GroupId == id
-                         select new GroupUser()
-                         {
-                             Id = u.Id,
-                             itemName = u.NickName,
-                             AccountImage = u.accountImage
-                         }
-                         ).ToArray();
-            group.Users = users;
+            if (group != null)
+            {
+                var users = (from utg in db.UsersToGroups
+                             join u in db.Users on utg.UserId equals u.Id
+                             where utg.GroupId == id
+                             select new GroupUser()
+                             {
+                                 Id = u.Id,
+                                 itemName = u.NickName,
+                                 AccountImage = u.accountImage
+                             }
+                             ).ToArray();
+                group.Users = users;
+            }
             return group;
         }
 
