@@ -25,7 +25,7 @@ namespace CommunicationSystem.Repositories
 
         public async Task DeleteQuestionWithoutSavingAsync(int id)
         {
-            var question = db.Questions.SingleOrDefault(q => q.Id == id);
+            var question = db.Questions.AsNoTracking().SingleOrDefault(q => q.Id == id);
             var options = db.Options.Where(o => o.QuestionId == question.Id).AsNoTracking().ToListAsync();
             var answers = db.StudentAnswers.Where(a => a.QuestionId == question.Id).AsNoTracking().ToListAsync();
             await Task.WhenAll(options, answers);
@@ -117,57 +117,61 @@ namespace CommunicationSystem.Repositories
         public async Task<List<Test>> GetUsersTestsAsync(int id)
         {
             var user = db.Users.SingleOrDefault(u => u.Id == id);
-            var tests = await (from t in db.Tests
-                               join s in db.Subjects on t.Subject equals s.Id
-                               join u in db.Users on t.Creator equals u.Id
-                               where t.Creator.ToString().Contains(user.Role == 3 ? "" : user.Id.ToString())
-                               select new Test()
-                               {
-                                   Id = t.Id,
-                                   Date = t.Date,
-                                   Creator = t.Creator,
-                                   CreatorName = u.NickName,
-                                   Grade = t.Grade,
-                                   Name = t.Name,
-                                   Questions = t.Questions,
-                                   Time = t.Time,
-                                   Subject = t.Subject,
-                                   Students = (from s in db.UsersToTests
-                                               join u in db.Users on s.UserId equals u.Id
-                                               where s.TestId == t.Id
-                                               select new UsersToTests()
-                                               {
-                                                   Name = u.GetFullName,
-                                                   Grade = u.GetFullGrade,
-                                                   UserId = u.Id,
-                                                   IsSelected = true,
-                                                   IsCompleted = s.IsCompleted,
-                                                   Mark = s.Mark
-                                               }).AsNoTracking().ToList(),
-                                   SubjectName = s.Name,
-                                   QuestionsList = (from q in db.Questions
-                                                    where q.TestId == t.Id
-                                                    select new Question()
-                                                    {
-                                                        Id = q.Id,
-                                                        TestId = q.Id,
-                                                        Text = q.Text,
-                                                        Image = q.Image,
-                                                        Points = q.Points,
-                                                        QuestionType = q.QuestionType,
-                                                        Options = (from o in db.Options
-                                                                   where o.QuestionId == q.Id
-                                                                   select new Option()
-                                                                   {
-                                                                       Id = o.Id,
-                                                                       IsRightOption = o.IsRightOption,
-                                                                       QuestionId = o.QuestionId,
-                                                                       Text = o.Text
+            if (user != null)
+            {
+                var tests = await (from t in db.Tests
+                                   join s in db.Subjects on t.Subject equals s.Id
+                                   join u in db.Users on t.Creator equals u.Id
+                                   where t.Creator.ToString().Contains(user.Role == 3 ? "" : user.Id.ToString())
+                                   select new Test()
+                                   {
+                                       Id = t.Id,
+                                       Date = t.Date,
+                                       Creator = t.Creator,
+                                       CreatorName = u.NickName,
+                                       Grade = t.Grade,
+                                       Name = t.Name,
+                                       Questions = t.Questions,
+                                       Time = t.Time,
+                                       Subject = t.Subject,
+                                       Students = (from s in db.UsersToTests
+                                                   join u in db.Users on s.UserId equals u.Id
+                                                   where s.TestId == t.Id
+                                                   select new UsersToTests()
+                                                   {
+                                                       Name = u.GetFullName,
+                                                       Grade = u.GetFullGrade,
+                                                       UserId = u.Id,
+                                                       IsSelected = true,
+                                                       IsCompleted = s.IsCompleted,
+                                                       Mark = s.Mark
+                                                   }).AsNoTracking().ToList(),
+                                       SubjectName = s.Name,
+                                       QuestionsList = (from q in db.Questions
+                                                        where q.TestId == t.Id
+                                                        select new Question()
+                                                        {
+                                                            Id = q.Id,
+                                                            TestId = q.Id,
+                                                            Text = q.Text,
+                                                            Image = q.Image,
+                                                            Points = q.Points,
+                                                            QuestionType = q.QuestionType,
+                                                            Options = (from o in db.Options
+                                                                       where o.QuestionId == q.Id
+                                                                       select new Option()
+                                                                       {
+                                                                           Id = o.Id,
+                                                                           IsRightOption = o.IsRightOption,
+                                                                           QuestionId = o.QuestionId,
+                                                                           Text = o.Text
 
-                                                                   }).AsNoTracking().ToList()
-                                                    }).AsNoTracking().ToList()
-                               }).AsNoTracking().ToListAsync();
-            return tests;
+                                                                       }).AsNoTracking().ToList()
+                                                        }).AsNoTracking().ToList()
+                                   }).AsNoTracking().ToListAsync();
+                return tests;
+            }
+            return null;
         }
 
         public async Task SaveTestAsync(Test test)
@@ -184,7 +188,7 @@ namespace CommunicationSystem.Repositories
                     }
                     else
                     {
-                        test.Date = DateTime.Now;
+                        test.Date = DateTime.UtcNow;
                         test.Id = 0;
                         db.Add(test);
                         await db.SaveChangesAsync();

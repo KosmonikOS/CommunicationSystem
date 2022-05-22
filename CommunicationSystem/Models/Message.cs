@@ -19,7 +19,7 @@ namespace CommunicationSystem.Models
     }
     public class Message
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         public int From { get; set; }
         public int To { get; set; }
         public int ToGroup { get; set; } = 0;

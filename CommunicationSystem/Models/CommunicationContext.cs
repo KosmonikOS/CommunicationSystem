@@ -21,7 +21,6 @@ namespace CommunicationSystem.Models
         public DbSet<StudentAnswer> StudentAnswers { get; set; }
         public CommunicationContext(DbContextOptions<CommunicationContext> options): base(options)
         {
-            //Database.EnsureCreated();
         }
     }
 }

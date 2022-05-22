@@ -2,6 +2,7 @@
 using CommunicationSystem.Repositories.Interfaces;
 using CommunicationSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,7 +56,7 @@ namespace CommunicationSystem.Repositories
                 else
                 {
                     db.Groups.Update(group);
-                    db.UsersToGroups.RemoveRange(db.UsersToGroups.Where(utg => utg.GroupId == group.Id));
+                    db.UsersToGroups.RemoveRange(db.UsersToGroups.AsNoTracking().Where(utg => utg.GroupId == group.Id));
                     //await db.SaveChangesAsync();
                     await db.UsersToGroups.AddRangeAsync(group.Users.Select(u => new UsersToGroups() { UserId = u.Id, GroupId = group.Id }));
                     await db.SaveChangesAsync();

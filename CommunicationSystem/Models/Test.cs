@@ -9,7 +9,7 @@ namespace CommunicationSystem.Models
 {
     public class Test
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         public int Subject { get; set; }
         [NotMapped]
         public string SubjectName { get; set; }

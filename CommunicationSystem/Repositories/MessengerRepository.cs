@@ -169,7 +169,7 @@ namespace CommunicationSystem.Repositories
                 {
                     var path = await fileService.SaveFileAsync(file);
                     message.Content = path;
-                    message.Date = DateTime.Now;
+                    message.Date = DateTime.UtcNow;
                     db.Messages.Add(message);
                     await db.SaveChangesAsync();
                     message.Id = 0;
@@ -179,7 +179,7 @@ namespace CommunicationSystem.Repositories
         }
         public async Task SaveMessageAsync(Message message)
         {
-            message.Date = DateTime.Now;
+            message.Date = DateTime.UtcNow;
             message.To = message.ToGroup != 0 ? 0 : message.To;
             db.Messages.Add(message);
             await db.SaveChangesAsync();

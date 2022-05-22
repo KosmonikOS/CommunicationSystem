@@ -1,12 +1,20 @@
-﻿{
+{
   "profiles": {
-    "CommunicationSystem": {
+    "WSL": {
+      "commandName": "WSL2",
+      "launchUrl": "https://0.0.0.0:5001/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://0.0.0.0:5001;http://0.0.0.0:5000"
+      },
+      "distributionName": ""
+    },
+    "Program": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "applicationUrl": "https://0.0.0.0:5001;http://0.0.0.0:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://0.0.0.0:5001;http://0.0.0.0:5000"
     }
   }
 }

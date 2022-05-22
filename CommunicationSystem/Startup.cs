@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using CommunicationSystem.Repositories.Interfaces;
 using CommunicationSystem.Repositories;
 using Newtonsoft.Json;
+using System;
 
 namespace CommunicationSystem
 {
@@ -100,9 +101,8 @@ namespace CommunicationSystem
             services.AddScoped<ISubjectRepository, SubjectRepository>();
             services.AddScoped<IUserEditRepository, UserEditRepository>();
 
-            services.AddDbContext<CommunicationContext>(options =>
-                        options.UseNpgsql(connection),
-                        ServiceLifetime.Transient);
+            services.AddDbContext<CommunicationContext>(options => options.UseNpgsql(connection));
+            //AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(

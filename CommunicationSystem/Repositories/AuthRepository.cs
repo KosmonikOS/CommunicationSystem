@@ -26,10 +26,10 @@ namespace CommunicationSystem.Repositories
             switch (act)
             {
                 case "enter":
-                    user.EnterTime = DateTime.Now;
+                    user.EnterTime = DateTime.UtcNow;
                     break;
                 case "leave":
-                    user.LeaveTime = DateTime.Now;
+                    user.LeaveTime = DateTime.UtcNow;
                     break;
             }
             db.Users.Update(user);
