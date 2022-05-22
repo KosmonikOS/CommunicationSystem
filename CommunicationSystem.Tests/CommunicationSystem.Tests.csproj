@@ -26,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommunicationSystem.Data\CommunicationSystem.Data.csproj" />
+    <ProjectReference Include="..\CommunicationSystem.Domain\CommunicationSystem.Domain.csproj" />
+    <ProjectReference Include="..\CommunicationSystem.Services\CommunicationSystem.Services.csproj" />
     <ProjectReference Include="..\CommunicationSystem\CommunicationSystem.csproj" />
   </ItemGroup>
 

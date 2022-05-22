@@ -1,10 +1,5 @@
-﻿using CommunicationSystem.Services.Interfaces;
+﻿using CommunicationSystem.Services.Services.Interfaces;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CommunicationSystem.Tests.Infrastructure.Mocks.GroupRepository
 {

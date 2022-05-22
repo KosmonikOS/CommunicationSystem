@@ -1,12 +1,9 @@
-﻿using CommunicationSystem.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using CommunicationSystem.Services;
-using System.Text;
-using Microsoft.AspNetCore.Hosting;
-using CommunicationSystem.Services.Interfaces;
-using CommunicationSystem.Repositories.Interfaces;
+using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Services.Services.Interfaces;
+using CommunicationSystem.Services.Repositories.Interfaces;
 
 namespace CommunicationSystem.Controllers
 {

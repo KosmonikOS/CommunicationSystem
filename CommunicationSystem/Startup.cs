@@ -1,7 +1,3 @@
-using CommunicationSystem.Hubs;
-using CommunicationSystem.Services.Interfaces;
-using CommunicationSystem.Models;
-using CommunicationSystem.Options;
 using CommunicationSystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -13,10 +9,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
-using CommunicationSystem.Repositories.Interfaces;
-using CommunicationSystem.Repositories;
 using Newtonsoft.Json;
-using System;
+using CommunicationSystem.Data;
+using CommunicationSystem.Services.Services.Interfaces;
+using CommunicationSystem.Services.Services;
+using CommunicationSystem.Services.Repositories.Interfaces;
+using CommunicationSystem.Services.Repositories;
+using CommunicationSystem.Services.Hubs;
+using CommunicationSystem.Domain.Options;
 
 namespace CommunicationSystem
 {
@@ -126,8 +126,6 @@ namespace CommunicationSystem
             }
             else
             {
-                app.UseExceptionHandler("/Error");
-
                 app.UseHsts();
 
                 app.UseSpaStaticFiles();

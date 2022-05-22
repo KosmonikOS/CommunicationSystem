@@ -1,11 +1,9 @@
-﻿using CommunicationSystem.Models;
-using CommunicationSystem.Repositories.Interfaces;
+﻿using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Services.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -16,7 +14,6 @@ namespace CommunicationSystem.Controllers
 
     public class TestsController : ControllerBase
     {
-        private readonly CommunicationContext db;
         private readonly ITestRepository repository;
 
         public TestsController(ITestRepository repository)

@@ -1,4 +1,5 @@
-﻿using CommunicationSystem.Models;
+﻿using CommunicationSystem.Data;
+using CommunicationSystem.Domain.Entities;
 using CommunicationSystem.Tests.Infrastructure.DataInitializers;
 using CommunicationSystem.Tests.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -7,11 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Tests.Infrastructure.Templates

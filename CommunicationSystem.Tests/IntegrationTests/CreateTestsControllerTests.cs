@@ -1,4 +1,4 @@
-﻿using CommunicationSystem.Models;
+﻿using CommunicationSystem.Domain.Entities;
 using CommunicationSystem.Tests.Infrastructure.DataInitializers;
 using CommunicationSystem.Tests.Infrastructure.Helpers;
 using CommunicationSystem.Tests.Infrastructure.Templates;

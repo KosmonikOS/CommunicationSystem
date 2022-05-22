@@ -1,15 +1,13 @@
 ﻿using AutoFixture;
-using CommunicationSystem.Models;
-using CommunicationSystem.Repositories;
+using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Services.Repositories;
 using CommunicationSystem.Tests.Infrastructure.DataInitializers;
 using CommunicationSystem.Tests.Infrastructure.Helpers;
 using CommunicationSystem.Tests.Infrastructure.Mocks.GroupRepository;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 

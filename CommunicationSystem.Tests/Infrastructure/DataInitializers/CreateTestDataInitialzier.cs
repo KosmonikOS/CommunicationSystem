@@ -1,11 +1,9 @@
 ﻿using AutoFixture;
-using CommunicationSystem.Models;
+using CommunicationSystem.Data;
+using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CommunicationSystem.Tests.Infrastructure.DataInitializers
 {

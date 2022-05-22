@@ -1,19 +1,11 @@
-﻿using CommunicationSystem.Hubs;
-using CommunicationSystem.Models;
-using CommunicationSystem.Options;
-using CommunicationSystem.Repositories.Interfaces;
-using CommunicationSystem.Services.Interfaces;
+﻿using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Services.Repositories.Interfaces;
+using CommunicationSystem.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -23,14 +15,12 @@ namespace CommunicationSystem.Controllers
     [Authorize]
     public class MessengerController : ControllerBase
     {
-        private readonly CommunicationContext db;
         private readonly IMessengerRepository messengerRepository;
         private readonly IGroupRepository groupRepository;
         private readonly IFileSaver fileService;
 
-        public MessengerController(CommunicationContext context, IMessengerRepository messengerRepository, IGroupRepository groupRepository,IFileSaver fileService)
+        public MessengerController(IMessengerRepository messengerRepository, IGroupRepository groupRepository,IFileSaver fileService)
         {
-            db = context;
             this.messengerRepository = messengerRepository;
             this.groupRepository = groupRepository;
             this.fileService = fileService;
