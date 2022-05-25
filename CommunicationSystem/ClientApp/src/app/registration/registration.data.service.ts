@@ -8,4 +8,7 @@ export class RegistrationDataService {
   postRegistration(registration: any) {
     return this.http.post(this.url, registration);
   }
+  getSendConfirmation(email?: string) {
+    return this.http.get(this.url + "/resend/" + email);
+  }
 }

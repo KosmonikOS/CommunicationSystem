@@ -13,16 +13,16 @@ export class CreatetestsDataService {
   getUsers(param: string) {
     return this.http.get(this.url + "getusers/" + param);
   }
-  getAnswers(id: number, testId: number) {
+  getAnswers(id: number, testId: string) {
     return this.http.get(this.url + "getanswers/" + id + "/" + testId);
   }
-  delete(id: number, type: string) {
+  delete(id: string, type: string) {
     return this.http.delete(this.url + type + "/" + id);
   }
   postTest(test: any) {
     return this.http.post(this.url, test);
   }
-  putMark(id: number, testid: number, mark: number) {
+  putMark(id: number, testid: string, mark: number) {
     return this.http.put(this.url + id + "/" + testid + "/" + mark, {});
   }
 }

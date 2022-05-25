@@ -1,7 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import { AuthDataService } from "./auth/auth.data.service";
 import { ToastService } from "./toast.service"
-import { Account } from "./account/account"
 import { AccountDataService } from "./account/account.data.service"
 import { Router } from '@angular/router';
 import { VideochatDataService } from './videochat/videochat.data.service';
@@ -9,7 +8,7 @@ import { AudioService } from "./audio.service"
 import { DevicesService } from "./devices.service"
 import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { UtilitesService } from "./utilites.service"
 @Component({
   selector: 'app-root',
@@ -58,7 +57,6 @@ export class AppComponent implements OnInit {
     this.videochatDataService.addConnectionListener("CallRequest", (caller: any,members:any) => {
       this.dismissType = true;
       this.videochatDataService.members = members;
-      console.log(members);
       this.videochatDataService.caller = caller;
       this.audioService.startAudio("assets/calling.mp3");
       this.modalService.open(this.callModal, { size: "md" }).result.then(() => { }, () => {

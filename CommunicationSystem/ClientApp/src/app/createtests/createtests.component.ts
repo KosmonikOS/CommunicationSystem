@@ -10,6 +10,7 @@ import { ToastService } from '../toast.service';
 import { TestMember } from './testmember';
 import { QuestionType } from "../tests/question"
 import { UtilitesService } from '../utilites.service';
+import { Guid } from "guid-typescript";
 
 @Component({
   selector: 'app-createtests',
@@ -114,7 +115,7 @@ export class CreatetestsComponent implements OnInit {
   }
   createTest() {
     this.search = "";
-    this.currentTest = new Test(-1);
+    this.currentTest = new Test('');
     this.userList = [];
     this.openModal(this.testModal);
   }
@@ -125,7 +126,7 @@ export class CreatetestsComponent implements OnInit {
     }
   }
   deleteTest() {
-    if (this.currentTest.id > 0) {
+    if (this.currentTest.id != '') {
       this.dataService.delete(this.currentTest.id, "test").subscribe(() => {
         this.getTests();
       });
@@ -133,7 +134,7 @@ export class CreatetestsComponent implements OnInit {
   }
   createQuestion() {
     this.search = "";
-    this.currentQuestion = new Question(-1);
+    this.currentQuestion = new Question('');
     this.openModal(this.questionModal);
   }
   editQuestion() {
@@ -142,14 +143,14 @@ export class CreatetestsComponent implements OnInit {
     }
   }
   deleteQuestion() {
-    if (this.currentQuestion.id > 0) {
+    if (this.currentQuestion.id != '') {
       this.dataService.delete(this.currentQuestion.id, "question").subscribe(() => { });
     }
     var index = this.currentTest.questionsList.findIndex(q => q.id == this.currentQuestion.id)
     this.currentTest.questionsList.splice(index, 1);
   }
   createOption() {
-    this.currentOption = new Option(-1);
+    this.currentOption = new Option('');
     this.openModal(this.optionModal);
   }
   editOption() {
@@ -158,7 +159,7 @@ export class CreatetestsComponent implements OnInit {
     }
   }
   deleteOption() {
-    if (this.currentOption.id > 0) {
+    if (this.currentOption.id != '') {
       this.dataService.delete(this.currentOption.id, "option").subscribe(() => { });
     }
     var index = this.currentQuestion.options.findIndex(o => o.id == this.currentOption.id)
@@ -166,20 +167,20 @@ export class CreatetestsComponent implements OnInit {
   }
   saveQuestion() {
     this.currentQuestion.questionType = Number(this.currentQuestion.questionType);
-    if (this.currentQuestion.id != -1) {
+    if (this.currentQuestion.id != '') {
       this.currentTest.questionsList[this.currentTest.questionsList.findIndex(q => q.id == this.currentQuestion.id)] = this.currentQuestion;
     } else {
-      this.currentQuestion.id = Math.round((Math.random() * -1000));
+      this.currentQuestion.id = Guid.create().toString();
       this.currentTest.questionsList.push(this.currentQuestion);
       this.currentTest.questions = this.currentTest.questionsList.length;
     }
     this.modalService.dismissAll();
   }
   saveOption() {
-    if (this.currentOption.id != -1) {
+    if (this.currentOption.id != '') {
       this.currentQuestion.options[this.currentQuestion.options.findIndex(o => o.id == this.currentOption.id)] = this.currentOption;
     } else {
-      this.currentOption.id = Math.round((Math.random() * -1000));
+      this.currentOption.id = Guid.create().toString();
       this.currentQuestion.options.push(this.currentOption);
     }
     this.modalService.dismissAll();

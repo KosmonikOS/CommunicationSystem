@@ -1,0 +1,1081 @@
+2022-05-25 10:04:32.777 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 10:05:10.534 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 10:05:10.543 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 10:05:10.583 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 10:05:10.585 +04:00 [ERR] Error: src/app/createtests/createtests.component.html:52:56 - error TS2367: This condition will always return 'true' since the types 'string' and 'number' have no overlap.
+
+2022-05-25 10:05:10.588 +04:00 [ERR] 52       <h4 class="modal-title" id="modal-basic-title">{currentTest.id != -1 ? currentTest.name:'╨Э╨╛╨▓╤Л╨╣ ╤В╨╡╤Б╤В'}</h4>
+
+2022-05-25 10:05:10.590 +04:00 [ERR]                                                           ~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 10:05:10.592 +04:00 [ERR]   src/app/createtests/createtests.component.ts:17:16
+
+2022-05-25 10:05:10.594 +04:00 [ERR]     17   templateUrl: './createtests.component.html',
+
+2022-05-25 10:05:10.605 +04:00 [ERR]                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 10:05:10.608 +04:00 [ERR]     Error occurs in the template of component CreatetestsComponent.
+
+2022-05-25 10:05:10.616 +04:00 [ERR] Error: src/app/createtests/createtests.component.html:153:56 - error TS2367: This condition will always return 'true' since the types 'string' and 'number' have no overlap.
+
+2022-05-25 10:05:10.622 +04:00 [ERR] 153       <h4 class="modal-title" id="modal-basic-title">{currentQuestion.id != -1 ? '':'╨Э╨╛╨▓╤Л╨╣ ╨▓╨╛╨┐╤А╨╛╤Б'}</h4>
+
+2022-05-25 10:05:10.625 +04:00 [ERR]                                                            ~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 10:05:10.637 +04:00 [ERR]   src/app/createtests/createtests.component.ts:17:16
+
+2022-05-25 10:05:10.644 +04:00 [ERR]     17   templateUrl: './createtests.component.html',
+
+2022-05-25 10:05:10.654 +04:00 [ERR]                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 10:05:10.660 +04:00 [ERR]     Error occurs in the template of component CreatetestsComponent.
+
+2022-05-25 10:05:10.669 +04:00 [ERR] Error: src/app/createtests/createtests.component.html:225:56 - error TS2367: This condition will always return 'true' since the types 'string' and 'number' have no overlap.
+
+2022-05-25 10:05:10.678 +04:00 [ERR] 225       <h4 class="modal-title" id="modal-basic-title">{currentOption.id != -1 ? '':'╨Э╨╛╨▓╤Л╨╣ ╨Т╨░╤А╨╕╨░╨╜╤В ╨╛╤В╨▓╨╡╤В╨░'}</h4>
+
+2022-05-25 10:05:10.696 +04:00 [ERR]                                                            ~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 10:05:10.700 +04:00 [ERR]   src/app/createtests/createtests.component.ts:17:16
+
+2022-05-25 10:05:10.715 +04:00 [ERR]     17   templateUrl: './createtests.component.html',
+
+2022-05-25 10:05:10.719 +04:00 [ERR]                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 10:05:10.731 +04:00 [ERR]     Error occurs in the template of component CreatetestsComponent.
+
+2022-05-25 10:08:31.415 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 10:11:38.914 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 10:11:58.593 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 10:11:58.815 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 10:11:58.818 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 10:12:18.553 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 10:12:40.504 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 10:12:40.730 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 10:12:40.732 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 10:16:57.016 +04:00 [ERR] Failed executing DbCommand (75ms) [Parameters=[@p0='?', @p1='?' (DbType = DateTime), @p2='?', @p3='?' (DbType = Int32), @p4='?', @p5='?', @p6='?', @p7='?' (DbType = DateTime), @p8='?', @p9='?', @p10='?', @p11='?', @p12='?', @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("Email", "EnterTime", "FirstName", "Grade", "GradeLetter", "IsConfirmed", "LastName", "LeaveTime", "MiddleName", "NickName", "Password", "Phone", "RefreshToken", "RoleId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13)
+RETURNING "Id", "AccountImage";
+2022-05-25 10:16:57.154 +04:00 [ERR] An exception occurred in the database while saving changes for context type 'CommunicationSystem.Data.CommunicationContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: значение NULL в столбце "FirstName" отношения "Users" нарушает ограничение NOT NULL
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23502
+    MessageText: значение NULL в столбце "FirstName" отношения "Users" нарушает ограничение NOT NULL
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: FirstName
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__104_0(DbContext _, ValueTuple`2 t)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: значение NULL в столбце "FirstName" отношения "Users" нарушает ограничение NOT NULL
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23502
+    MessageText: значение NULL в столбце "FirstName" отношения "Users" нарушает ограничение NOT NULL
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: FirstName
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__104_0(DbContext _, ValueTuple`2 t)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2022-05-25 10:44:50.975 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 10:45:35.922 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 10:45:55.187 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 10:45:55.412 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 10:45:55.415 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 10:47:37.361 +04:00 [ERR] Failed executing DbCommand (52ms) [Parameters=[@p0='?', @p1='?' (DbType = DateTime), @p2='?', @p3='?' (DbType = Int32), @p4='?', @p5='?', @p6='?', @p7='?' (DbType = DateTime), @p8='?', @p9='?', @p10='?', @p11='?', @p12='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("Email", "EnterTime", "FirstName", "Grade", "GradeLetter", "IsConfirmed", "LastName", "LeaveTime", "MiddleName", "NickName", "Password", "Phone", "RefreshToken")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12)
+RETURNING "Id", "AccountImage", "RoleId";
+2022-05-25 10:47:37.534 +04:00 [ERR] An exception occurred in the database while saving changes for context type 'CommunicationSystem.Data.CommunicationContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23503: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23503
+    MessageText: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ConstraintName: FK_Users_Role_RoleId
+    File: ri_triggers.c
+    Line: 2539
+    Routine: ri_ReportViolation
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__104_0(DbContext _, ValueTuple`2 t)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23503: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23503
+    MessageText: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ConstraintName: FK_Users_Role_RoleId
+    File: ri_triggers.c
+    Line: 2539
+    Routine: ri_ReportViolation
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__104_0(DbContext _, ValueTuple`2 t)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2022-05-25 10:49:56.761 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 10:50:13.222 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 10:50:13.407 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 10:50:13.410 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 10:50:41.485 +04:00 [ERR] Failed executing DbCommand (13ms) [Parameters=[@p0='?', @p1='?' (DbType = DateTime), @p2='?', @p3='?' (DbType = Int32), @p4='?', @p5='?', @p6='?', @p7='?' (DbType = DateTime), @p8='?', @p9='?', @p10='?', @p11='?', @p12='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("Email", "EnterTime", "FirstName", "Grade", "GradeLetter", "IsConfirmed", "LastName", "LeaveTime", "MiddleName", "NickName", "Password", "Phone", "RefreshToken")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12)
+RETURNING "Id", "AccountImage", "RoleId";
+2022-05-25 10:50:41.550 +04:00 [ERR] An exception occurred in the database while saving changes for context type 'CommunicationSystem.Data.CommunicationContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23503: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23503
+    MessageText: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ConstraintName: FK_Users_Role_RoleId
+    File: ri_triggers.c
+    Line: 2539
+    Routine: ri_ReportViolation
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__104_0(DbContext _, ValueTuple`2 t)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23503: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23503
+    MessageText: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ConstraintName: FK_Users_Role_RoleId
+    File: ri_triggers.c
+    Line: 2539
+    Routine: ri_ReportViolation
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__104_0(DbContext _, ValueTuple`2 t)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2022-05-25 10:52:11.561 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 10:52:33.742 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 10:52:54.556 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 10:52:54.789 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 10:52:54.792 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 10:53:06.857 +04:00 [ERR] Failed executing DbCommand (14ms) [Parameters=[@p0='?', @p1='?' (DbType = DateTime), @p2='?', @p3='?' (DbType = Int32), @p4='?', @p5='?', @p6='?', @p7='?' (DbType = DateTime), @p8='?', @p9='?', @p10='?', @p11='?', @p12='?', @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("Email", "EnterTime", "FirstName", "Grade", "GradeLetter", "IsConfirmed", "LastName", "LeaveTime", "MiddleName", "NickName", "Password", "Phone", "RefreshToken", "RoleId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13)
+RETURNING "Id", "AccountImage";
+2022-05-25 10:53:06.912 +04:00 [ERR] An exception occurred in the database while saving changes for context type 'CommunicationSystem.Data.CommunicationContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23503: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23503
+    MessageText: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ConstraintName: FK_Users_Role_RoleId
+    File: ri_triggers.c
+    Line: 2539
+    Routine: ri_ReportViolation
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__104_0(DbContext _, ValueTuple`2 t)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23503: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23503
+    MessageText: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ConstraintName: FK_Users_Role_RoleId
+    File: ri_triggers.c
+    Line: 2539
+    Routine: ri_ReportViolation
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__104_0(DbContext _, ValueTuple`2 t)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2022-05-25 10:56:03.348 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 10:56:43.973 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 10:57:00.750 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 10:57:00.925 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 10:57:00.928 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 12:00:58.524 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 12:01:13.917 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 12:01:31.489 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 12:01:31.664 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 12:01:31.667 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 12:04:35.393 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 12:51:09.109 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 12:51:28.843 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 12:51:29.056 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 12:51:29.059 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 12:52:49.803 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 12:53:15.059 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 12:53:15.365 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 12:53:15.367 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 12:53:59.044 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 12:54:21.711 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 12:54:21.938 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 12:54:21.941 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 12:55:10.967 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 12:55:58.799 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 12:57:06.373 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 12:57:10.386 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 12:57:11.194 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 12:58:52.020 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:00:50.632 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:04:17.300 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:04:53.798 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:06:13.365 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:06:29.090 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:07:10.700 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:10:03.286 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:10:16.154 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:10:24.169 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:10:58.803 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:11:58.152 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:12:16.052 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:13:00.835 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:13:23.291 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:14:51.519 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:14:58.262 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:15:45.374 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:16:03.914 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:16:57.812 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:17:19.341 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:22:31.343 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:22:46.776 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:23:09.725 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:23:27.757 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:23:27.760 +04:00 [ERR] Error: src/app/registration/registration.component.ts:45:7 - error TS2663: Cannot find name 'timer'. Did you mean the instance member 'this.timer'?
+
+2022-05-25 13:23:27.764 +04:00 [ERR] 45       timer -= 1;
+
+2022-05-25 13:23:27.770 +04:00 [ERR]          ~~~~~
+
+2022-05-25 13:23:31.239 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:23:40.238 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:24:07.270 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:28:26.333 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:29:07.128 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:30:35.448 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:36:35.041 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:36:35.706 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:37:25.415 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:37:47.515 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:40:13.964 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:42:06.077 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:43:55.625 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:44:12.299 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:47:16.645 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:49:56.579 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 13:50:30.796 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:50:31.054 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 13:50:31.057 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 13:53:31.394 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:56:04.815 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 13:56:25.724 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 13:56:25.940 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 13:56:25.943 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 13:58:51.974 +04:00 [ERR] ^C
+2022-05-25 13:59:30.577 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 14:00:06.304 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 14:00:30.833 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:00:31.118 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 14:00:31.121 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 14:01:30.622 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:05:52.583 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 14:06:19.554 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:06:19.800 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 14:06:19.802 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 14:10:43.053 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:48:15.004 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 14:48:42.300 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:48:42.318 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 14:48:42.333 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 14:48:42.336 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:10:86 - error TS2339: Property 'registration' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.340 +04:00 [ERR] 10                 <input type="text" class="form-control form-control-lg" [(ngModel)]="registration.nickName" [error]="{Error:errors.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" />
+
+2022-05-25 14:48:42.355 +04:00 [ERR]                                                                                         ~~~~~~~~~~~~
+
+2022-05-25 14:48:42.361 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.369 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.375 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.383 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.389 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:10:86 - error TS2339: Property 'registration' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.398 +04:00 [ERR] 10                 <input type="text" class="form-control form-control-lg" [(ngModel)]="registration.nickName" [error]="{Error:errors.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" />
+
+2022-05-25 14:48:42.404 +04:00 [ERR]                                                                                         ~~~~~~~~~~~~
+
+2022-05-25 14:48:42.406 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.410 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.414 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.419 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.421 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:10:125 - error TS2339: Property 'errors' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.428 +04:00 [ERR] 10                 <input type="text" class="form-control form-control-lg" [(ngModel)]="registration.nickName" [error]="{Error:errors.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" />
+
+2022-05-25 14:48:42.433 +04:00 [ERR]                                                                                                                                ~~~~~~
+
+2022-05-25 14:48:42.436 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.440 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.447 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.451 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.454 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:14:87 - error TS2339: Property 'registration' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.459 +04:00 [ERR] 14                 <input type="email" class="form-control form-control-lg" [(ngModel)]="registration.email" [error]="{Error:errors.Email,PlaceHolder:'╨Я╨╛╤З╤В╨░'}" />
+
+2022-05-25 14:48:42.465 +04:00 [ERR]                                                                                          ~~~~~~~~~~~~
+
+2022-05-25 14:48:42.469 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.482 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.484 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.489 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.493 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:14:87 - error TS2339: Property 'registration' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.499 +04:00 [ERR] 14                 <input type="email" class="form-control form-control-lg" [(ngModel)]="registration.email" [error]="{Error:errors.Email,PlaceHolder:'╨Я╨╛╤З╤В╨░'}" />
+
+2022-05-25 14:48:42.508 +04:00 [ERR]                                                                                          ~~~~~~~~~~~~
+
+2022-05-25 14:48:42.513 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.515 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.518 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.522 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.527 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:14:123 - error TS2339: Property 'errors' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.530 +04:00 [ERR] 14                 <input type="email" class="form-control form-control-lg" [(ngModel)]="registration.email" [error]="{Error:errors.Email,PlaceHolder:'╨Я╨╛╤З╤В╨░'}" />
+
+2022-05-25 14:48:42.537 +04:00 [ERR]                                                                                                                              ~~~~~~
+
+2022-05-25 14:48:42.541 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.544 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.548 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.553 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.559 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:18:90 - error TS2339: Property 'registration' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.562 +04:00 [ERR] 18                 <input type="password" class="form-control form-control-lg" [(ngModel)]="registration.password" [error]="{Error:errors.Password,PlaceHolder:'╨Я╨░╤А╨╛╨╗╤М'}" />
+
+2022-05-25 14:48:42.570 +04:00 [ERR]                                                                                             ~~~~~~~~~~~~
+
+2022-05-25 14:48:42.574 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.577 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.582 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.586 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.588 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:18:90 - error TS2339: Property 'registration' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.590 +04:00 [ERR] 18                 <input type="password" class="form-control form-control-lg" [(ngModel)]="registration.password" [error]="{Error:errors.Password,PlaceHolder:'╨Я╨░╤А╨╛╨╗╤М'}" />
+
+2022-05-25 14:48:42.597 +04:00 [ERR]                                                                                             ~~~~~~~~~~~~
+
+2022-05-25 14:48:42.600 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.602 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.605 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.607 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.612 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:18:129 - error TS2339: Property 'errors' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.615 +04:00 [ERR] 18                 <input type="password" class="form-control form-control-lg" [(ngModel)]="registration.password" [error]="{Error:errors.Password,PlaceHolder:'╨Я╨░╤А╨╛╨╗╤М'}" />
+
+2022-05-25 14:48:42.618 +04:00 [ERR]                                                                                                                                    ~~~~~~
+
+2022-05-25 14:48:42.620 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.622 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.628 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.630 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.633 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:21:79 - error TS2339: Property 'Register' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.635 +04:00 [ERR] 21                 <button type="button" class="btn btn-primary btn-lg" (click)="Register()">╨б╨╛╨╖╨┤╨░╤В╤М</button>
+
+2022-05-25 14:48:42.637 +04:00 [ERR]                                                                                  ~~~~~~~~
+
+2022-05-25 14:48:42.639 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.645 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.648 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.650 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.653 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:25:54 - error TS2339: Property 'redirectToAuth' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.655 +04:00 [ERR] 25                 <a class="btn text-primary" (click)="redirectToAuth()">╨г ╨╝╨╡╨╜╤П ╤Г╨╢╨╡ ╨╡╤Б╤В╤М ╨░╨║╨║╨░╤Г╨╜╤В</a>
+
+2022-05-25 14:48:42.663 +04:00 [ERR]                                                         ~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.666 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.669 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.677 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.679 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.682 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:42:52 - error TS2339: Property 'timer' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.684 +04:00 [ERR] 42       <button class="btn btn-primary" [disabled] ="timer >= 0" (click)="ResendConfirmation()">╨Ю╤В╨┐╤А╨░╨▓╨╕╤В╤М ╨╖╨░╨╜╨╛╨▓╨╛ <span *ngIf="timer >= 0">{timer}</span></button>
+
+2022-05-25 14:48:42.689 +04:00 [ERR]                                                       ~~~~~
+
+2022-05-25 14:48:42.693 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.696 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.698 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.701 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.707 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:42:73 - error TS2339: Property 'ResendConfirmation' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.711 +04:00 [ERR] 42       <button class="btn btn-primary" [disabled] ="timer >= 0" (click)="ResendConfirmation()">╨Ю╤В╨┐╤А╨░╨▓╨╕╤В╤М ╨╖╨░╨╜╨╛╨▓╨╛ <span *ngIf="timer >= 0">{timer}</span></button>
+
+2022-05-25 14:48:42.713 +04:00 [ERR]                                                                            ~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.715 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.720 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.722 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.725 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.729 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:42:125 - error TS2339: Property 'timer' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.731 +04:00 [ERR] 42       <button class="btn btn-primary" [disabled] ="timer >= 0" (click)="ResendConfirmation()">╨Ю╤В╨┐╤А╨░╨▓╨╕╤В╤М ╨╖╨░╨╜╨╛╨▓╨╛ <span *ngIf="timer >= 0">{timer}</span></button>
+
+2022-05-25 14:48:42.737 +04:00 [ERR]                                                                                                                                ~~~~~
+
+2022-05-25 14:48:42.741 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.745 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.754 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.759 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:48:42.763 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:42:139 - error TS2339: Property 'timer' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 14:48:42.769 +04:00 [ERR] 42       <button class="btn btn-primary" [disabled] ="timer >= 0" (click)="ResendConfirmation()">╨Ю╤В╨┐╤А╨░╨▓╨╕╤В╤М ╨╖╨░╨╜╨╛╨▓╨╛ <span *ngIf="timer >= 0">{timer}</span></button>
+
+2022-05-25 14:48:42.781 +04:00 [ERR]                                                                                                                                              ~~~~~
+
+2022-05-25 14:48:42.791 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 14:48:42.801 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 14:48:42.804 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 14:48:42.807 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 14:49:38.293 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:50:24.976 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:51:19.586 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:55:41.662 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:56:13.666 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:58:42.448 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:59:01.790 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:59:27.526 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 14:59:52.846 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:01:15.319 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:01:29.899 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:02:03.684 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:02:20.828 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:02:41.632 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:02:41.636 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.ts:24:7 - error TS1005: ',' expected.
+
+2022-05-25 15:02:41.641 +04:00 [ERR] 24       });
+
+2022-05-25 15:02:41.649 +04:00 [ERR]          ~
+
+2022-05-25 15:02:41.662 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.ts:24:8 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+2022-05-25 15:02:41.674 +04:00 [ERR] 24       });
+
+2022-05-25 15:02:41.688 +04:00 [ERR]           ~
+
+2022-05-25 15:02:41.695 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.ts:27:1 - error TS1128: Declaration or statement expected.
+
+2022-05-25 15:02:41.703 +04:00 [ERR] 27 }
+
+2022-05-25 15:02:41.706 +04:00 [ERR]    ~
+
+2022-05-25 15:02:49.302 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:03:13.174 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:03:16.978 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:04:26.894 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:04:35.515 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:04:54.857 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:05:04.722 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:05:11.226 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:05:12.173 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:06:10.933 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:06:10.935 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:8:41 - error TS2339: Property 'error' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 15:06:10.941 +04:00 [ERR] 8               <h4 class="text-center">{error}</h4>
+
+2022-05-25 15:06:10.946 +04:00 [ERR]                                           ~~~~~
+
+2022-05-25 15:06:10.960 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 15:06:10.965 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 15:06:10.985 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 15:06:11.028 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 15:06:11.039 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.ts:23:16 - error TS2339: Property 'error' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 15:06:11.049 +04:00 [ERR] 23           this.error = error.error;
+
+2022-05-25 15:06:11.066 +04:00 [ERR]                   ~~~~~
+
+2022-05-25 15:06:17.550 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:06:17.552 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.html:8:41 - error TS2339: Property 'error' does not exist on type 'ConfirmationComponent'.
+
+2022-05-25 15:06:17.560 +04:00 [ERR] 8               <h4 class="text-center">{error}</h4>
+
+2022-05-25 15:06:17.566 +04:00 [ERR]                                           ~~~~~
+
+2022-05-25 15:06:17.576 +04:00 [ERR]   src/app/confirmation/confirmation.component.ts:7:16
+
+2022-05-25 15:06:17.586 +04:00 [ERR]     7   templateUrl: './confirmation.component.html',
+
+2022-05-25 15:06:17.611 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 15:06:17.627 +04:00 [ERR]     Error occurs in the template of component ConfirmationComponent.
+
+2022-05-25 15:06:29.276 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:06:45.128 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:07:00.839 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:11:20.820 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 15:11:53.957 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:11:54.210 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 15:11:54.213 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 15:21:20.882 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 15:21:41.155 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:21:41.368 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 15:21:41.371 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 15:25:41.975 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:26:20.128 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:27:37.067 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:27:37.077 +04:00 [ERR] ./src/app/confirmation/confirmation.component.ts:39:67 - Error: Module parse failed: Unexpected token (39:67)
+
+2022-05-25 15:27:37.084 +04:00 [ERR] File was processed with these loaders:
+
+2022-05-25 15:27:37.089 +04:00 [ERR]  * ./node_modules/@angular-devkit/build-angular/src/babel/webpack-loader.js
+
+2022-05-25 15:27:37.098 +04:00 [ERR]  * ./node_modules/@ngtools/webpack/src/ivy/index.js
+
+2022-05-25 15:27:37.103 +04:00 [ERR] You may need an additional loader to handle the result of these loaders.
+
+2022-05-25 15:27:37.110 +04:00 [ERR] |     }
+
+2022-05-25 15:27:37.116 +04:00 [ERR] |     ngOnInit() {
+
+2022-05-25 15:27:37.119 +04:00 [ERR] >         var token = this.activateRoute.snapshot.params["token"] +  == ;
+
+2022-05-25 15:27:37.125 +04:00 [ERR] |         this.dataService.getConfirmAccount(token).subscribe(result => {
+
+2022-05-25 15:27:37.130 +04:00 [ERR] |             this.router.navigate([""]);
+
+2022-05-25 15:27:37.133 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.ts:16:63 - error TS1109: Expression expected.
+
+2022-05-25 15:27:37.135 +04:00 [ERR] 16     var token = this.activateRoute.snapshot.params["token"] + ==;
+
+2022-05-25 15:27:37.141 +04:00 [ERR]                                                                  ~~
+
+2022-05-25 15:27:37.147 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.ts:16:65 - error TS1109: Expression expected.
+
+2022-05-25 15:27:37.150 +04:00 [ERR] 16     var token = this.activateRoute.snapshot.params["token"] + ==;
+
+2022-05-25 15:27:37.156 +04:00 [ERR]                                                                    ~
+
+2022-05-25 15:27:37.160 +04:00 [ERR] Error: src/app/confirmation/confirmation.component.ts:17:40 - error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+
+2022-05-25 15:27:37.163 +04:00 [ERR] 17     this.dataService.getConfirmAccount(token).subscribe(
+
+2022-05-25 15:27:37.166 +04:00 [ERR]                                           ~~~~~
+
+2022-05-25 15:27:39.903 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:33:56.249 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 15:34:01.089 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 16:31:16.793 +04:00 [ERR] Failed executing DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" ADD CONSTRAINT "FK_Users_UserSaltPass_UserSaltPassId" FOREIGN KEY ("UserSaltPassId") REFERENCES "UserSaltPass" ("Id") ON DELETE CASCADE;
+2022-05-25 17:14:23.363 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-25 17:14:57.212 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 17:14:57.220 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-25 17:14:57.230 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-25 17:14:57.232 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:16:69 - error NG8002: Can't bind to 'ngModel' since it isn't a known property of 'input'.
+
+2022-05-25 17:14:57.235 +04:00 [ERR] 16       <input placeholder="╨Я╨╛╨╕╤Б╨║" type="search" class="form-control" [(ngModel)]="search" />
+
+2022-05-25 17:14:57.248 +04:00 [ERR]                                                                        ~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.256 +04:00 [ERR]   src/app/subjects/subjects.component.ts:8:16
+
+2022-05-25 17:14:57.263 +04:00 [ERR]     8   templateUrl: './subjects.component.html',
+
+2022-05-25 17:14:57.272 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.280 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-25 17:14:57.287 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:16:82 - error TS2322: Type 'Event' is not assignable to type 'string'.
+
+2022-05-25 17:14:57.291 +04:00 [ERR] 16       <input placeholder="╨Я╨╛╨╕╤Б╨║" type="search" class="form-control" [(ngModel)]="search" />
+
+2022-05-25 17:14:57.293 +04:00 [ERR]                                                                                     ~~~~~~~~~~
+
+2022-05-25 17:14:57.296 +04:00 [ERR] 17       <button class="btn btn-outline-primary">
+
+2022-05-25 17:14:57.299 +04:00 [ERR]    ~~
+
+2022-05-25 17:14:57.304 +04:00 [ERR]   src/app/subjects/subjects.component.ts:8:16
+
+2022-05-25 17:14:57.309 +04:00 [ERR]     8   templateUrl: './subjects.component.html',
+
+2022-05-25 17:14:57.311 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.314 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-25 17:14:57.318 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:30:77 - error NG8002: Can't bind to 'ngClass' since it isn't a known property of 'tr'.
+
+2022-05-25 17:14:57.323 +04:00 [ERR] 30         <tr *ngFor="let subject of subjects | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="setSubject(subject,i)" (dblclick)="dblSetSubject(subject,i)">
+
+2022-05-25 17:14:57.326 +04:00 [ERR]                                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.328 +04:00 [ERR]   src/app/subjects/subjects.component.ts:8:16
+
+2022-05-25 17:14:57.334 +04:00 [ERR]     8   templateUrl: './subjects.component.html',
+
+2022-05-25 17:14:57.339 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.341 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-25 17:14:57.343 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:46:92 - error NG8002: Can't bind to 'error' since it isn't a known property of 'input'.
+
+2022-05-25 17:14:57.347 +04:00 [ERR] 46         <div><label class="labels">╨Э╨░╨╖╨▓╨░╨╜╨╕╨╡</label><input type="text" class="form-control" [error]="{Error:errors?.FirstName,PlaceHolder:'╨Э╨░╨╖╨▓╨░╨╜╨╕╨╡'}" [(ngModel)]="currentSubject.name"></div>
+
+2022-05-25 17:14:57.353 +04:00 [ERR]                                                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.355 +04:00 [ERR]   src/app/subjects/subjects.component.ts:8:16
+
+2022-05-25 17:14:57.357 +04:00 [ERR]     8   templateUrl: './subjects.component.html',
+
+2022-05-25 17:14:57.360 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.364 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-25 17:14:57.369 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:46:151 - error NG8002: Can't bind to 'ngModel' since it isn't a known property of 'input'.
+
+2022-05-25 17:14:57.371 +04:00 [ERR] 46         <div><label class="labels">╨Э╨░╨╖╨▓╨░╨╜╨╕╨╡</label><input type="text" class="form-control" [error]="{Error:errors?.FirstName,PlaceHolder:'╨Э╨░╨╖╨▓╨░╨╜╨╕╨╡'}" [(ngModel)]="currentSubject.name"></div>
+
+2022-05-25 17:14:57.375 +04:00 [ERR]                                                                                                                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.379 +04:00 [ERR]   src/app/subjects/subjects.component.ts:8:16
+
+2022-05-25 17:14:57.383 +04:00 [ERR]     8   templateUrl: './subjects.component.html',
+
+2022-05-25 17:14:57.385 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.387 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-25 17:14:57.389 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:46:164 - error TS2322: Type 'Event' is not assignable to type 'string'.
+
+2022-05-25 17:14:57.394 +04:00 [ERR] 46         <div><label class="labels">╨Э╨░╨╖╨▓╨░╨╜╨╕╨╡</label><input type="text" class="form-control" [error]="{Error:errors?.FirstName,PlaceHolder:'╨Э╨░╨╖╨▓╨░╨╜╨╕╨╡'}" [(ngModel)]="currentSubject.name"></div>
+
+2022-05-25 17:14:57.398 +04:00 [ERR]                                                                                                                                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.401 +04:00 [ERR]   src/app/subjects/subjects.component.ts:8:16
+
+2022-05-25 17:14:57.410 +04:00 [ERR]     8   templateUrl: './subjects.component.html',
+
+2022-05-25 17:14:57.414 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-25 17:14:57.416 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-25 17:15:58.454 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 17:16:05.871 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-25 17:16:05.875 +04:00 [ERR] Error: src/app/app.module.ts:69:5 - error TS1005: ',' expected.
+
+2022-05-25 17:16:05.896 +04:00 [ERR] 69     MessengerModule,
+
+2022-05-25 17:16:05.901 +04:00 [ERR]        ~~~~~~~~~~~~~~~
+
+2022-05-25 17:16:07.642 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+

@@ -10,7 +10,7 @@ export class TestsDataService {
   getTests(id: number) {
     return this.http.get(this.url + id);
   }
-  postTest(questions: Question[], id: number, testId: number) {
+  postTest(questions: Question[], id: number, testId: string) {
     return this.http.post(this.url, { "questions": questions, "userId": id, "testId": testId });
   }
 }

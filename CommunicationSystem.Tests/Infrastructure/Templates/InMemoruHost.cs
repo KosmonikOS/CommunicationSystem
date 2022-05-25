@@ -1,6 +1,4 @@
 ﻿using CommunicationSystem.Data;
-using CommunicationSystem.Domain.Entities;
-using CommunicationSystem.Tests.Infrastructure.DataInitializers;
 using CommunicationSystem.Tests.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -35,7 +33,7 @@ namespace CommunicationSystem.Tests.Infrastructure.Templates
                     var context = scope.ServiceProvider.GetService<CommunicationContext>();
                     Context = context;
                     Context.Database.EnsureDeleted();
-                    IntegrationTestAuthDataInitializer.Initialize(Context);
+                    //IntegrationTestAuthDataInitializer.Initialize(Context);
             });
             });
             factory.ClientOptions.BaseAddress = new Uri("https://192.168.64.21:5001");
@@ -43,15 +41,15 @@ namespace CommunicationSystem.Tests.Infrastructure.Templates
         }
         public async Task AuthenticateAsync()
         {
-            var user = new Login()
-            {
-                Email = "integration@test.now",
-                Password = "MyPassword"
-            };
-            var data = HttpHelper.ConvertToHttpContent(user);
-            var response = await Client.PostAsync("/api/auth", data);
-            var result = await HttpHelper.GetDataAsync<AuthenticationResponse>(response);
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.access_token);
+            //var user = new Login()
+            //{
+            //    Email = "integration@test.now",
+            //    Password = "MyPassword"
+            //};
+            //var data = HttpHelper.ConvertToHttpContent(user);
+            //var response = await Client.PostAsync("/api/auth", data);
+            //var result = await HttpHelper.GetDataAsync<AuthenticationResponse>(response);
+            //Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.access_token);
         }
     }
 }

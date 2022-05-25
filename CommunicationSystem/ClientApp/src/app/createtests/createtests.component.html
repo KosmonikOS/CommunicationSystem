@@ -49,7 +49,7 @@
 
   <ng-template #testModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">{{currentTest.id != -1 ? currentTest.name:'Новый тест'}}</h4>
+      <h4 class="modal-title" id="modal-basic-title">{{currentTest.id != '' ? currentTest.name:'Новый тест'}}</h4>
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body row">
@@ -150,7 +150,7 @@
 
   <ng-template #questionModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">{{currentQuestion.id != -1 ? '':'Новый вопрос'}}</h4>
+      <h4 class="modal-title" id="modal-basic-title">{{currentQuestion.id != '' ? '':'Новый вопрос'}}</h4>
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body row">
@@ -222,7 +222,7 @@
 
   <ng-template #optionModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">{{currentOption.id != -1 ? '':'Новый Вариант ответа'}}</h4>
+      <h4 class="modal-title" id="modal-basic-title">{{currentOption.id != '' ? '':'Новый Вариант ответа'}}</h4>
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body row">

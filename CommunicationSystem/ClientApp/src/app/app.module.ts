@@ -9,6 +9,7 @@ import { AccountDataService } from "./account/account.data.service"
 import { AuthComponent } from "./auth/auth.component";
 import { AppComponent } from './app.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { AccountComponent } from './account/account.component';
 import { MessengerComponent } from './messenger/messenger.component'
 import { VideochatComponent } from './videochat/videochat.component'
@@ -26,6 +27,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AuthModule } from "./auth/auth.module";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegistrationModule } from "./registration/registration.module";
+import { ConfirmationModule } from "./confirmation/confirmation.module";
 import { AccountModule } from "./account/account.module";
 import { MessengerModule } from './messenger/messenger.module';
 import { VideochatModule } from './videochat/videochat.module';
@@ -39,6 +41,7 @@ import { TestsModule } from "./tests/tests.module"
 const routes = [
   { path: "", component: AuthComponent },
   { path: "registration", component: RegistrationComponent },
+  { path: "confirmation/:token", component: ConfirmationComponent },
   { path: "account", component: AccountComponent, canActivate: [AuthGuard] },
   { path: "messenger", component: MessengerComponent, canActivate: [AuthGuard] },
   { path: "videochat", component: VideochatComponent, canActivate: [AuthGuard] },
@@ -60,7 +63,9 @@ export function tokenGetter() {
     NgbModule,
     AuthModule,
     RegistrationModule,
+    ConfirmationModule,
     AccountModule,
+    SubjectsModule,
     MessengerModule,
     CreatetestsModule,
     TestsModule,

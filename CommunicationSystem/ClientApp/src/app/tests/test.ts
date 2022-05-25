@@ -3,7 +3,7 @@ import { Question } from "./question"
 
 export class Test {
   constructor(
-    public id: number = 0,
+    public id: string = '',
     public subject?: number,
     public subjectName?: string,
     public name?: string,

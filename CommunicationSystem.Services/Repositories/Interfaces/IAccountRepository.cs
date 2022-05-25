@@ -1,13 +1,15 @@
-﻿using CommunicationSystem.Domain.Entities;
-using System.Threading.Tasks;
+﻿using CommunicationSystem.Domain.Dtos;
+using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Services.Infrastructure.Responses;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CommunicationSystem.Services.Repositories.Interfaces
 {
-    public interface IAccountRepository
+    public interface IAccountRepository :IBaseRepository
     {
         public User GetUserByEmail(string email);
-        public Task AddUserAsync(Registration user,string token);
-        public Task UpdateImageAsync(int id, string path);
-        public Task UpdateUserAsync(User user);
+        public EntityEntry<User> AddUser(RegistrationDto user,UserSaltPass hash, string token);
+        public IResponse UpdateImage(int id, string path);
+        public EntityEntry<User> UpdateUser(User user);
     }
 }

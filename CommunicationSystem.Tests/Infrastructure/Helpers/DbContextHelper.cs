@@ -10,7 +10,7 @@ namespace CommunicationSystem.Tests.Infrastructure.Helpers
         public static CommunicationContext CreateInMemoryContext()
         {
             var builder = new DbContextOptionsBuilder<CommunicationContext>()
-                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString(),x => x.EnableNullChecks(false))
                     .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
             var options = builder.Options;
             var context = new CommunicationContext(options);

@@ -35,7 +35,7 @@ export class AuthDataService {
       }, time);
     }
   }
-  setTime(id: number, action: string) {
+  setTime(id: number, action: number) {
     if (this.isAuthenticated()) {
       return this.http.get(this.url + "settime/" + id + "/" + action).subscribe(() => { });
     }
@@ -51,12 +51,12 @@ export class AuthDataService {
   }
   logIn(email:string) {
     this.setRefreshTimer();
-    this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "enter");
+    this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), 0);
     this.accountDataService.getAccount(email);
   }
   logOut() {
     if (this.isAuthenticated()) {
-      this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
+      this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), 1);
       clearTimeout(this.refreshTimer);
     }
       localStorage.removeItem("COMMUNICATION_ACCESS_TOKEN_KEY");

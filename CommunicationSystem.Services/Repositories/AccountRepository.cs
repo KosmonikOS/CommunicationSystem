@@ -1,41 +1,67 @@
 ﻿using CommunicationSystem.Data;
+using CommunicationSystem.Domain.Dtos;
 using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Services.Infrastructure.Enums;
+using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 
 namespace CommunicationSystem.Services.Repositories
 {
     public class AccountRepository : IAccountRepository
     {
-        private readonly CommunicationContext db;
+        private readonly CommunicationContext context;
+        private readonly ILogger<AccountRepository> logger;
 
-        public AccountRepository(CommunicationContext db)
+        public AccountRepository(CommunicationContext context,ILogger<AccountRepository> logger)
         {
-            this.db = db;
+            this.context = context;
+            this.logger = logger;
         }
 
-        public async Task AddUserAsync(Registration user,string token)
+        public EntityEntry<User> AddUser(RegistrationDto user,UserSaltPass saltPass, string token)
         {
-            db.Users.Add(new User() { Email = user.Email, NickName = user.NickName, Password = user.Password, IsConfirmed = token });
-            await db.SaveChangesAsync();
+            return context.Add(new User()
+            {
+                Email = user.Email,
+                NickName = user.NickName,
+                PassHash = saltPass,
+                IsConfirmed = token,
+            });
         }
 
         public User GetUserByEmail(string email)
         {
-            return db.Users.SingleOrDefault(u => u.Email == email);
+            return context.Users.AsNoTracking().FirstOrDefault(u => u.Email == email);
+        }
+        public IResponse UpdateImage(int id, string path)
+        {
+            var user = context.Users.Find(id);
+            if (user == null)
+            {
+                logger.LogWarning($"User with {id} id wasn't fount while updating image");
+                return new BaseResponse(ResponseStatus.NotFound) { Message = "Пользователь не найден" };
+            }
+            user.AccountImage = path;
+            return new BaseResponse(ResponseStatus.Ok);
+
         }
 
-        public async Task UpdateImageAsync(int id, string path)
+        public EntityEntry<User> UpdateUser(User user)
         {
-            var user = db.Users.SingleOrDefault(u => u.Id == id);
-            user.accountImage = path;
-            db.Users.Update(user);
-            await db.SaveChangesAsync();
+            return context.Update(user);
         }
 
-        public async Task UpdateUserAsync(User user)
+        public int SaveChanges()
         {
-            db.Users.Update(user);
-            await db.SaveChangesAsync();
+            return context.SaveChanges();
+        }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return context.SaveChangesAsync();
         }
     }
 }
