@@ -2,7 +2,6 @@
 using CommunicationSystem.Services.Services.Interfaces;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Text;
 
 namespace CommunicationSystem.Services.Services
 {
@@ -15,19 +14,19 @@ namespace CommunicationSystem.Services.Services
             var saltPass = new UserSaltPass()
             {
                 PasswordHash = hash,
-                Salt = Encoding.ASCII.GetString(salt)
+                Salt = Convert.ToBase64String(salt)
             };
             return saltPass;
 
         }
         public bool ComparePasswords(string hash, string salt, string password)
         {
-            var saltPass = GenerateHash(password, Encoding.ASCII.GetBytes(salt));
+            var saltPass = GenerateHash(password, Convert.FromBase64String(salt));
             return hash == saltPass;
         }
         private byte[] GenerateSalt()
         {
-            byte[] salt = new byte[128 / 8];
+            byte[] salt = new byte[32];
             using (var rngCsp = new RNGCryptoServiceProvider())
             {
                 rngCsp.GetNonZeroBytes(salt);
@@ -44,6 +43,5 @@ namespace CommunicationSystem.Services.Services
             numBytesRequested: 256 / 8));
             return hash;
         }
-
     }
 }

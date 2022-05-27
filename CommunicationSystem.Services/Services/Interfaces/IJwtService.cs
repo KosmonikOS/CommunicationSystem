@@ -8,10 +8,10 @@ namespace CommunicationSystem.Services.Services.Interfaces
 {
     public interface IJwtService
     {
-        public List<Claim> GenerateClaims(User user,string passwordHash);
+        public List<Claim> GenerateClaims(User user);
         public Task<IContentResponse<string>> GenerateRTAsync(int id);
         public string GenerateJWT(List<Claim> claims);
-        public Task<IContentResponse<AccessTokenDto>> RefreshAsync(TokenPairDto pair);
+        public Task<IContentResponse<RefreshTokenDto>> RefreshAsync(RefreshTokenDto pair);
         public IContentResponse<ClaimsPrincipal> GetClaims(string token);
     }
 }

@@ -1079,3 +1079,504 @@ ALTER TABLE "Users" ADD CONSTRAINT "FK_Users_UserSaltPass_UserSaltPassId" FOREIG
 
 2022-05-25 17:16:07.642 +04:00 [ERR] тИЪ Browser application bundle generation complete.
 
+2022-05-26 14:31:25.038 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 14:31:56.886 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 14:31:56.900 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 14:31:56.903 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 14:31:56.907 +04:00 [ERR] Error: src/app/app.component.ts:55:94 - error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+
+2022-05-26 14:31:56.910 +04:00 [ERR] 55       this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
+
+2022-05-26 14:31:56.920 +04:00 [ERR]                                                                                                 ~~~~~~~
+
+2022-05-26 14:32:50.049 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:08:53.272 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 15:09:25.123 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:09:25.345 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 15:09:25.347 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 15:19:02.872 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 15:19:22.700 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:19:22.915 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 15:19:22.917 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 15:25:26.445 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 15:25:55.470 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:25:55.820 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 15:25:55.822 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 15:27:07.437 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 15:27:38.147 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:27:38.551 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 15:27:38.553 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 15:30:25.435 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:32:26.501 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:33:35.824 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:37:02.115 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 15:37:24.163 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:37:24.401 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 15:37:24.404 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 15:38:42.678 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:39:49.508 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:40:20.698 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:41:45.784 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:43:09.952 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:43:16.199 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:43:31.832 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:43:37.980 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:43:56.963 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:55:48.571 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 15:56:50.369 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 15:57:16.035 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 15:57:16.328 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 15:57:16.330 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 15:59:25.302 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:02:11.096 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:07:54.972 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:08:32.055 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:10:55.044 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:11:25.146 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:11:48.515 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:12:51.613 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:13:34.570 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:14:45.751 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:15:07.978 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:17:47.131 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:21:01.000 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:21:31.003 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:22:17.710 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:22:49.820 +04:00 [ERR] ^C^C
+2022-05-26 16:28:22.160 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 16:28:44.023 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:28:44.247 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 16:28:44.251 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 16:39:30.543 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 16:40:05.857 +04:00 [ERR] ^C^C
+2022-05-26 19:41:26.742 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 19:41:56.704 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 19:41:56.973 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 19:41:56.976 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 19:43:34.769 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Exception of type 'System.Exception' was thrown.
+   at CommunicationSystem.Controllers.AuthController.SetTime(Int32 id, String act) in D:\Projects\CommunicationSystemV2\CommunicationSystem\Controllers\AuthController.cs:line 23
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-26 19:44:00.506 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Exception of type 'System.Exception' was thrown.
+   at CommunicationSystem.Controllers.AuthController.SetTime(Int32 id, String act) in D:\Projects\CommunicationSystemV2\CommunicationSystem\Controllers\AuthController.cs:line 23
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-26 19:44:06.069 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Exception of type 'System.Exception' was thrown.
+   at CommunicationSystem.Controllers.AuthController.SetTime(Int32 id, String act) in D:\Projects\CommunicationSystemV2\CommunicationSystem\Controllers\AuthController.cs:line 23
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-26 19:44:10.983 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Exception of type 'System.Exception' was thrown.
+   at CommunicationSystem.Controllers.AuthController.SetTime(Int32 id, String act) in D:\Projects\CommunicationSystemV2\CommunicationSystem\Controllers\AuthController.cs:line 23
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-26 20:21:27.914 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 20:22:02.517 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 20:22:02.811 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 20:22:02.814 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 20:22:22.000 +04:00 [ERR] IDX10653: The encryption algorithm 'HS256' requires a key size of at least '128' bits. Key '[PII of type 'Microsoft.IdentityModel.Tokens.SymmetricSecurityKey' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]', is of size: '32'. (Parameter 'key')
+2022-05-26 20:23:33.043 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 20:23:58.005 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 20:23:58.256 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 20:23:58.259 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 20:24:18.453 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Exception of type 'System.Exception' was thrown.
+   at CommunicationSystem.Controllers.AuthController.SetTime(Int32 id, String act) in D:\Projects\CommunicationSystemV2\CommunicationSystem\Controllers\AuthController.cs:line 23
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-26 20:24:34.024 +04:00 [ERR] ^C^C
+2022-05-26 20:47:48.966 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 20:48:13.623 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 20:48:13.950 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 20:48:13.953 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 20:48:40.128 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Exception of type 'System.Exception' was thrown.
+   at CommunicationSystem.Controllers.AuthController.SetTime(Int32 id, String act) in D:\Projects\CommunicationSystemV2\CommunicationSystem\Controllers\AuthController.cs:line 23
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-26 20:48:40.399 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Exception of type 'System.Exception' was thrown.
+   at CommunicationSystem.Controllers.AuthController.SetTime(Int32 id, String act) in D:\Projects\CommunicationSystemV2\CommunicationSystem\Controllers\AuthController.cs:line 23
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-26 20:48:54.424 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Exception of type 'System.Exception' was thrown.
+   at CommunicationSystem.Controllers.AuthController.SetTime(Int32 id, String act) in D:\Projects\CommunicationSystemV2\CommunicationSystem\Controllers\AuthController.cs:line 23
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-26 20:49:10.404 +04:00 [ERR] ^C^C
+2022-05-26 22:37:24.072 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-26 22:37:58.651 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-26 22:37:59.119 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-26 22:37:59.126 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-26 22:39:38.641 +04:00 [ERR] ^C^C
+2022-05-27 10:07:57.404 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 10:08:42.053 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 10:08:42.485 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 10:08:42.487 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 10:13:43.232 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 10:14:26.551 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 10:14:27.166 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 10:14:27.169 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 10:15:02.609 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 10:19:02.313 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 10:22:31.868 +04:00 [ERR] ^C^C
+2022-05-27 13:07:50.787 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 13:08:24.694 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 13:08:24.703 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 13:08:24.739 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 13:08:24.741 +04:00 [ERR] Error: src/app/recovery/recovery.component.ts:8:16 - error NG2008: Could not find template file './confirmation.component.html'.
+
+2022-05-27 13:08:24.746 +04:00 [ERR] 8   templateUrl: './confirmation.component.html',
+
+2022-05-27 13:08:24.749 +04:00 [ERR]                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 13:08:24.753 +04:00 [ERR] Error: src/app/recovery/recovery.module.ts:10:5 - error NG6001: The class 'RecoveryComponent' is listed in the declarations of the NgModule 'RecoveryModule', but is not a directive, a component, or a pipe. Either remove it from the NgModule's declarations, or add an appropriate Angular decorator.
+
+2022-05-27 13:08:24.761 +04:00 [ERR] 10     RecoveryComponent
+
+2022-05-27 13:08:24.764 +04:00 [ERR]        ~~~~~~~~~~~~~~~~~
+
+2022-05-27 13:08:24.769 +04:00 [ERR]   src/app/recovery/recovery.component.ts:12:14
+
+2022-05-27 13:08:24.772 +04:00 [ERR]     12 export class RecoveryComponent {
+
+2022-05-27 13:08:24.775 +04:00 [ERR]                     ~~~~~~~~~~~~~~~~~
+
+2022-05-27 13:08:24.777 +04:00 [ERR]     'RecoveryComponent' is declared here.
+
+2022-05-27 13:08:24.780 +04:00 [ERR] Error: src/app/recovery/recovery.module.ts:18:14 - error NG6002: Appears in the NgModule.imports of AppModule, but itself has errors
+
+2022-05-27 13:08:24.786 +04:00 [ERR] 18 export class RecoveryModule { }
+
+2022-05-27 13:08:24.790 +04:00 [ERR]                 ~~~~~~~~~~~~~~
+
+2022-05-27 13:09:17.270 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 13:14:12.853 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 13:14:38.400 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 13:14:38.659 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 13:14:38.661 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 13:16:07.519 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 13:16:09.302 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 13:16:31.658 +04:00 [ERR] Failed executing DbCommand (62ms) [Parameters=[@p0='?', @p1='?', @p2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "UserSaltPass" ("PasswordHash", "Salt", "UserId")
+VALUES (@p0, @p1, @p2)
+RETURNING "Id";
+2022-05-27 13:16:31.819 +04:00 [ERR] An exception occurred in the database while saving changes for context type 'CommunicationSystem.Data.CommunicationContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23505: повторяющееся значение ключа нарушает ограничение уникальности "IX_UserSaltPass_UserId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23505
+    MessageText: повторяющееся значение ключа нарушает ограничение уникальности "IX_UserSaltPass_UserId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: UserSaltPass
+    ConstraintName: IX_UserSaltPass_UserId
+    File: nbtinsert.c
+    Line: 670
+    Routine: _bt_check_unique
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23505: повторяющееся значение ключа нарушает ограничение уникальности "IX_UserSaltPass_UserId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23505
+    MessageText: повторяющееся значение ключа нарушает ограничение уникальности "IX_UserSaltPass_UserId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: UserSaltPass
+    ConstraintName: IX_UserSaltPass_UserId
+    File: nbtinsert.c
+    Line: 670
+    Routine: _bt_check_unique
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2022-05-27 13:16:32.152 +04:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+2022-05-27 13:19:24.175 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 13:25:00.698 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 13:25:28.396 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 13:25:28.660 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 13:25:28.662 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 13:28:54.543 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 13:29:15.248 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 13:29:15.525 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 13:29:15.528 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+

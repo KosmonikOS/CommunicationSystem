@@ -48,9 +48,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\infrastructure\error.handler.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Remove="ClientApp\src\app\confirmation\confirmation.component.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\confirmation\confirmation.data.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\confirmation\confirmation.module.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\recovery\recovery.component.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\recovery\recovery.data.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\recovery\recovery.module.ts" />
   </ItemGroup>
 
   <ItemGroup>

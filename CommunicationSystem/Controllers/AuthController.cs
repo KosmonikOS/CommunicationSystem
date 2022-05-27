@@ -1,6 +1,7 @@
 ﻿using CommunicationSystem.Domain.Dtos;
+using CommunicationSystem.Services.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -9,20 +10,42 @@ namespace CommunicationSystem.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        [HttpGet("settime/{id}/{act?}")]
-        public async Task<IActionResult> SetTime(int id, string act)
+        private readonly IMediator mediator;
+
+        public AuthController(IMediator mediator)
         {
-            throw new Exception();
+            this.mediator = mediator;
+        }
+        [HttpPut("settime")]
+        public async Task<IActionResult> SetTime(UserActivityDto dto)
+        {
+            var command = new SetUserActivityTimeCommand()
+            {
+                Dto = dto
+            };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
         [HttpPost]
-        public async Task<IActionResult> Enter(LoginDto dto)
+        public async Task<ActionResult<TokenPairDto>> Enter(LoginDto dto)
         {
-            throw new Exception();
+            var command = new GenerateEnterTokenCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
-        //[HttpPost("refresh")]
-        //public async Task<IActionResult> Refresh(TokenPair pair)
-        //{
-        //    throw new Exception();
-        //}
+        [HttpPost("refresh")]
+        public async Task<ActionResult<RefreshTokenDto>> Refresh(RefreshTokenDto dto)
+        {
+            var command = new RefreshTokenCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
+        }
+        [HttpPut("recover")]
+        public async Task<IActionResult> RecoverPassword(RecoverPasswordDto dto)
+        {
+            var command = new RecoverPasswordCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
+        }
     }
 }

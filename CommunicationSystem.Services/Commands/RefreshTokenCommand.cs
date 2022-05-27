@@ -4,8 +4,8 @@ using MediatR;
 
 namespace CommunicationSystem.Services.Commands
 {
-    public class GenerateEnterTokenCommand : IRequest<IContentResponse<TokenPairDto>>
+    public class RefreshTokenCommand :IRequest<IContentResponse<RefreshTokenDto>>
     {
-        public LoginDto Dto { get; set; }
+        public RefreshTokenDto Dto { get; set; }
     }
 }

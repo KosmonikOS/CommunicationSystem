@@ -15,10 +15,11 @@ export class AuthDataService {
   getToken(email: string, password: string) {
     return this.http.post<any>(this.url, { email, password }).pipe(
       tap(token => {
-        localStorage.setItem("COMMUNICATION_ACCESS_TOKEN_KEY", token.access_token);
-        localStorage.setItem("COMMUNICATION_REFRESH_TOKEN", token.refresh_token);
+        console.log(token);
+        localStorage.setItem("COMMUNICATION_ACCESS_TOKEN_KEY", token.accessToken);
+        localStorage.setItem("COMMUNICATION_REFRESH_TOKEN", token.refreshToken);
         localStorage.setItem("CURRENT_COMMUNICATION_EMAIL", email);
-        localStorage.setItem("CURRENT_COMMUNICATION_ID", token.current_account_id);
+        localStorage.setItem("CURRENT_COMMUNICATION_ID", token.currentAccountId);
         this.currentUserEmail = email;
       })
     );
@@ -27,17 +28,24 @@ export class AuthDataService {
     var time = JSON.parse(atob(localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY")!.split('.')[1])).exp * 1000 - new Date().getTime() - 60000;
     if (time > 0) {
       this.refreshTimer = setTimeout(() => {
-        this.http.post<any>(this.url + "refresh", { "JWT": localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY"), "RT": localStorage.getItem("COMMUNICATION_REFRESH_TOKEN") }).subscribe((token: any) => {
-          localStorage.setItem("COMMUNICATION_ACCESS_TOKEN_KEY", token.access_token);
-          localStorage.setItem("COMMUNICATION_REFRESH_TOKEN", token.refresh_token);
-          this.setRefreshTimer();
-        })
+        this.http.post<any>(this.url + "refresh", {
+          "AccessToken": localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY"),
+          "RefreshToken": localStorage.getItem("COMMUNICATION_REFRESH_TOKEN")
+        }).subscribe(
+          token => {
+            localStorage.setItem("COMMUNICATION_ACCESS_TOKEN_KEY", token.accessToken);
+            localStorage.setItem("COMMUNICATION_REFRESH_TOKEN", token.refreshToken);
+            this.setRefreshTimer();
+          })
       }, time);
     }
   }
   setTime(id: number, action: number) {
     if (this.isAuthenticated()) {
-      return this.http.get(this.url + "settime/" + id + "/" + action).subscribe(() => { });
+      return this.http.put(this.url + "settime", {
+        "Id": id,
+        "Action": action
+      }).subscribe(() => { });
     }
   }
   isAuthenticated() {
@@ -47,9 +55,9 @@ export class AuthDataService {
       this.router.navigate([""]);
     }
     return token && !lifeTime;
-    
+
   }
-  logIn(email:string) {
+  logIn(email: string) {
     this.setRefreshTimer();
     this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), 0);
     this.accountDataService.getAccount(email);
@@ -59,11 +67,11 @@ export class AuthDataService {
       this.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), 1);
       clearTimeout(this.refreshTimer);
     }
-      localStorage.removeItem("COMMUNICATION_ACCESS_TOKEN_KEY");
-      localStorage.removeItem("CURRENT_COMMUNICATION_EMAIL");
-      localStorage.removeItem("CURRENT_COMMUNICATION_ID");
-      localStorage.removeItem("COMMUNICATION_REFRESH_TOKEN");
-      this.router.navigate(['']);
+    localStorage.removeItem("COMMUNICATION_ACCESS_TOKEN_KEY");
+    localStorage.removeItem("CURRENT_COMMUNICATION_EMAIL");
+    localStorage.removeItem("CURRENT_COMMUNICATION_ID");
+    localStorage.removeItem("COMMUNICATION_REFRESH_TOKEN");
+    this.router.navigate(['']);
   }
   saveUserData(email: string, password: string) {
     localStorage.setItem("COMMUNICATION_EMAIL", email);

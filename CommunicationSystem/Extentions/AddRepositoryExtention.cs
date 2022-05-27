@@ -9,6 +9,7 @@ namespace CommunicationSystem.Extentions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
             return services;
         }
     }

@@ -15,13 +15,13 @@ namespace CommunicationSystem.Services.Repositories
         private readonly CommunicationContext context;
         private readonly ILogger<AccountRepository> logger;
 
-        public AccountRepository(CommunicationContext context,ILogger<AccountRepository> logger)
+        public AccountRepository(CommunicationContext context, ILogger<AccountRepository> logger)
         {
             this.context = context;
             this.logger = logger;
         }
 
-        public EntityEntry<User> AddUser(RegistrationDto user,UserSaltPass saltPass, string token)
+        public EntityEntry<User> AddUser(RegistrationDto user, UserSaltPass saltPass, string token)
         {
             return context.Add(new User()
             {
@@ -54,6 +54,22 @@ namespace CommunicationSystem.Services.Repositories
             return context.Update(user);
         }
 
+        public IResponse UpdateUserPasswordByEmail(UserSaltPass hash, string email)
+        {
+
+            var user = context.Users.Include(x => x.PassHash)
+                .FirstOrDefault(x => x.Email == email);
+            if (user == null)
+            {
+                logger.LogWarning($"User with {email} wasn't found");
+                return new BaseResponse(ResponseStatus.NotFound) { Message = "Пользователь не найден" };
+            }
+            user.PassHash = hash;
+            logger.LogInformation($"User with {email} recovers password");
+            return new BaseResponse(ResponseStatus.Ok);
+
+        }
+
         public int SaveChanges()
         {
             return context.SaveChanges();
@@ -63,5 +79,6 @@ namespace CommunicationSystem.Services.Repositories
         {
             return context.SaveChangesAsync();
         }
+
     }
 }

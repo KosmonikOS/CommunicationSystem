@@ -11,6 +11,7 @@ namespace CommunicationSystem.Extentions
             services.AddScoped<IConfirmationTokenService, ConfirmationTokenService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IPasswordHashService, PasswordHashService>();
+            services.AddScoped<IJwtService, JwtService>();
             return services;
         }
     }

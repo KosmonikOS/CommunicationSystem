@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
     }
     window.addEventListener("beforeunload", () => {
       //this.logOut();
-      this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "leave");
+      this.authDataService.setTime(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), 1);
     });
     this.videochatDataService.addConnectionListener("CallRequest", (caller: any,members:any) => {
       this.dismissType = true;

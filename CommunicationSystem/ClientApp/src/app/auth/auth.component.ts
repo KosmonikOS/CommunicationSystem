@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthDataService } from "./auth.data.service"
 import { Login } from "./login"
-import { ToastService } from "../toast.service"
+import { ErrorHandler } from "../infrastructure/error.handler"
 import { AccountDataService } from '../account/account.data.service';
 import { VideochatDataService } from '../videochat/videochat.data.service';
 
@@ -10,15 +10,16 @@ import { VideochatDataService } from '../videochat/videochat.data.service';
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
-  providers: [AuthDataService]
+  providers: [AuthDataService, ErrorHandler]
 })
 export class AuthComponent implements OnInit {
   login: Login = new Login(localStorage.getItem("COMMUNICATION_EMAIL") || "", localStorage.getItem("COMMUNICATION_PASSWORD") || "");
   saveToLocalStorage: boolean = false;
   errors: any = {};
 
-  constructor(private dataService: AuthDataService, private router: Router, private toastService: ToastService, private accountDataService: AccountDataService, private videochatDataService: VideochatDataService) { }
-  enter() {
+  constructor(private dataService: AuthDataService, private router: Router,
+    private accountDataService: AccountDataService, private videochatDataService: VideochatDataService, private errorHandler: ErrorHandler) { }
+  Enter() {
     this.dataService.getToken(this.login.email, this.login.password).subscribe(result => {
       if (this.saveToLocalStorage) {
         this.dataService.saveUserData(this.login.email, this.login.password);
@@ -30,16 +31,16 @@ export class AuthComponent implements OnInit {
       this.dataService.logIn(this.login.email);
     },
       error => {
-        if (error.status == 401) {
-          this.toastService.showError("Не верные данные");
-        }
-        this.errors = error.error.errors;
+        this.errors = this.errorHandler.Handle(error);
       }
     );
   }
- 
-  redirectToRegistration() {
+
+  RedirectToRegistration() {
     this.router.navigate(["/registration"]);
+  }
+  RedirectToRecovery() {
+    this.router.navigate(["/recovery"]);
   }
   ngOnInit(): void {
     this.dataService.logOut();

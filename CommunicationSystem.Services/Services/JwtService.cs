@@ -27,13 +27,13 @@ namespace CommunicationSystem.Services.Services
             this.context = context;
             this.logger = logger;
         }
-        public List<Claim> GenerateClaims(User user, string passwordHash)
+        public List<Claim> GenerateClaims(User user)
         {
             return new List<Claim>()
                 {
                     new Claim(ClaimsIdentity.DefaultNameClaimType,user.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Sub,passwordHash),
-                    new Claim("role",user.Role.ToString())
+                    new Claim(JwtRegisteredClaimNames.Sub,user.PassHash.PasswordHash),
+                    new Claim("role",user.Role.RoleId.ToString())
                 };
         }
 
@@ -53,14 +53,14 @@ namespace CommunicationSystem.Services.Services
         public async Task<IContentResponse<string>> GenerateRTAsync(int id)
         {
             var user = context.Users.Find(id);
-            if (user != null)
+            if (user == null)
                 return new ContentResponse<string>(ResponseStatus.NotFound) { Message = "Пользователь не найден" };
             var rt = "";
-            using (var rng = RandomNumberGenerator.Create())
+            using (var rngCsp = new RNGCryptoServiceProvider())
             {
-                var randomNumber = new byte[32];
-                rng.GetBytes(randomNumber);
-                rt = Convert.ToBase64String(randomNumber);
+                var token = new byte[32];
+                rngCsp.GetNonZeroBytes(token);
+                rt = Convert.ToBase64String(token);
             }
             user.RefreshToken = rt;
             await context.SaveChangesAsync();
@@ -75,7 +75,7 @@ namespace CommunicationSystem.Services.Services
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = options.GetSymmetricSecurityKey(),
-                ValidateLifetime = false
+                ValidateLifetime = false,
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;
@@ -89,27 +89,28 @@ namespace CommunicationSystem.Services.Services
             return new ContentResponse<ClaimsPrincipal>(ResponseStatus.Ok) { Content = principal };
         }
 
-        public async Task<IContentResponse<AccessTokenDto>> RefreshAsync(TokenPairDto pair)
+        public async Task<IContentResponse<RefreshTokenDto>> RefreshAsync(RefreshTokenDto pair)
         {
-            var principal = GetClaims(pair.JWT);
+            var principal = GetClaims(pair.AccessToken);
             if (!principal.IsSuccess)
-                return new ContentResponse<AccessTokenDto>(principal.Status) { Message = principal.Message };
-            var userRT = context.Users.Find(principal.Content.Identity.Name).RefreshToken;
-            if (pair.RT != userRT)
+                return new ContentResponse<RefreshTokenDto>(principal.Status) { Message = principal.Message };
+            var userId = Convert.ToInt32(principal.Content.Identity.Name);
+            var userRT = context.Users.Find(userId).RefreshToken;
+            if (pair.RefreshToken != userRT)
             {
                 logger.LogWarning($"User's RCs with {principal.Content.Identity.Name} id don't match");
-                return new ContentResponse<AccessTokenDto>(ResponseStatus.BadRequest) { Message = "Некорректные данные" };
+                return new ContentResponse<RefreshTokenDto>(ResponseStatus.BadRequest) { Message = "Некорректные данные" };
             }
-            var token = GenerateJWT(principal.Content.Claims.ToList());
-            var rt = await GenerateRTAsync(Convert.ToInt32(principal.Content.Identity.Name));
+            var rt = await GenerateRTAsync(userId);
             if (!rt.IsSuccess)
-                return new ContentResponse<AccessTokenDto>(rt.Status) { Message = rt.Message };
-            return new ContentResponse<AccessTokenDto>(ResponseStatus.Ok)
+                return new ContentResponse<RefreshTokenDto>(rt.Status) { Message = rt.Message };
+            var token = GenerateJWT(principal.Content.Claims.ToList());
+            return new ContentResponse<RefreshTokenDto>(ResponseStatus.Ok)
             {
-                Content = new AccessTokenDto()
+                Content = new RefreshTokenDto()
                 {
-                    AssessToken = token,
-                    RefreshToken = rt.Content
+                    AccessToken = token,
+                    RefreshToken = rt.Content,
                 }
             };
         }

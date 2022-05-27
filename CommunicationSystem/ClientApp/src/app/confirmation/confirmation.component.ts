@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationDataService } from "./confirmation.data.service"
-import { ToastService } from "../toast.service"
 import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-confirmation',
@@ -10,8 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ConfirmationComponent implements OnInit {
   message: string = "";
-  constructor(private dataService: ConfirmationDataService, private router: Router,
-    private toastService: ToastService, private activateRoute: ActivatedRoute) { }
+  constructor(private dataService: ConfirmationDataService,
+    private router: Router, private activateRoute: ActivatedRoute) { }
   ngOnInit(): void {
     var token = this.activateRoute.snapshot.params["token"] + "==";
     this.dataService.getConfirmAccount(token).subscribe(

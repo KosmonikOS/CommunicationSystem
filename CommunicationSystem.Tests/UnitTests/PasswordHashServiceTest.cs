@@ -39,7 +39,7 @@ namespace CommunicationSystem.Tests.UnitTests
             var salt = "salt";
             string hash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: password,
-            salt: Encoding.ASCII.GetBytes(salt),
+            salt: Convert.FromBase64String(salt),
             prf: KeyDerivationPrf.HMACSHA512,
             iterationCount: 100000,
             numBytesRequested: 256 / 8));

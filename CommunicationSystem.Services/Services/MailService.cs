@@ -22,12 +22,30 @@ namespace CommunicationSystem.Services.Services
         }
         public async Task SendConfirmationAsync(string email, string token)
         {
+            var subject = "Подтверждение регистрации";
+            var body = $"Для подтверждения регистрации перейдите по" +
+                $" <a href = '{mailOptions.RedirectUrl}/confirmation/{token}'>ссылке</a>";
+            await SendMessage(email, subject, body);
+            logger.LogInformation($"Confirmation letter is successfully sent to {email}");
+        }
+
+        public async Task SendRecoveredPasswordAsync(string email, string password)
+        {
+            var subject = "Временный пароль";
+            var body = $"Ваш временный пароль: {password} <br/> " +
+                $"Не забудьте сменить его";
+            await SendMessage(email, subject, body);
+            logger.LogInformation($"Recovery letter is successfully sent to {email}");
+        }
+
+        private async Task SendMessage(string email,string subject,string body)
+        {
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("CommunicationSystem", smtpOptions.Login));
             emailMessage.To.Add(new MailboxAddress("", email));
-            emailMessage.Subject = "Подтверждение регистрации";
+            emailMessage.Subject = subject;
             var bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = $"<span>Для подтверждения регистрации перейдите по <a href = '{mailOptions.RedirectUrl}/confirmation/{token}'>ссылке</a></span>";
+            bodyBuilder.HtmlBody = body;
             emailMessage.Body = bodyBuilder.ToMessageBody();
             using (var client = new SmtpClient())
             {
@@ -36,7 +54,6 @@ namespace CommunicationSystem.Services.Services
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);
             }
-            logger.LogInformation($"Confirmation letter successfully sent to {email}");
         }
     }
 }

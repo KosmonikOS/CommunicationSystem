@@ -1,10 +1,11 @@
 ﻿using CommunicationSystem.Domain.Dtos;
+using CommunicationSystem.Domain.Entities;
 using CommunicationSystem.Domain.Enums;
 using CommunicationSystem.Services.Infrastructure.Enums;
 using CommunicationSystem.Services.Repositories;
+using CommunicationSystem.Services.Services.Interfaces;
 using CommunicationSystem.Tests.Infrastructure.DataInitializers;
 using CommunicationSystem.Tests.Infrastructure.Helpers;
-using CommunicationSystem.Tests.Infrastructure.Mocks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Linq;
@@ -19,9 +20,9 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            var mock = PasswordHashServiceMock.GetMock();
+            var mock = Mock.Of<IPasswordHashService>();
             var logger = LoggerHelper.GetLogger<AuthRepository>();
-            var sut = new AuthRepository(context, mock.Object, logger);
+            var sut = new AuthRepository(context, mock, logger);
             //Act
             //Assert
             Assert.NotNull(sut);
@@ -32,7 +33,9 @@ namespace CommunicationSystem.Tests.UnitTests
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
             AuthRepositoryDataInitializer.Initialize(context);
-            var mock = PasswordHashServiceMock.GetMock();
+            var mock = new Mock<IPasswordHashService>();
+            mock.Setup(x => x.ComparePasswords(It.IsAny<string>()
+                , It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             var logger = LoggerHelper.GetLogger<AuthRepository>();
             var sut = new AuthRepository(context, mock.Object, logger);
             var expected = new LoginDto()
@@ -45,14 +48,14 @@ namespace CommunicationSystem.Tests.UnitTests
             //Assert
             mock.Verify(x => x.ComparePasswords(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
             Assert.True(actual.IsSuccess);
-            Assert.Equal(expected.Email,actual.Content.Email);
+            Assert.Equal(expected.Email, actual.Content.Email);
         }
         [Fact]
         public void ItShould_Return_NotFound_While_GetConfirmedUser()
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            var mock = PasswordHashServiceMock.GetMock();
+            var mock = new Mock<IPasswordHashService>();
             var logger = LoggerHelper.GetLogger<AuthRepository>();
             var sut = new AuthRepository(context, mock.Object, logger);
             var expected = new LoginDto()
@@ -63,9 +66,9 @@ namespace CommunicationSystem.Tests.UnitTests
             //Act
             var actual = sut.GetConfirmedUser(expected);
             //Assert
-            mock.Verify(x => x.ComparePasswords(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),Times.Never);
+            mock.Verify(x => x.ComparePasswords(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
             Assert.False(actual.IsSuccess);
-            Assert.Equal(ResponseStatus.NotFound,actual.Status);
+            Assert.Equal(ResponseStatus.NotFound, actual.Status);
             Assert.NotNull(actual.Message);
         }
         [Fact]
@@ -74,7 +77,9 @@ namespace CommunicationSystem.Tests.UnitTests
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
             AuthRepositoryDataInitializer.Initialize(context);
-            var mock = PasswordHashServiceMock.GetMock();
+            var mock = new Mock<IPasswordHashService>();
+            mock.Setup(x => x.ComparePasswords(It.IsAny<string>()
+                , It.IsAny<string>(), It.IsAny<string>())).Returns(false);
             var logger = LoggerHelper.GetLogger<AuthRepository>();
             var sut = new AuthRepository(context, mock.Object, logger);
             var expected = new LoginDto()
@@ -96,12 +101,13 @@ namespace CommunicationSystem.Tests.UnitTests
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
             AuthRepositoryDataInitializer.Initialize(context);
-            var mock = PasswordHashServiceMock.GetMock();
+            var mock = Mock.Of<IPasswordHashService>();
             var logger = LoggerHelper.GetLogger<AuthRepository>();
-            var sut = new AuthRepository(context, mock.Object, logger);
+            var sut = new AuthRepository(context, mock, logger);
             var user = context.Users.AsNoTracking().FirstOrDefault();
+            var dto = new UserActivityDto() { Id = user.Id, Activity = UserActivityState.Enter };
             //Act
-            var actual = sut.SetTime(user.Id, UserActivityState.Enter);
+            var actual = sut.SetTime(dto);
             sut.SaveChanges();
             //Assert
             Assert.NotEqual(user.EnterTime, actual.Entity.EnterTime);
@@ -112,12 +118,13 @@ namespace CommunicationSystem.Tests.UnitTests
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
             AuthRepositoryDataInitializer.Initialize(context);
-            var mock = PasswordHashServiceMock.GetMock();
+            var mock = Mock.Of<IPasswordHashService>();
             var logger = LoggerHelper.GetLogger<AuthRepository>();
-            var sut = new AuthRepository(context, mock.Object, logger);
+            var sut = new AuthRepository(context, mock, logger);
             var user = context.Users.AsNoTracking().FirstOrDefault();
+            var dto = new UserActivityDto() { Id = user.Id, Activity = UserActivityState.Leave };
             //Act
-            var actual = sut.SetTime(user.Id, UserActivityState.Leave);
+            var actual = sut.SetTime(dto);
             sut.SaveChanges();
             //Assert
             Assert.NotEqual(user.LeaveTime, actual.Entity.LeaveTime);

@@ -3,9 +3,11 @@ using CommunicationSystem.Domain.Dtos;
 using CommunicationSystem.Domain.Entities;
 using CommunicationSystem.Services.Infrastructure.Enums;
 using CommunicationSystem.Services.Repositories;
+using CommunicationSystem.Services.Services.Interfaces;
 using CommunicationSystem.Tests.Infrastructure.DataInitializers;
 using CommunicationSystem.Tests.Infrastructure.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using System.Linq;
 using Xunit;
 
@@ -110,6 +112,48 @@ namespace CommunicationSystem.Tests.UnitTests
             var actual = sut.GetUserByEmail(email);
             //Assert
             Assert.Null(actual);
+        }
+        [Fact]
+        public void ItShould_Set_Recover_Password()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            AuthRepositoryDataInitializer.Initialize(context);
+            var logger = LoggerHelper.GetLogger<AccountRepository>();
+            var sut = new AccountRepository(context, logger);
+            var user = context.Users
+                .Include(x => x.PassHash).FirstOrDefault();
+            var saltPass = new UserSaltPass()
+            {
+                PasswordHash = "A8@#gRGA3",
+                Salt = "NPNZH435FNU3",
+            };
+            //Act
+            var actual = sut.UpdateUserPasswordByEmail(saltPass,user.Email);
+            sut.SaveChanges();
+            //Assert
+            Assert.True(actual.IsSuccess);
+            Assert.Null(actual.Message);
+            Assert.Equal(saltPass.Salt, user.PassHash.Salt);
+            Assert.Equal(saltPass.PasswordHash, user.PassHash.PasswordHash);
+        }
+        public void ItShould_Return_NotFound_While_Set_Recover_Password()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            var logger = LoggerHelper.GetLogger<AccountRepository>();
+            var sut = new AccountRepository(context, logger);
+            var saltPass = new UserSaltPass()
+            {
+                PasswordHash = "A8@#gRGA3",
+                Salt = "NPNZH435FNU3",
+            };
+            //Act
+            var actual = sut.UpdateUserPasswordByEmail(saltPass, "test@test.test");
+            //Assert
+            Assert.True(!actual.IsSuccess);
+            Assert.Equal(ResponseStatus.NotFound, actual.Status);
+            Assert.NotNull(actual.Message);
         }
     }
 }

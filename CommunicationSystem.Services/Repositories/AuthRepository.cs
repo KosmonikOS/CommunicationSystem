@@ -27,7 +27,8 @@ namespace CommunicationSystem.Services.Repositories
         }
         public IContentResponse<User> GetConfirmedUser(LoginDto dto)
         {
-            var user = context.Users.AsNoTracking().Include(x => x.PassHash)
+            var user = context.Users.AsNoTracking()
+                .Include(x => x.PassHash).Include(x => x.Role)
                 .FirstOrDefault(x => x.Email == dto.Email);
             if (user == null)
             {
@@ -43,12 +44,12 @@ namespace CommunicationSystem.Services.Repositories
             return new ContentResponse<User>(ResponseStatus.Ok) { Content = user };
         }
 
-        public EntityEntry<User> SetTime(int id, UserActivityState act)
+        public EntityEntry<User> SetTime(UserActivityDto dto)
         {
-            var user = context.Users.Find(id);
+            var user = context.Users.Find(dto.Id);
             if (user != null)
             {
-                switch (act)
+                switch (dto.Activity)
                 {
                     case UserActivityState.Enter:
                         user.EnterTime = DateTime.UtcNow;

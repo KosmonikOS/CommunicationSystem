@@ -3,12 +3,13 @@ import { Registration } from './registration';
 import { RegistrationDataService } from "./registration.data.service"
 import { Router } from '@angular/router';
 import { ToastService } from "../toast.service"
+import { ErrorHandler } from "../infrastructure/error.handler"
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
-  providers: [RegistrationDataService]
+  providers: [RegistrationDataService, ErrorHandler]
 })
 export class RegistrationComponent {
   registration: Registration = new Registration();
@@ -16,7 +17,8 @@ export class RegistrationComponent {
   timer: number = 60;
   @ViewChild("confirmationModal") confirmationModal: ElementRef = new ElementRef("");
   constructor(private dataService: RegistrationDataService, private router: Router
-    , private toastService: ToastService, private modalService: NgbModal) { };
+    , private toastService: ToastService, private modalService: NgbModal
+    , private errorHandler: ErrorHandler) { };
   Register() {
     this.dataService.postRegistration(this.registration).subscribe(
       result => {
@@ -25,12 +27,7 @@ export class RegistrationComponent {
         this.router.navigate([""])
       },
       error => {
-        if (error.status != 500) {
-          this.toastService.showError(error.error);
-        } else {
-          this.toastService.showError("Что-то пошло не так");
-        }
-        this.errors = error.error.errors;
+        this.errors = this.errorHandler.Handle(error);
       }
     )
   }
@@ -41,8 +38,7 @@ export class RegistrationComponent {
         this.toastService.showSuccess("Письмо отправленно");
       },
       error => {
-        this.toastService.showError(error.error);
-
+        this.errors = this.errorHandler.Handle(error);
       });
   }
   StartCountDown() {

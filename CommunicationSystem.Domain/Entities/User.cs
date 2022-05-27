@@ -31,7 +31,6 @@ namespace CommunicationSystem.Domain.Entities
         public Role Role { get; set; }
         public int RoleId { get; set; }
         public UserSaltPass PassHash { get; set; }
-        public int UserSaltPassId { get; set; }
         public ICollection<Group> Groups { get; set; }
         public ICollection<Test> Tests { get; set; }
         public ICollection<StudentAnswer> StudentAnswers { get; set; } 
