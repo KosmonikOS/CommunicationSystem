@@ -5,7 +5,7 @@ using CommunicationSystem.Tests.Infrastructure.Helpers;
 
 namespace CommunicationSystem.Tests.Infrastructure.DataInitializers
 {
-    public static class AccountDataInitializer
+    public static class AccountRepositoryDataInitializer
     {
         public static void Initialize(CommunicationContext context)
         {

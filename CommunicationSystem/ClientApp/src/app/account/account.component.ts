@@ -2,44 +2,47 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Account } from './account';
 import { AccountDataService } from './account.data.service';
 import { ToastService } from "../toast.service"
+import { ErrorHandler } from '../infrastructure/error.handler';
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+  styleUrls: ['./account.component.css'],
+  providers: [ErrorHandler]
 })
 export class AccountComponent {
   errors: any = {};
   isOnImage: boolean = false;
   @ViewChild("fileInput") fileInput: ElementRef = new ElementRef("");
 
-  constructor(public dataService: AccountDataService, private toastService: ToastService) { }
-  enterImage() {
+  constructor(public dataService: AccountDataService, private errorHandler: ErrorHandler
+    , private toastService: ToastService) { }
+  EnterImage() {
     this.isOnImage = true;
   }
-  leaveImage() {
+  LeaveImage() {
     this.isOnImage = false;
   }
-  openFileInput() {
+  OpenFileInput() {
     this.fileInput.nativeElement.click();
   }
-  fileSelected(event: any) {
+  FileSelected(event: any) {
     var file = <File>event.target.files[0];
-    this.dataService.putImage(file, this.dataService.currentAccount.id).subscribe((result:any) => {
+    this.dataService.putImage(file, this.dataService.currentAccount.id).subscribe(
+      (result: any) => {
       this.toastService.showSuccess("Файл загружен");
-      console.log(result.path);
-      this.dataService.currentAccount.accountImage = result.path;
-    }, error => {
-      this.toastService.showError("Ошибка загрузки")
+      this.dataService.currentAccount.accountImage = result;
+      }, error => {
+        this.errorHandler.Handle(error);
     });
   }
-  saveAccount() {
-    this.dataService.postAccount().subscribe(result => {
+  SaveAccount() {
+    this.dataService.postAccount().subscribe(
+      result => {
       this.toastService.showSuccess("Профиль сохранен");
       this.errors = {};
-    }, error => {
-      this.toastService.showError("Ошибка сохранения");
-      this.errors = error.error.errors;
+      }, error => {
+        this.errors = this.errorHandler.Handle(error);
     });
   }
 }

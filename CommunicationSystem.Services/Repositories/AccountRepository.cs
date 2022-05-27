@@ -34,7 +34,8 @@ namespace CommunicationSystem.Services.Repositories
 
         public User GetUserByEmail(string email)
         {
-            return context.Users.AsNoTracking().FirstOrDefault(u => u.Email == email);
+            return context.Users.AsNoTracking()
+                .Include(x => x.Role).FirstOrDefault(u => u.Email == email);
         }
         public IResponse UpdateImage(int id, string path)
         {
@@ -51,21 +52,29 @@ namespace CommunicationSystem.Services.Repositories
 
         public EntityEntry<User> UpdateUser(User user)
         {
-            return context.Update(user);
+            var userEntry = context.Update(user);
+            userEntry.Property(x => x.EnterTime).IsModified = false;
+            userEntry.Property(x => x.LeaveTime).IsModified = false;
+            userEntry.Property(x => x.RoleId).IsModified = false;
+            userEntry.Property(x => x.IsConfirmed).IsModified = false;
+            userEntry.Property(x => x.RefreshToken).IsModified = false;
+
+            return userEntry;
         }
 
         public IResponse UpdateUserPasswordByEmail(UserSaltPass hash, string email)
         {
 
-            var user = context.Users.Include(x => x.PassHash)
-                .FirstOrDefault(x => x.Email == email);
-            if (user == null)
+            var userHash = context.UserSaltPass
+                .FirstOrDefault(x => x.User.Email == email);
+            if (userHash == null)
             {
                 logger.LogWarning($"User with {email} wasn't found");
                 return new BaseResponse(ResponseStatus.NotFound) { Message = "Пользователь не найден" };
             }
-            user.PassHash = hash;
-            logger.LogInformation($"User with {email} recovers password");
+            userHash.Salt = hash.Salt;
+            userHash.PasswordHash = hash.PasswordHash;
+            logger.LogInformation($"User with {email} updates password");
             return new BaseResponse(ResponseStatus.Ok);
 
         }

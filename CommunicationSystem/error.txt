@@ -1580,3 +1580,744 @@ DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error
 
 2022-05-27 13:29:15.528 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
 
+2022-05-27 16:05:20.959 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 16:06:22.230 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 16:06:22.484 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 16:06:22.486 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 16:09:24.779 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 16:09:59.618 +04:00 [ERR] The instance of entity type 'User' cannot be tracked because another instance with the same key value for {'Id'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.
+2022-05-27 16:15:49.633 +04:00 [ERR] ^C^C
+2022-05-27 16:16:44.939 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 16:17:23.237 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 16:17:23.641 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 16:17:23.644 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 16:17:35.125 +04:00 [ERR] The instance of entity type 'User' cannot be tracked because another instance with the same key value for {'Id'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.
+2022-05-27 17:03:49.682 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 17:04:38.874 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 17:04:39.621 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 17:04:39.623 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 17:04:41.726 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 17:05:58.790 +04:00 [ERR] Failed executing DbCommand (20ms) [Parameters=[@__dto_Email_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."AccountImage", u."Email", u."EnterTime", u."FirstName", u."Grade", u."GradeLetter", u."IsConfirmed", u."LastName", u."LeaveTime", u."MiddleName", u."NickName", u."Phone", u."RefreshToken", u."RoleId", p."Id", p."PasswordHash", p."Salt", p."UserId", r."RoleId", r."Name"
+FROM "Users" AS u
+LEFT JOIN "PasswordHashes" AS p ON u."Id" = p."UserId"
+INNER JOIN "Role" AS r ON u."RoleId" = r."RoleId"
+WHERE u."Email" = @__dto_Email_0
+LIMIT 1
+2022-05-27 17:05:59.031 +04:00 [ERR] An exception occurred while iterating over the results of a query for context type 'CommunicationSystem.Data.CommunicationContext'.
+Npgsql.PostgresException (0x80004005): 42P01: отношение "PasswordHashes" не существует
+
+POSITION: 319
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__19_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 42P01
+    MessageText: отношение "PasswordHashes" не существует
+    Position: 319
+    File: parse_relation.c
+    Line: 1384
+    Routine: parserOpenTable
+Npgsql.PostgresException (0x80004005): 42P01: отношение "PasswordHashes" не существует
+
+POSITION: 319
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__19_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 42P01
+    MessageText: отношение "PasswordHashes" не существует
+    Position: 319
+    File: parse_relation.c
+    Line: 1384
+    Routine: parserOpenTable
+2022-05-27 17:05:59.218 +04:00 [ERR] 42P01: отношение "PasswordHashes" не существует
+
+POSITION: 319
+2022-05-27 17:08:55.725 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 17:09:28.471 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 17:09:28.840 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 17:09:28.842 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 17:13:15.997 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 17:13:42.004 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 17:13:42.254 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 17:13:42.256 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 17:16:17.609 +04:00 [ERR] Failed executing DbCommand (14ms) [Parameters=[@p2='?' (DbType = Int32), @p0='?', @p1='?', @p17='?' (DbType = Int32), @p3='?', @p4='?', @p5='?' (DbType = DateTime), @p6='?', @p7='?' (DbType = Int32), @p8='?', @p9='?', @p10='?', @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "UserSaltPass" SET "PasswordHash" = @p0, "Salt" = @p1
+WHERE "Id" = @p2;
+UPDATE "Users" SET "AccountImage" = @p3, "Email" = @p4, "EnterTime" = @p5, "FirstName" = @p6, "Grade" = @p7, "GradeLetter" = @p8, "IsConfirmed" = @p9, "LastName" = @p10, "LeaveTime" = @p11, "MiddleName" = @p12, "NickName" = @p13, "Phone" = @p14, "RefreshToken" = @p15, "RoleId" = @p16
+WHERE "Id" = @p17;
+2022-05-27 17:16:17.734 +04:00 [ERR] An exception occurred in the database while saving changes for context type 'CommunicationSystem.Data.CommunicationContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: значение NULL в столбце "IsConfirmed" отношения "Users" нарушает ограничение NOT NULL
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23502
+    MessageText: значение NULL в столбце "IsConfirmed" отношения "Users" нарушает ограничение NOT NULL
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: IsConfirmed
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: значение NULL в столбце "IsConfirmed" отношения "Users" нарушает ограничение NOT NULL
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23502
+    MessageText: значение NULL в столбце "IsConfirmed" отношения "Users" нарушает ограничение NOT NULL
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: IsConfirmed
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2022-05-27 17:16:17.937 +04:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+2022-05-27 17:30:15.103 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 17:30:35.870 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 17:30:36.111 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 17:30:36.113 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 17:30:51.691 +04:00 [ERR] Failed executing DbCommand (25ms) [Parameters=[@p2='?' (DbType = Int32), @p0='?', @p1='?', @p13='?' (DbType = Int32), @p3='?', @p4='?', @p5='?', @p6='?' (DbType = Int32), @p7='?', @p8='?', @p9='?', @p10='?', @p11='?', @p12='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "UserSaltPass" SET "PasswordHash" = @p0, "Salt" = @p1
+WHERE "Id" = @p2;
+UPDATE "Users" SET "AccountImage" = @p3, "Email" = @p4, "FirstName" = @p5, "Grade" = @p6, "GradeLetter" = @p7, "LastName" = @p8, "MiddleName" = @p9, "NickName" = @p10, "Phone" = @p11, "RoleId" = @p12
+WHERE "Id" = @p13;
+2022-05-27 17:30:51.773 +04:00 [ERR] An exception occurred in the database while saving changes for context type 'CommunicationSystem.Data.CommunicationContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23503: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23503
+    MessageText: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ConstraintName: FK_Users_Role_RoleId
+    File: ri_triggers.c
+    Line: 2539
+    Routine: ri_ReportViolation
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23503: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23503
+    MessageText: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ConstraintName: FK_Users_Role_RoleId
+    File: ri_triggers.c
+    Line: 2539
+    Routine: ri_ReportViolation
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2022-05-27 17:30:51.969 +04:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+2022-05-27 17:36:40.309 +04:00 [ERR] Failed executing DbCommand (8ms) [Parameters=[@p2='?' (DbType = Int32), @p0='?', @p1='?', @p13='?' (DbType = Int32), @p3='?', @p4='?', @p5='?', @p6='?' (DbType = Int32), @p7='?', @p8='?', @p9='?', @p10='?', @p11='?', @p12='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "UserSaltPass" SET "PasswordHash" = @p0, "Salt" = @p1
+WHERE "Id" = @p2;
+UPDATE "Users" SET "AccountImage" = @p3, "Email" = @p4, "FirstName" = @p5, "Grade" = @p6, "GradeLetter" = @p7, "LastName" = @p8, "MiddleName" = @p9, "NickName" = @p10, "Phone" = @p11, "RoleId" = @p12
+WHERE "Id" = @p13;
+2022-05-27 17:36:40.339 +04:00 [ERR] An exception occurred in the database while saving changes for context type 'CommunicationSystem.Data.CommunicationContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23503: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23503
+    MessageText: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ConstraintName: FK_Users_Role_RoleId
+    File: ri_triggers.c
+    Line: 2539
+    Routine: ri_ReportViolation
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23503: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 23503
+    MessageText: INSERT или UPDATE в таблице "Users" нарушает ограничение внешнего ключа "FK_Users_Role_RoleId"
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ConstraintName: FK_Users_Role_RoleId
+    File: ri_triggers.c
+    Line: 2539
+    Routine: ri_ReportViolation
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2022-05-27 17:36:40.847 +04:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+2022-05-27 17:40:41.823 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 18:15:30.721 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-27 18:15:52.010 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 18:15:52.242 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-27 18:15:52.245 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-27 18:18:42.027 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 18:18:57.081 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 18:21:24.382 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 18:22:36.445 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 18:22:36.449 +04:00 [ERR] Error: src/app/account/account.component.html:33:27 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.454 +04:00 [ERR] 33           <div [ngClass]="{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}"><label class="labels">╨Э╨╕╨║╨╜╨╡╨╣╨╝</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
+
+2022-05-27 18:22:36.464 +04:00 [ERR]                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.468 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.476 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.480 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.484 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.489 +04:00 [ERR] Error: src/app/account/account.component.html:33:214 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.494 +04:00 [ERR] 33           <div [ngClass]="{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}"><label class="labels">╨Э╨╕╨║╨╜╨╡╨╣╨╝</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
+
+2022-05-27 18:22:36.498 +04:00 [ERR]                                                                                                                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.500 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.504 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.507 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.509 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.511 +04:00 [ERR] Error: src/app/account/account.component.html:33:275 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.513 +04:00 [ERR] 33           <div [ngClass]="{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}"><label class="labels">╨Э╨╕╨║╨╜╨╡╨╣╨╝</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
+
+2022-05-27 18:22:36.519 +04:00 [ERR]                                                                                                                                                                                                                                                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.525 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.528 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.531 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.535 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.539 +04:00 [ERR] Error: src/app/account/account.component.html:33:275 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.543 +04:00 [ERR] 33           <div [ngClass]="{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}"><label class="labels">╨Э╨╕╨║╨╜╨╡╨╣╨╝</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
+
+2022-05-27 18:22:36.548 +04:00 [ERR]                                                                                                                                                                                                                                                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.554 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.557 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.560 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.562 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.569 +04:00 [ERR] Error: src/app/account/account.component.html:34:118 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.574 +04:00 [ERR] 34           <div class="col-md-12"><label class="labels">╨Я╨╛╤З╤В╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'╨Я╨╛╤З╤В╨░'}" [(ngModel)]="dataService.currentAccount.email"></div>
+
+2022-05-27 18:22:36.581 +04:00 [ERR]                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.585 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.587 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.590 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.592 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.597 +04:00 [ERR] Error: src/app/account/account.component.html:34:174 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.603 +04:00 [ERR] 34           <div class="col-md-12"><label class="labels">╨Я╨╛╤З╤В╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'╨Я╨╛╤З╤В╨░'}" [(ngModel)]="dataService.currentAccount.email"></div>
+
+2022-05-27 18:22:36.607 +04:00 [ERR]                                                                                                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.614 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.617 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.620 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.622 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.627 +04:00 [ERR] Error: src/app/account/account.component.html:34:174 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.633 +04:00 [ERR] 34           <div class="col-md-12"><label class="labels">╨Я╨╛╤З╤В╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'╨Я╨╛╤З╤В╨░'}" [(ngModel)]="dataService.currentAccount.email"></div>
+
+2022-05-27 18:22:36.636 +04:00 [ERR]                                                                                                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.645 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.649 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.651 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.654 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.660 +04:00 [ERR] Error: src/app/account/account.component.html:35:127 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.663 +04:00 [ERR] 35           <div class="col-md-12"><label class="labels">╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░'}" [(ngModel)]="dataService.currentAccount.phone"></div>
+
+2022-05-27 18:22:36.666 +04:00 [ERR]                                                                                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.668 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.676 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.679 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.681 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.684 +04:00 [ERR] Error: src/app/account/account.component.html:35:192 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.694 +04:00 [ERR] 35           <div class="col-md-12"><label class="labels">╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░'}" [(ngModel)]="dataService.currentAccount.phone"></div>
+
+2022-05-27 18:22:36.698 +04:00 [ERR]                                                                                                                                                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.703 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.711 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.713 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.720 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.726 +04:00 [ERR] Error: src/app/account/account.component.html:35:192 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.730 +04:00 [ERR] 35           <div class="col-md-12"><label class="labels">╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░'}" [(ngModel)]="dataService.currentAccount.phone"></div>
+
+2022-05-27 18:22:36.739 +04:00 [ERR]                                                                                                                                                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.742 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.750 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.755 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.759 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.766 +04:00 [ERR] Error: src/app/account/account.component.html:36:131 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.773 +04:00 [ERR] 36           <div class="col-md-12"><label class="labels">╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М'}" [(ngModel)]="dataService.currentAccount.password"></div>
+
+2022-05-27 18:22:36.779 +04:00 [ERR]                                                                                                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.784 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.787 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.791 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.796 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.801 +04:00 [ERR] Error: src/app/account/account.component.html:36:199 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.804 +04:00 [ERR] 36           <div class="col-md-12"><label class="labels">╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М'}" [(ngModel)]="dataService.currentAccount.password"></div>
+
+2022-05-27 18:22:36.808 +04:00 [ERR]                                                                                                                                                                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.813 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.817 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.822 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.829 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.831 +04:00 [ERR] Error: src/app/account/account.component.html:36:199 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.834 +04:00 [ERR] 36           <div class="col-md-12"><label class="labels">╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М'}" [(ngModel)]="dataService.currentAccount.password"></div>
+
+2022-05-27 18:22:36.837 +04:00 [ERR]                                                                                                                                                                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.843 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.846 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.849 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.852 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:22:36.856 +04:00 [ERR] Error: src/app/account/account.component.html:37:134 - error NG5002: Parser Error: Unexpected token }, expected identifier, keyword, or string at column 99 in [{'col-md-12':dataService.currentAccount.role == 1,'col-md-6':dataService.currentAccount.role != 1,}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:22:36.862 +04:00 [ERR] 37           <div style="height:80px" class="col-md-12 mt-md-5 mt-3 text-center"><button class="btn btn-primary" type="button" (click)="SaveAccount()">╨б╨╛╤Е╤А╨░╨╜╨╕╤В╤М</button></div>
+
+2022-05-27 18:22:36.865 +04:00 [ERR]                                                                                                                                         ~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.867 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:22:36.871 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:22:36.874 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:22:36.876 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.555 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-27 18:23:58.558 +04:00 [ERR] Error: src/app/account/account.component.html:33:27 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.564 +04:00 [ERR] 33           <div [ngClass]="{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}"><label class="labels">╨Э╨╕╨║╨╜╨╡╨╣╨╝</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
+
+2022-05-27 18:23:58.570 +04:00 [ERR]                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.574 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.583 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.586 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.588 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.591 +04:00 [ERR] Error: src/app/account/account.component.html:33:213 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.599 +04:00 [ERR] 33           <div [ngClass]="{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}"><label class="labels">╨Э╨╕╨║╨╜╨╡╨╣╨╝</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
+
+2022-05-27 18:23:58.604 +04:00 [ERR]                                                                                                                                                                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.609 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.613 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.616 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.618 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.620 +04:00 [ERR] Error: src/app/account/account.component.html:33:274 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.628 +04:00 [ERR] 33           <div [ngClass]="{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}"><label class="labels">╨Э╨╕╨║╨╜╨╡╨╣╨╝</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
+
+2022-05-27 18:23:58.636 +04:00 [ERR]                                                                                                                                                                                                                                                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.646 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.650 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.653 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.660 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.665 +04:00 [ERR] Error: src/app/account/account.component.html:33:274 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.674 +04:00 [ERR] 33           <div [ngClass]="{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}"><label class="labels">╨Э╨╕╨║╨╜╨╡╨╣╨╝</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'╨Э╨╕╨║╨╜╨╡╨╣╨╝'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
+
+2022-05-27 18:23:58.681 +04:00 [ERR]                                                                                                                                                                                                                                                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.686 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.689 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.692 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.694 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.696 +04:00 [ERR] Error: src/app/account/account.component.html:34:118 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.700 +04:00 [ERR] 34           <div class="col-md-12"><label class="labels">╨Я╨╛╤З╤В╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'╨Я╨╛╤З╤В╨░'}" [(ngModel)]="dataService.currentAccount.email"></div>
+
+2022-05-27 18:23:58.706 +04:00 [ERR]                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.709 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.711 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.714 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.718 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.722 +04:00 [ERR] Error: src/app/account/account.component.html:34:174 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.726 +04:00 [ERR] 34           <div class="col-md-12"><label class="labels">╨Я╨╛╤З╤В╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'╨Я╨╛╤З╤В╨░'}" [(ngModel)]="dataService.currentAccount.email"></div>
+
+2022-05-27 18:23:58.729 +04:00 [ERR]                                                                                                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.734 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.738 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.740 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.742 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.744 +04:00 [ERR] Error: src/app/account/account.component.html:34:174 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.750 +04:00 [ERR] 34           <div class="col-md-12"><label class="labels">╨Я╨╛╤З╤В╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'╨Я╨╛╤З╤В╨░'}" [(ngModel)]="dataService.currentAccount.email"></div>
+
+2022-05-27 18:23:58.754 +04:00 [ERR]                                                                                                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.757 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.759 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.767 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.770 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.772 +04:00 [ERR] Error: src/app/account/account.component.html:35:127 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.775 +04:00 [ERR] 35           <div class="col-md-12"><label class="labels">╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░'}" [(ngModel)]="dataService.currentAccount.phone"></div>
+
+2022-05-27 18:23:58.783 +04:00 [ERR]                                                                                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.785 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.788 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.790 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.792 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.797 +04:00 [ERR] Error: src/app/account/account.component.html:35:192 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.801 +04:00 [ERR] 35           <div class="col-md-12"><label class="labels">╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░'}" [(ngModel)]="dataService.currentAccount.phone"></div>
+
+2022-05-27 18:23:58.804 +04:00 [ERR]                                                                                                                                                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.807 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.814 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.817 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.821 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.825 +04:00 [ERR] Error: src/app/account/account.component.html:35:192 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.831 +04:00 [ERR] 35           <div class="col-md-12"><label class="labels">╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'╨Э╨╛╨╝╨╡╤А ╤В╨╡╨╗╨╡╤Д╨╛╨╜╨░'}" [(ngModel)]="dataService.currentAccount.phone"></div>
+
+2022-05-27 18:23:58.837 +04:00 [ERR]                                                                                                                                                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.843 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.848 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.852 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.859 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.864 +04:00 [ERR] Error: src/app/account/account.component.html:36:131 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.868 +04:00 [ERR] 36           <div class="col-md-12"><label class="labels">╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М'}" [(ngModel)]="dataService.currentAccount.password"></div>
+
+2022-05-27 18:23:58.876 +04:00 [ERR]                                                                                                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.879 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.881 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.884 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.888 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.894 +04:00 [ERR] Error: src/app/account/account.component.html:36:199 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.897 +04:00 [ERR] 36           <div class="col-md-12"><label class="labels">╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М'}" [(ngModel)]="dataService.currentAccount.password"></div>
+
+2022-05-27 18:23:58.904 +04:00 [ERR]                                                                                                                                                                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.908 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.911 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.913 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.916 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.920 +04:00 [ERR] Error: src/app/account/account.component.html:36:199 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.926 +04:00 [ERR] 36           <div class="col-md-12"><label class="labels">╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'╨б╨╝╨╡╨╜╨╕╤В╤М ╨┐╨░╤А╨╛╨╗╤М'}" [(ngModel)]="dataService.currentAccount.password"></div>
+
+2022-05-27 18:23:58.929 +04:00 [ERR]                                                                                                                                                                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.934 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.938 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.940 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.943 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:23:58.945 +04:00 [ERR] Error: src/app/account/account.component.html:37:134 - error NG5002: Parser Error: Missing expected } at column 13 in [{dataService.currentAccount.role == 1:'col-md-12',dataService.currentAccount.role != 1:'col-md-6'}] in D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\account\account.component.html@32:26
+
+2022-05-27 18:23:58.953 +04:00 [ERR] 37           <div style="height:80px" class="col-md-12 mt-md-5 mt-3 text-center"><button class="btn btn-primary" type="button" (click)="SaveAccount()">╨б╨╛╤Е╤А╨░╨╜╨╕╤В╤М</button></div>
+
+2022-05-27 18:23:58.956 +04:00 [ERR]                                                                                                                                         ~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.959 +04:00 [ERR]   src/app/account/account.component.ts:9:16
+
+2022-05-27 18:23:58.961 +04:00 [ERR]     9   templateUrl: './account.component.html',
+
+2022-05-27 18:23:58.966 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-27 18:23:58.969 +04:00 [ERR]     Error occurs in the template of component AccountComponent.
+
+2022-05-27 18:25:15.041 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+

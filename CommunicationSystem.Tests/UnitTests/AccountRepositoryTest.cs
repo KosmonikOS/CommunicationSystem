@@ -56,7 +56,7 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            AccountDataInitializer.Initialize(context);
+            AccountRepositoryDataInitializer.Initialize(context);
             var logger = LoggerHelper.GetLogger<AccountRepository>();
             var sut = new AccountRepository(context, logger);
             var id = 1;
@@ -91,7 +91,7 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            AccountDataInitializer.Initialize(context);
+            AccountRepositoryDataInitializer.Initialize(context);
             var logger = LoggerHelper.GetLogger<AccountRepository>();
             var sut = new AccountRepository(context, logger);
             var email = "test@test.test";
@@ -130,7 +130,8 @@ namespace CommunicationSystem.Tests.UnitTests
             };
             //Act
             var actual = sut.UpdateUserPasswordByEmail(saltPass,user.Email);
-            sut.SaveChanges();
+            var res = sut.SaveChanges();
+            var ac = context.PasswordHashes.FirstOrDefault();
             //Assert
             Assert.True(actual.IsSuccess);
             Assert.Null(actual.Message);
