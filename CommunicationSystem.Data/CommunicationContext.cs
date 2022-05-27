@@ -13,6 +13,7 @@ namespace CommunicationSystem.Data
         public DbSet<StudentAnswer> StudentAnswers { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<UserSaltPass> UserSaltPass { get; set; }
+        public DbSet<Subject> Subject { get; set; }
         public CommunicationContext(DbContextOptions<CommunicationContext> options): base(options)
         {
         }

@@ -1,14 +1,17 @@
 <div class="container-fluide pt-3 px-md-4 px-1 h-100" style="position:relative;">
   <div class="btn-group toolbar w-100">
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="createSubject()">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="GetSubjects()">
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="CreateSubject()">
       <i class="bi bi-plus-lg"></i>
       <span class="d-none d-md-block" style="padding-left:5px">Добавить</span>
     </button>
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="editSubject()">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="EditSubject()">
       <i class="bi bi-pencil"></i>
       <span class="d-none d-md-block" style="padding-left:5px">Изменить</span>
     </button>
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="deleteSubject()">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="DeleteSubject()">
       <i class="bi bi-trash"></i>
       <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
     </button>
@@ -27,7 +30,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let subject of subjects | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="setSubject(subject,i)" (dblclick)="dblSetSubject(subject,i)">
+        <tr *ngFor="let subject of subjects | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="SetSubject(subject,i)" (dblclick)="DblSetSubject(subject,i)">
           <th scope="row">{{subject.name}}</th>
         </tr>
       </tbody>
@@ -43,11 +46,11 @@
   <div class="modal-body row">
     <div class="d-flex justify-content-center align-items-center h-100 w-100">
       <div>
-        <div><label class="labels">Название</label><input type="text" class="form-control" [error]="{Error:errors?.FirstName,PlaceHolder:'Название'}" [(ngModel)]="currentSubject.name"></div>
+        <div><label class="labels">Название</label><input type="text" class="form-control" [error]="{Error:errors?.Name,PlaceHolder:'Название'}" [(ngModel)]="currentSubject.name"></div>
       </div>
     </div>
   </div>
   <div class="modal-footer justify-content-center">
-    <div class="text-center"><button class="btn btn-primary" type="button" (click)="saveSubject()">Сохранить</button></div>
+    <div class="text-center"><button class="btn btn-primary" type="button" (click)="SaveSubject()">Сохранить</button></div>
   </div>
 </ng-template>

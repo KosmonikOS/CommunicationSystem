@@ -36,7 +36,7 @@ namespace CommunicationSystem.Services.Commands.Handlers
             catch(Exception e)
             {
                 logger.LogError(e.Message);
-                return new ContentResponse<string>(ResponseStatus.InternalServerError) { Message = e.Message };
+                return new ContentResponse<string>(ResponseStatus.InternalServerError);
             }
         }
     }

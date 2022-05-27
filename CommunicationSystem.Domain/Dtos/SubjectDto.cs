@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CommunicationSystem.Domain.Entities
+namespace CommunicationSystem.Domain.Dtos
 {
-    public class Subject
+    public class SubjectDto
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Это поле обязательное")]
         public string Name { get; set; }
-        public ICollection<Test> Tests { get; set; }
     }
 }

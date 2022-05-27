@@ -32,7 +32,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
             catch(Exception e)
             {
                 logger.LogError(e.Message);
-                return new ContentResponse<UserAccountDto>(ResponseStatus.InternalServerError) { Message = e.Message };
+                return new ContentResponse<UserAccountDto>(ResponseStatus.InternalServerError);
             }
         }
     }

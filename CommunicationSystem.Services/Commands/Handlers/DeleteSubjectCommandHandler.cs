@@ -6,23 +6,22 @@ using Microsoft.Extensions.Logging;
 
 namespace CommunicationSystem.Services.Commands.Handlers
 {
-    public class SetUserActivityTimeCommandHandler : IRequestHandler<SetUserActivityTimeCommand, IResponse>
+    public class DeleteSubjectCommandHandler : IRequestHandler<DeleteSubjectCommand, IResponse>
     {
-        private readonly IAuthRepository authRepository;
-        private readonly ILogger<SetUserActivityTimeCommandHandler> logger;
+        private readonly ISubjectRepository subjectRepository;
+        private readonly ILogger<AddSubjectCommandHandler> logger;
 
-        public SetUserActivityTimeCommandHandler(IAuthRepository authRepository
-            ,ILogger<SetUserActivityTimeCommandHandler> logger)
+        public DeleteSubjectCommandHandler(ISubjectRepository subjectRepository,ILogger<AddSubjectCommandHandler> logger)
         {
-            this.authRepository = authRepository;
+            this.subjectRepository = subjectRepository;
             this.logger = logger;
         }
-        public async Task<IResponse> Handle(SetUserActivityTimeCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                authRepository.SetTime(request.Dto);
-                await authRepository.SaveChangesAsync();
+                subjectRepository.DeleteSubject(request.Id);
+                await subjectRepository.SaveChangesAsync();
                 return new BaseResponse(ResponseStatus.Ok);
             }
             catch(Exception e)

@@ -10,7 +10,10 @@ export class SubjectDataService {
     return this.http.get(this.url);
   }
   postSubject(subject: any) {
-    return this.http.post(this.url, subject)
+    return this.http.post(this.url, subject);
+  }
+  putSubject(subject: any) {
+    return this.http.put(this.url, subject);
   }
   deleteSubject(id: number) {
     return this.http.delete(this.url + id);

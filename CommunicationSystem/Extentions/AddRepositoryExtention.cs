@@ -10,6 +10,7 @@ namespace CommunicationSystem.Extentions
         {
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<ISubjectRepository, SubjectRepository>();
             return services;
         }
     }

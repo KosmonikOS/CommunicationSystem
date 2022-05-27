@@ -47,7 +47,7 @@ namespace CommunicationSystem.Services.Commands.Handlers
             catch (Exception e)
             {
                 logger.LogError(e.Message);
-                return new ContentResponse<TokenPairDto>(ResponseStatus.InternalServerError) { Message = e.Message };
+                return new ContentResponse<TokenPairDto>(ResponseStatus.InternalServerError);
             }
         }
     }

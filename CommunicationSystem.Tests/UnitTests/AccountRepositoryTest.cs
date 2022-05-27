@@ -131,7 +131,7 @@ namespace CommunicationSystem.Tests.UnitTests
             //Act
             var actual = sut.UpdateUserPasswordByEmail(saltPass,user.Email);
             var res = sut.SaveChanges();
-            var ac = context.PasswordHashes.FirstOrDefault();
+            var ac = context.UserSaltPass.FirstOrDefault();
             //Assert
             Assert.True(actual.IsSuccess);
             Assert.Null(actual.Message);
