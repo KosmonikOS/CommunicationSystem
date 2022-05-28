@@ -1,0 +1,13 @@
+2022-05-28 22:04:32.603 +04:00 [INF] User profile is available. Using 'C:\Users\НИКИТА\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-05-28 22:04:33.008 +04:00 [INF] Starting @angular/cli on port 64033...
+2022-05-28 22:04:33.361 +04:00 [INF] Now listening on: https://0.0.0.0:5001
+2022-05-28 22:04:33.361 +04:00 [INF] Now listening on: http://0.0.0.0:5000
+2022-05-28 22:04:33.361 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-05-28 22:04:33.361 +04:00 [INF] Hosting environment: Development
+2022-05-28 22:04:33.361 +04:00 [INF] Content root path: D:\Projects\CommunicationSystemV2\CommunicationSystem
+2022-05-28 22:04:36.286 +04:00 [INF] > client-app@0.0.0 start
+
+2022-05-28 22:04:36.287 +04:00 [INF] > echo Starting && ng serve "--port" "64033"
+
+2022-05-28 22:04:36.306 +04:00 [INF] Starting 
+

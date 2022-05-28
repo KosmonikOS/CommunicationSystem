@@ -232,3 +232,6 @@ _Pvt_Extensions
 
 # Assets
 /ClientApp/src/assets
+
+#Logs
+/Logs

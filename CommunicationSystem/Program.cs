@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+using Serilog.Filters;
 using System;
 
 namespace CommunicationSystem
@@ -47,8 +48,20 @@ namespace CommunicationSystem
                             .ReadFrom.Services(services)
                             .Enrich.FromLogContext()
                             .WriteTo.Console()
-                            .WriteTo.File(context.Configuration["LoggingPath:File"],LogEventLevel.Information)
-                            .WriteTo.File(context.Configuration["LoggingPath:FileErr"], LogEventLevel.Error);
+                            .WriteTo.Conditional("@l in ['Information']", config =>
+                            {
+                                config.Logger(x => x.Filter.ByExcluding(Matching.FromSource("Microsoft"))
+                                .WriteTo.File(context.Configuration["LoggingPath:Info"]));
+                            })
+                            .WriteTo.Conditional("@l in ['Warning']", config =>
+                            {
+                                config.File(context.Configuration["LoggingPath:Warn"]);
+                            })
+                            .WriteTo.Conditional("@l in ['Error']", config =>
+                            {
+                                config.File(context.Configuration["LoggingPath:Err"]);
+                            });
+
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
