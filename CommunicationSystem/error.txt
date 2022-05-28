@@ -2776,3 +2776,351 @@ DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error
 2022-05-27 20:34:20.015 +04:00 [ERR] The property 'Subject.Tests' is being accessed using the 'Property' method, but is defined in the model as a navigation. Use either the 'Reference' or 'Collection' method to access navigations.
 2022-05-27 20:35:59.040 +04:00 [ERR] тИЪ Browser application bundle generation complete.
 
+2022-05-28 14:35:59.003 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-28 14:36:36.084 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 14:36:36.100 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-28 14:36:36.104 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-28 14:36:36.206 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:19:84 - error TS2551: Property 'getSubjects' does not exist on type 'SubjectsComponent'. Did you mean 'GetSubjects'?
+
+2022-05-28 14:36:36.209 +04:00 [ERR] 19       <input placeholder="╨Я╨╛╨╕╤Б╨║" type="search" class="form-control" (keyup.enter)="getSubjects(search)" [(ngModel)]="search" />
+
+2022-05-28 14:36:36.212 +04:00 [ERR]                                                                                       ~~~~~~~~~~~
+
+2022-05-28 14:36:36.214 +04:00 [ERR]   src/app/subjects/subjects.component.ts:9:16
+
+2022-05-28 14:36:36.221 +04:00 [ERR]     9   templateUrl: './subjects.component.html',
+
+2022-05-28 14:36:36.226 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-28 14:36:36.229 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-28 14:36:36.234 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:20:56 - error TS2551: Property 'getSubjects' does not exist on type 'SubjectsComponent'. Did you mean 'GetSubjects'?
+
+2022-05-28 14:36:36.237 +04:00 [ERR] 20       <button class="btn btn-outline-primary" (click)="getSubjects(search)">
+
+2022-05-28 14:36:36.239 +04:00 [ERR]                                                           ~~~~~~~~~~~
+
+2022-05-28 14:36:36.242 +04:00 [ERR]   src/app/subjects/subjects.component.ts:9:16
+
+2022-05-28 14:36:36.245 +04:00 [ERR]     9   templateUrl: './subjects.component.html',
+
+2022-05-28 14:36:36.249 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-28 14:36:36.254 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-28 14:36:58.915 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 14:38:07.831 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 14:40:04.041 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-28 14:40:27.688 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 14:40:27.999 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-28 14:40:28.000 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-28 14:41:06.797 +04:00 [ERR] ^C^C
+2022-05-28 14:41:36.642 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-28 14:42:06.307 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 14:42:06.631 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-28 14:42:06.638 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-28 14:44:42.015 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-28 14:45:25.625 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 14:45:26.061 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-28 14:45:26.164 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-28 14:57:57.649 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-28 14:58:29.350 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 14:58:29.573 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-28 14:58:29.576 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-28 15:12:42.643 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-28 15:13:02.184 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:13:02.424 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-28 15:13:02.430 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-28 15:14:39.333 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.IO.IOException: The client reset the request stream.
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpRequestStream.ReadAsyncInternal(Memory`1 destination, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.WebUtilities.FileBufferingReadStream.ReadAsync(Memory`1 buffer, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.WebUtilities.StreamHelperExtensions.DrainAsync(Stream stream, ArrayPool`1 bytePool, Nullable`1 limit, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonInputFormatter.ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinder.BindModelAsync(ModelBindingContext bindingContext)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.ParameterBinder.BindModelAsync(ActionContext actionContext, IModelBinder modelBinder, IValueProvider valueProvider, ParameterDescriptor parameter, ModelMetadata metadata, Object value, Object container)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerBinderDelegateProvider.<>c__DisplayClass0_0.<<CreateBinderDelegate>g__Bind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-28 15:14:39.393 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:15:49.283 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:16:04.323 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:16:15.717 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:17:07.669 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:17:09.227 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:17:57.698 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:17:58.086 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.IO.IOException: The client reset the request stream.
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpRequestStream.ReadAsyncInternal(Memory`1 destination, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.WebUtilities.FileBufferingReadStream.ReadAsync(Memory`1 buffer, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.WebUtilities.StreamHelperExtensions.DrainAsync(Stream stream, ArrayPool`1 bytePool, Nullable`1 limit, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonInputFormatter.ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinder.BindModelAsync(ModelBindingContext bindingContext)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.ParameterBinder.BindModelAsync(ActionContext actionContext, IModelBinder modelBinder, IValueProvider valueProvider, ParameterDescriptor parameter, ModelMetadata metadata, Object value, Object container)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerBinderDelegateProvider.<>c__DisplayClass0_0.<<CreateBinderDelegate>g__Bind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-28 15:18:56.201 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:18:59.367 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:19:40.367 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:20:05.518 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:21:33.212 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:21:33.215 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:41:89 - error TS2339: Property 'NextPage' does not exist on type 'SubjectsComponent'.
+
+2022-05-28 15:21:33.225 +04:00 [ERR] 41       <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="NextPage()" *ngIf="page > 0">
+
+2022-05-28 15:21:33.237 +04:00 [ERR]                                                                                            ~~~~~~~~
+
+2022-05-28 15:21:33.243 +04:00 [ERR]   src/app/subjects/subjects.component.ts:9:16
+
+2022-05-28 15:21:33.250 +04:00 [ERR]     9   templateUrl: './subjects.component.html',
+
+2022-05-28 15:21:33.258 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-28 15:21:33.261 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-28 15:21:33.265 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:45:89 - error TS2339: Property 'PreviousPage' does not exist on type 'SubjectsComponent'.
+
+2022-05-28 15:21:33.280 +04:00 [ERR] 45       <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="PreviousPage()">
+
+2022-05-28 15:21:33.311 +04:00 [ERR]                                                                                            ~~~~~~~~~~~~
+
+2022-05-28 15:21:33.318 +04:00 [ERR]   src/app/subjects/subjects.component.ts:9:16
+
+2022-05-28 15:21:33.327 +04:00 [ERR]     9   templateUrl: './subjects.component.html',
+
+2022-05-28 15:21:33.337 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-28 15:21:33.341 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-28 15:22:45.906 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:22:59.726 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:22:59.728 +04:00 [ERR] Error: src/app/subjects/subjects.component.ts:87:42 - error TS2554: Expected 1 arguments, but got 2.
+
+2022-05-28 15:22:59.733 +04:00 [ERR] 87     this.dataService.getSubjects(search, this.page).subscribe(
+
+2022-05-28 15:22:59.739 +04:00 [ERR]                                             ~~~~~~~~~
+
+2022-05-28 15:23:18.893 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:23:51.461 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:25:49.102 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-28 15:26:13.296 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:26:13.607 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-28 15:26:13.609 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-28 15:26:21.388 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.IO.IOException: The client reset the request stream.
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpRequestStream.ReadAsyncInternal(Memory`1 destination, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.WebUtilities.FileBufferingReadStream.ReadAsync(Memory`1 buffer, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.WebUtilities.StreamHelperExtensions.DrainAsync(Stream stream, ArrayPool`1 bytePool, Nullable`1 limit, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonInputFormatter.ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinder.BindModelAsync(ModelBindingContext bindingContext)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.ParameterBinder.BindModelAsync(ActionContext actionContext, IModelBinder modelBinder, IValueProvider valueProvider, ParameterDescriptor parameter, ModelMetadata metadata, Object value, Object container)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerBinderDelegateProvider.<>c__DisplayClass0_0.<<CreateBinderDelegate>g__Bind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-28 15:26:33.866 +04:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Net.WebSockets.WebSocketException (0x80004005): The WebSocket is in an invalid state ('Aborted') for this operation. Valid states are: 'Open, CloseReceived'
+   at System.Net.WebSockets.WebSocketValidate.ThrowIfInvalidState(WebSocketState currentState, Boolean isDisposed, WebSocketState[] validStates)
+   at System.Net.WebSockets.ManagedWebSocket.CloseOutputAsyncCore(WebSocketCloseStatus closeStatus, String statusDescription, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.SpaServices.Extensions.Proxy.SpaProxy.PumpWebSocket(WebSocket source, WebSocket destination, Int32 bufferSize, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.SpaServices.Extensions.Proxy.SpaProxy.AcceptProxyWebSocketRequest(HttpContext context, Uri destinationUri, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.SpaServices.Extensions.Proxy.SpaProxy.PerformProxyRequest(HttpContext context, HttpClient httpClient, Task`1 baseUriTask, CancellationToken applicationStoppingToken, Boolean proxy404s)
+   at Microsoft.AspNetCore.Builder.SpaProxyingExtensions.<>c__DisplayClass2_0.<<UseProxyToSpaDevelopmentServer>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-05-28 15:26:33.968 +04:00 [ERR] Connection id "0HMI0JJ8ER2MO", Request id "0HMI0JJ8ER2MO:00000002": An unhandled exception was thrown by the application.
+System.Net.WebSockets.WebSocketException (0x80004005): The WebSocket is in an invalid state ('Aborted') for this operation. Valid states are: 'Open, CloseReceived'
+   at System.Net.WebSockets.WebSocketValidate.ThrowIfInvalidState(WebSocketState currentState, Boolean isDisposed, WebSocketState[] validStates)
+   at System.Net.WebSockets.ManagedWebSocket.CloseOutputAsyncCore(WebSocketCloseStatus closeStatus, String statusDescription, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.SpaServices.Extensions.Proxy.SpaProxy.PumpWebSocket(WebSocket source, WebSocket destination, Int32 bufferSize, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.SpaServices.Extensions.Proxy.SpaProxy.AcceptProxyWebSocketRequest(HttpContext context, Uri destinationUri, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.SpaServices.Extensions.Proxy.SpaProxy.PerformProxyRequest(HttpContext context, HttpClient httpClient, Task`1 baseUriTask, CancellationToken applicationStoppingToken, Boolean proxy404s)
+   at Microsoft.AspNetCore.Builder.SpaProxyingExtensions.<>c__DisplayClass2_0.<<UseProxyToSpaDevelopmentServer>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)
+2022-05-28 15:26:45.801 +04:00 [ERR] Failed executing DbCommand (20ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT s."Id", s."Name"
+FROM "Subject" AS s
+LIMIT @__p_1 OFFSET @__p_0
+2022-05-28 15:26:45.915 +04:00 [ERR] An exception occurred while iterating over the results of a query for context type 'CommunicationSystem.Data.CommunicationContext'.
+Npgsql.PostgresException (0x80004005): 2201X: OFFSET не может быть отрицательным
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 2201X
+    MessageText: OFFSET не может быть отрицательным
+    File: nodelimit.c
+    Line: 374
+    Routine: recompute_limits
+Npgsql.PostgresException (0x80004005): 2201X: OFFSET не может быть отрицательным
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 2201X
+    MessageText: OFFSET не может быть отрицательным
+    File: nodelimit.c
+    Line: 374
+    Routine: recompute_limits
+2022-05-28 15:26:46.157 +04:00 [ERR] 2201X: OFFSET не может быть отрицательным
+2022-05-28 15:27:13.764 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:27:13.769 +04:00 [ERR] Error: src/app/subjects/subjects.component.html:45:89 - error TS2339: Property 'Next' does not exist on type 'SubjectsComponent'.
+
+2022-05-28 15:27:13.772 +04:00 [ERR] 45       <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="Next()">
+
+2022-05-28 15:27:13.775 +04:00 [ERR]                                                                                            ~~~~
+
+2022-05-28 15:27:13.777 +04:00 [ERR]   src/app/subjects/subjects.component.ts:9:16
+
+2022-05-28 15:27:13.781 +04:00 [ERR]     9   templateUrl: './subjects.component.html',
+
+2022-05-28 15:27:13.785 +04:00 [ERR]                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2022-05-28 15:27:13.802 +04:00 [ERR]     Error occurs in the template of component SubjectsComponent.
+
+2022-05-28 15:27:22.237 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:37:56.896 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-28 15:38:21.024 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:38:21.325 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-28 15:38:21.326 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-28 15:48:36.268 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:50:00.062 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:50:15.407 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:50:39.444 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 15:50:52.221 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 17:13:34.137 +04:00 [ERR] - Generating browser application bundles (phase: setup)...
+
+2022-05-28 17:14:17.570 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 17:14:17.924 +04:00 [ERR] Warning: D:\Projects\CommunicationSystemV2\CommunicationSystem\ClientApp\src\app\videochat\videochat.component.ts depends on 'simple-peer'. CommonJS or AMD dependencies can cause optimization bailouts.
+
+2022-05-28 17:14:17.930 +04:00 [ERR] For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+2022-05-28 17:17:30.508 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 17:18:28.614 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 17:20:18.842 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 17:20:53.882 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 17:21:45.496 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 17:23:08.918 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+
+2022-05-28 17:23:49.085 +04:00 [ERR] тИЪ Browser application bundle generation complete.
+

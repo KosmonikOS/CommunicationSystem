@@ -1,6 +1,6 @@
 <div class="container-fluide pt-3 px-md-4 px-1 h-100" style="position:relative;">
   <div class="btn-group toolbar w-100">
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="GetSubjects()">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="Reload()">
       <i class="bi bi-arrow-clockwise"></i>
     </button>
     <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="CreateSubject()">
@@ -16,13 +16,13 @@
       <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
     </button>
     <div class="input-group w-100">
-      <input placeholder="Поиск" type="search" class="form-control" [(ngModel)]="search" />
-      <button class="btn btn-outline-primary">
+      <input placeholder="Поиск" type="search" class="form-control" (keyup.enter)="Search()" [(ngModel)]="search" />
+      <button class="btn btn-outline-primary" (click)="Search()">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </div>
-  <div class="scrollable w-100" style="height:90%">
+  <div class="scrollable w-100" style="height:90%" #subjectsList>
     <table class="table">
       <thead style="border-bottom: solid 2px #DEE2E6">
         <tr>
@@ -30,11 +30,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let subject of subjects | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="SetSubject(subject,i)" (dblclick)="DblSetSubject(subject,i)">
+        <tr *ngFor="let subject of subjects;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="SetSubject(subject,i)" (dblclick)="DblSetSubject(subject,i)">
           <th scope="row">{{subject.name}}</th>
         </tr>
       </tbody>
     </table>
+    <div class="text-center">
+      <div class="btn-group toolbar">
+        <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="PreviousPage()" *ngIf="page > 0">
+          <i class="bi bi-chevron-left"></i>
+          <span class="d-none d-md-block" style="padding-left:5px">Назад</span>
+        </button>
+        <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="NextPage()" *ngIf="subjects.length > 0">
+          <span class="d-none d-md-block" style="padding-left:5px">Вперед</span>
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 

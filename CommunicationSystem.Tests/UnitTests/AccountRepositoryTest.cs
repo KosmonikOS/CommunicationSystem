@@ -96,7 +96,8 @@ namespace CommunicationSystem.Tests.UnitTests
             var sut = new AccountRepository(context, logger);
             var email = "test@test.test";
             //Act
-            var actual = sut.GetUserByEmail(email);
+            var actual = sut.GetUsersByEmail(email)
+                .FirstOrDefault();
             //Assert
             Assert.Equal(email, actual.Email);
         }
@@ -109,7 +110,8 @@ namespace CommunicationSystem.Tests.UnitTests
             var sut = new AccountRepository(context, logger);
             var email = "test@test.test";
             //Act
-            var actual = sut.GetUserByEmail(email);
+            var actual = sut.GetUsersByEmail(email)
+                .FirstOrDefault();
             //Assert
             Assert.Null(actual);
         }

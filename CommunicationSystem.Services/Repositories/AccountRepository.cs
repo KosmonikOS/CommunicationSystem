@@ -32,10 +32,10 @@ namespace CommunicationSystem.Services.Repositories
             });
         }
 
-        public User GetUserByEmail(string email)
+        public IQueryable<User> GetUsersByEmail(string email)
         {
             return context.Users.AsNoTracking()
-                .Include(x => x.Role).FirstOrDefault(u => u.Email == email);
+                .Where(x => x.Email == email);
         }
         public IResponse UpdateImage(int id, string path)
         {

@@ -4,6 +4,7 @@ using CommunicationSystem.Services.Infrastructure.Enums;
 using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Repositories.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CommunicationSystem.Services.Queries.Handlers
@@ -25,8 +26,8 @@ namespace CommunicationSystem.Services.Queries.Handlers
         {
             try
             {
-                var user = accountRepository.GetUserByEmail(request.Email);
-                var dto = mapper.Map<UserAccountDto>(user);
+                var dto = mapper.ProjectTo<UserAccountDto>(accountRepository.GetUsersByEmail(request.Email)
+                    .Include(x => x.Role)).FirstOrDefault();
                 return new ContentResponse<UserAccountDto>(ResponseStatus.Ok) { Content = dto};
             }
             catch(Exception e)

@@ -7,7 +7,7 @@ namespace CommunicationSystem.Services.Repositories.Interfaces
 {
     public interface IAccountRepository :IBaseRepository
     {
-        public User GetUserByEmail(string email);
+        public IQueryable<User> GetUsersByEmail(string email);
         public EntityEntry<User> AddUser(RegistrationDto user,UserSaltPass hash, string token);
         public IResponse UpdateUserPasswordByEmail(UserSaltPass hash, string email);
         public IResponse UpdateImage(int id, string path);

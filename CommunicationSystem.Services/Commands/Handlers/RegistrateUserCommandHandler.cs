@@ -31,7 +31,8 @@ namespace CommunicationSystem.Services.Commands.Handlers
             {
                 if (request.Dto != null)
                 {
-                    var user = accountRepository.GetUserByEmail(request.Dto.Email);
+                    var user = accountRepository.GetUsersByEmail(request.Dto.Email)
+                        .FirstOrDefault();
                     if (user != null)
                     {
                         logger.LogWarning("User with same email has already added");

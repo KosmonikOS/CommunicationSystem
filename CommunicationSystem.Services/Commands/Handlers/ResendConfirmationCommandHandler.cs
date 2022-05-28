@@ -24,7 +24,8 @@ namespace CommunicationSystem.Services.Commands.Handlers
         {
             try
             {
-                var user = accountRepository.GetUserByEmail(request.Email);
+                var user = accountRepository.GetUsersByEmail(request.Email)
+                    .FirstOrDefault();
                 if (user == null)
                 {
                     logger.LogWarning($"User with {request.Email} wasn't found");

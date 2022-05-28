@@ -19,10 +19,10 @@ namespace CommunicationSystem.Controllers
         {
             this.mediator = mediator;
         }
-        [HttpGet]
-        public async Task<ActionResult<List<Subject>>> GetSubjects()
+        [HttpGet("{page}/{search?}")]
+        public async Task<ActionResult<List<Subject>>> GetSubjects(int page, string search)
         {
-            var query = new GetSubjectsQuery();
+            var query = new GetSubjectsQuery() { Search = search, Page = page };
             var result = await mediator.Send(query);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }

@@ -25,13 +25,22 @@ namespace CommunicationSystem.Services.Repositories
                 .Include(x => x.Tests).ThenInclude(x => x.StudentAnswers)
                 .Include(x => x.Tests).ThenInclude(x => x.Questions)
                 .ThenInclude(x => x.Options)
-                .FirstOrDefault(x => x.Id ==id);
+                .FirstOrDefault(x => x.Id == id);
             return context.Remove(subject);
         }
 
-        public async Task<List<Subject>> GetSubjectsAsync()
+        public IQueryable<Subject> GetSubjectsPage(int page,string search)
         {
-            return await context.Subject.AsNoTracking().ToListAsync();
+            var query = context.Subject.AsNoTracking();
+            if(!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(x => EF.Functions.ILike(x.Name,$"%{search}%"));
+            }
+            if(page > 0)
+            {
+                query = query.Skip(page * 50);
+            }
+            return query.Take(50);
         }
 
         public EntityEntry<Subject> UpdateSubject(Subject subject)

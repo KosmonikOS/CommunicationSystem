@@ -3,6 +3,7 @@ using CommunicationSystem.Services.Infrastructure.Enums;
 using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Repositories.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CommunicationSystem.Services.Queries.Handlers
@@ -22,7 +23,8 @@ namespace CommunicationSystem.Services.Queries.Handlers
         {
             try
             {
-                var subjects = await subjectRepository.GetSubjectsAsync();
+                var subjects = await subjectRepository
+                    .GetSubjectsPage(request.Page,request.Search).ToListAsync();
                 return new ContentResponse<List<Subject>>(ResponseStatus.Ok) { Content = subjects };
             }
             catch(Exception e)

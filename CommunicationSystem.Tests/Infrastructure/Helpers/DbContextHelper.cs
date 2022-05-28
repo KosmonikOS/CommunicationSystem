@@ -1,4 +1,5 @@
 ﻿using CommunicationSystem.Data;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
@@ -14,6 +15,7 @@ namespace CommunicationSystem.Tests.Infrastructure.Helpers
                     .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
             var options = builder.Options;
             var context = new CommunicationContext(options);
+            context.Database.EnsureCreated();
             return context;
         }
 

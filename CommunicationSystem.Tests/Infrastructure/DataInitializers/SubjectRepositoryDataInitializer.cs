@@ -13,7 +13,8 @@ namespace CommunicationSystem.Tests.Infrastructure.DataInitializers
             var subjects = new List<Subject>()
             {
                 FixtureHelper.Fixture.Build<Subject>()
-                    .With(x => x.Id,1).Create(),
+                    .With(x => x.Id,1)
+                    .With(x => x.Name,"Test").Create(),
                 FixtureHelper.Fixture.Build<Subject>()
                     .With(x => x.Tests,new List<Test>()).Create(),
                 FixtureHelper.Fixture.Build<Subject>()

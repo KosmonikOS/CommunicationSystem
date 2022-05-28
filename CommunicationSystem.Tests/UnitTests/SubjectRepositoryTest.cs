@@ -22,17 +22,28 @@ namespace CommunicationSystem.Tests.UnitTests
             Assert.NotNull(sut);
         }
         [Fact]
-        public async Task ItShould_Get_Subjects()
+        public void ItShould_Get_Subjects()
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
             SubjectRepositoryDataInitializer.Initialize(context);
             var sut = new SubjectRepository(context);
             //Act
-            var actual = await sut.GetSubjectsAsync();
+            var actual = sut.GetSubjectsPage(0,"").ToList();
             //Assert
             Assert.Equal(3, actual.Count);
             Assert.Equal(1, actual[0].Id);
+        }
+        public void ItShould_Not_Get_Subjects_By_Page()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            SubjectRepositoryDataInitializer.Initialize(context);
+            var sut = new SubjectRepository(context);
+            //Act
+            var actual = sut.GetSubjectsPage(100, null).ToList();
+            //Assert
+            Assert.Empty(actual);
         }
         [Fact]
         public async Task ItShould_Add_Subject()

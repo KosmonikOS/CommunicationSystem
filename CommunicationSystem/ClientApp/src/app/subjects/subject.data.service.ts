@@ -6,8 +6,8 @@ export class SubjectDataService {
   url = "/api/subjects/"
   constructor(private http: HttpClient) { };
 
-  getSubjects() {
-    return this.http.get(this.url);
+  getSubjects(search: string, page: number) {
+    return this.http.get(this.url + page + "/" + search);
   }
   postSubject(subject: any) {
     return this.http.post(this.url, subject);
