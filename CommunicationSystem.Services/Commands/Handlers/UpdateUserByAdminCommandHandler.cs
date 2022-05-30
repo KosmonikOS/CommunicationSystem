@@ -9,22 +9,22 @@ using Microsoft.Extensions.Logging;
 
 namespace CommunicationSystem.Services.Commands.Handlers
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, IResponse>
+    public class UpdateUserByAdminCommandHandler : IRequestHandler<UpdateUserByAdminCommand, IResponse>
     {
-        private readonly IPasswordHashService hashService;
+        private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
-        private readonly IAccountRepository accountRepository;
-        private readonly ILogger<UpdateUserCommandHandler> logger;
+        private readonly IPasswordHashService hashService;
+        private readonly ILogger<AddUserByAdminCommandHandler> logger;
 
-        public UpdateUserCommandHandler(IPasswordHashService hashService, IMapper mapper
-            , IAccountRepository accountRepository, ILogger<UpdateUserCommandHandler> logger)
+        public UpdateUserByAdminCommandHandler(IUserRepository userRepository, IMapper mapper
+            , IPasswordHashService hashService, ILogger<AddUserByAdminCommandHandler> logger)
         {
-            this.hashService = hashService;
+            this.userRepository = userRepository;
             this.mapper = mapper;
-            this.accountRepository = accountRepository;
+            this.hashService = hashService;
             this.logger = logger;
         }
-        public async Task<IResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse> Handle(UpdateUserByAdminCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -32,10 +32,10 @@ namespace CommunicationSystem.Services.Commands.Handlers
                 if (!string.IsNullOrEmpty(request.Dto.Password))
                 {
                     var hash = hashService.GenerateSaltPass(request.Dto.Password);
-                    accountRepository.UpdateUserPasswordByEmail(hash, user.Email);
+                    userRepository.UpdateUserPasswordByEmail(hash, user.Email);
                 }
-                accountRepository.UpdateUser(user);
-                await accountRepository.SaveChangesAsync();
+                userRepository.UpdateUser(user, false);
+                await userRepository.SaveChangesAsync();
                 return new BaseResponse(ResponseStatus.Ok);
             }
             catch (Exception e)

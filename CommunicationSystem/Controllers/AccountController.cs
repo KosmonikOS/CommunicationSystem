@@ -25,21 +25,10 @@ namespace CommunicationSystem.Controllers
             var result = await mediator.Send(query);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
-        [HttpPut("{id}")]
-        public async Task<ActionResult<string>> UpdateUserImage(IFormFile imageToSave, int id)
+        [HttpPut]
+        public async Task<IActionResult> UpdateAccount(UserAccountUpdateDto dto)
         {
-            var command = new UpdateUserImageCommand()
-            {
-                Id = id,
-                ImageToSave = imageToSave
-            };
-            var result = await mediator.Send(command);
-            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
-        }
-        [HttpPost]
-        public async Task<IActionResult> UpdateUser(UserAccountUpdateDto dto)
-        {
-            var command = new UpdateUserCommand() { Dto = dto };
+            var command = new UpdateAccountCommand() { Dto = dto };
             var result = await mediator.Send(command);
             return StatusCode(result.StatusCode, result.Message);
         }

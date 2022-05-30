@@ -16,8 +16,8 @@
       <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
     </button>
     <div class="input-group w-100">
-      <input placeholder="Поиск" type="search" class="form-control" (keyup.enter)="Search()" [(ngModel)]="search" />
-      <button class="btn btn-outline-primary" (click)="Search()">
+      <input placeholder="Поиск по названию" type="search" class="form-control" (keyup.enter)="Search()" [(ngModel)]="search" />
+      <button class="btn btn-outline-primary d-none d-md-block" (click)="Search()">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -41,7 +41,7 @@
           <i class="bi bi-chevron-left"></i>
           <span class="d-none d-md-block" style="padding-left:5px">Назад</span>
         </button>
-        <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="NextPage()" *ngIf="subjects.length > 0">
+        <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="NextPage()" *ngIf="subjects.length == 50">
           <span class="d-none d-md-block" style="padding-left:5px">Вперед</span>
           <i class="bi bi-chevron-right"></i>
         </button>

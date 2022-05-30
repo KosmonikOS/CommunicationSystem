@@ -12,6 +12,7 @@ using CommunicationSystem.Extentions;
 using Microsoft.Extensions.Options;
 using MediatR;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CommunicationSystem
 {

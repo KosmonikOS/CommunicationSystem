@@ -10,17 +10,17 @@ namespace CommunicationSystem.Services.Commands.Handlers
     public class RegistrateUserCommandHandler : IRequestHandler<RegistrateUserCommand, IResponse>
     {
         private readonly IConfirmationTokenService tokenService;
-        private readonly IAccountRepository accountRepository;
+        private readonly IUserRepository userRepository;
         private readonly IMailService mailService;
         private readonly IPasswordHashService hashService;
         private readonly ILogger<RegistrateUserCommandHandler> logger;
 
         public RegistrateUserCommandHandler(IConfirmationTokenService tokenService
-            , IAccountRepository accountRepository, IMailService mailService
+            , IUserRepository userRepository, IMailService mailService
             ,IPasswordHashService hashService, ILogger<RegistrateUserCommandHandler> logger)
         {
             this.tokenService = tokenService;
-            this.accountRepository = accountRepository;
+            this.userRepository = userRepository;
             this.mailService = mailService;
             this.hashService = hashService;
             this.logger = logger;
@@ -31,7 +31,7 @@ namespace CommunicationSystem.Services.Commands.Handlers
             {
                 if (request.Dto != null)
                 {
-                    var user = accountRepository.GetUsersByEmail(request.Dto.Email)
+                    var user = userRepository.GetUsers(x => x.Email == request.Dto.Email)
                         .FirstOrDefault();
                     if (user != null)
                     {
@@ -40,8 +40,8 @@ namespace CommunicationSystem.Services.Commands.Handlers
                     }
                     var token = tokenService.GenerateToken(request.Dto.Email);
                     var saltPass = hashService.GenerateSaltPass(request.Dto.Password);
-                    accountRepository.AddUser(request.Dto,saltPass ,token);
-                    await accountRepository.SaveChangesAsync();
+                    userRepository.AddUser(request.Dto,saltPass ,token);
+                    await userRepository.SaveChangesAsync();
                     await mailService.SendConfirmationAsync(request.Dto.Email, token);
                     logger.LogInformation($"User with {request.Dto.Email} successfully created");
                     return new BaseResponse(ResponseStatus.Ok);

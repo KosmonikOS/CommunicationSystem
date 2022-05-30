@@ -45,7 +45,7 @@ export class SubjectsComponent implements OnInit {
     this.ScrollUp();
   }
   ScrollUp() {
-    this.subjectsList.nativeElement.scroll(0,0);
+    this.subjectsList.nativeElement.scroll(0, 0);
   }
   SaveSubject() {
     if (this.currentSubject.id == 0) {
@@ -66,41 +66,43 @@ export class SubjectsComponent implements OnInit {
       });
     }
   }
-  public DblSetSubject(subject: Subject, i: number) {
+  DblSetSubject(subject: Subject, i: number) {
     this.currentSubject = subject;
     this.currentRow = i;
     this.EditSubject();
   }
-  public SetSubject(subject: Subject, i: number) {
+  SetSubject(subject: Subject, i: number) {
     this.currentSubject = this.currentSubject == subject ? new Subject() : subject;
     this.currentRow = this.currentRow == i ? -1 : i;
   }
-  public OpensubjectModal() {
+  OpensubjectModal() {
     this.modalService.open(this.subjectModal, { size: "sm", centered: true }).result.then(() => { }, () => {
       this.currentSubject == new Subject();
       this.currentRow = -1;
       this.errors = {};
     });
   }
-  public CreateSubject() {
+  CreateSubject() {
     this.currentSubject = new Subject();
     this.OpensubjectModal();
   }
-  public EditSubject() {
+  EditSubject() {
     if (this.currentSubject.id) {
       this.OpensubjectModal();
     }
   }
-  public DeleteSubject() {
-    this.dataService.deleteSubject(this.currentSubject.id).subscribe(result => {
-      this.currentSubject == new Subject();
-      this.currentRow = -1;
-      this.GetSubjects(this.page, this.search);
-    }, error => {
-      this.errorHandler.Handle(error);
-    })
+  DeleteSubject() {
+    if (this.currentSubject.id) {
+      this.dataService.deleteSubject(this.currentSubject.id).subscribe(result => {
+        this.currentSubject == new Subject();
+        this.currentRow = -1;
+        this.GetSubjects(this.page, this.search);
+      }, error => {
+        this.errorHandler.Handle(error);
+      })
+    }
   }
-  GetSubjects(page: number,search: string = "") {
+  GetSubjects(page: number, search: string = "") {
     this.dataService.getSubjects(search, page).subscribe(
       (data: any) => {
         this.subjects = data;

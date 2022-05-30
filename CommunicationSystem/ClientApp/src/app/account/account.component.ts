@@ -3,6 +3,7 @@ import { Account } from './account';
 import { AccountDataService } from './account.data.service';
 import { ToastService } from "../toast.service"
 import { ErrorHandler } from '../infrastructure/error.handler';
+import { UtilitesService } from '../utilites.service';
 
 @Component({
   selector: 'app-account',
@@ -15,7 +16,8 @@ export class AccountComponent {
   isOnImage: boolean = false;
   @ViewChild("fileInput") fileInput: ElementRef = new ElementRef("");
 
-  constructor(public dataService: AccountDataService, private errorHandler: ErrorHandler
+  constructor(public dataService: AccountDataService, private utilitesService: UtilitesService,
+    private errorHandler: ErrorHandler
     , private toastService: ToastService) { }
   EnterImage() {
     this.isOnImage = true;
@@ -28,21 +30,21 @@ export class AccountComponent {
   }
   FileSelected(event: any) {
     var file = <File>event.target.files[0];
-    this.dataService.putImage(file, this.dataService.currentAccount.id).subscribe(
+    this.utilitesService.postImage(file).subscribe(
       (result: any) => {
-      this.toastService.showSuccess("Файл загружен");
-      this.dataService.currentAccount.accountImage = result;
+        this.toastService.showSuccess("Файл загружен");
+        this.dataService.currentAccount.accountImage = result;
       }, error => {
         this.errorHandler.Handle(error);
-    });
+      });
   }
   SaveAccount() {
-    this.dataService.postAccount().subscribe(
+    this.dataService.putAccount().subscribe(
       result => {
-      this.toastService.showSuccess("Профиль сохранен");
-      this.errors = {};
+        this.toastService.showSuccess("Профиль сохранен");
+        this.errors = {};
       }, error => {
         this.errors = this.errorHandler.Handle(error);
-    });
+      });
   }
 }

@@ -11,14 +11,14 @@ namespace CommunicationSystem.Services.Queries.Handlers
 {
     public class GetUserAccountQueryHandler : IRequestHandler<GetUserAccountQuery, IContentResponse<UserAccountDto>>
     {
-        private readonly IAccountRepository accountRepository;
+        private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
         private readonly ILogger<GetUserAccountQueryHandler> logger;
 
-        public GetUserAccountQueryHandler(IAccountRepository accountRepository,IMapper mapper
+        public GetUserAccountQueryHandler(IUserRepository userRepository,IMapper mapper
             ,ILogger<GetUserAccountQueryHandler> logger)
         {
-            this.accountRepository = accountRepository;
+            this.userRepository = userRepository;
             this.mapper = mapper;
             this.logger = logger;
         }
@@ -26,8 +26,8 @@ namespace CommunicationSystem.Services.Queries.Handlers
         {
             try
             {
-                var dto = mapper.ProjectTo<UserAccountDto>(accountRepository.GetUsersByEmail(request.Email)
-                    .Include(x => x.Role)).FirstOrDefault();
+                var dto = mapper.ProjectTo<UserAccountDto>(userRepository
+                    .GetUsers(x => x.Email == request.Email)).FirstOrDefault();
                 return new ContentResponse<UserAccountDto>(ResponseStatus.Ok) { Content = dto};
             }
             catch(Exception e)

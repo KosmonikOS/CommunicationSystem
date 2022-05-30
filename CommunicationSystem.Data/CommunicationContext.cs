@@ -14,6 +14,7 @@ namespace CommunicationSystem.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<UserSaltPass> UserSaltPass { get; set; }
         public DbSet<Subject> Subject { get; set; }
+        public DbSet<Role> Role { get; set; }
         public CommunicationContext(DbContextOptions<CommunicationContext> options): base(options)
         {
         }
@@ -23,6 +24,18 @@ namespace CommunicationSystem.Data
                 .HasDefaultValue("/assets/user.png");
             modelBuilder.Entity<User>().Property("RoleId")
                 .HasDefaultValue(1);
+            modelBuilder.Entity<User>().HasIndex(x => x.Email)
+                .HasMethod("gin")
+                .HasOperators("gin_trgm_ops");
+            modelBuilder.Entity<User>().HasIndex(x => x.NickName)
+                .HasMethod("gin")
+                .HasOperators("gin_trgm_ops");
+            modelBuilder.Entity<Role>().HasIndex(x => x.Name)
+                .HasMethod("gin")
+                .HasOperators("gin_trgm_ops");
+            modelBuilder.Entity<Subject>().HasIndex(x => x.Name)
+                .HasMethod("gin")
+                .HasOperators("gin_trgm_ops");
             modelBuilder.Entity<Group>().Property("GroupImage")
                 .HasDefaultValue("/assets/group.png");
             modelBuilder.Entity<Message>().HasOne(x => x.From)
@@ -30,8 +43,9 @@ namespace CommunicationSystem.Data
             modelBuilder.Entity<Message>().HasOne(x => x.To)
                 .WithMany().HasForeignKey("ToId");
             modelBuilder.Entity<Test>().HasOne(x => x.Creator)
-                .WithMany().HasForeignKey("CreatorId");
+                .WithMany(x => x.CreatedTests).HasForeignKey("CreatorId");
             base.OnModelCreating(modelBuilder);
+            modelBuilder.HasPostgresExtension("pg_trgm");
         }
     }
 }

@@ -80,7 +80,7 @@ export class CreatetestsComponent implements OnInit {
   }
   fileSelected(event: any) {
     var file = <File>event.target.files[0];
-    this.utilitesService.putImage(file).subscribe((response: any) => {
+    this.utilitesService.postImage(file).subscribe((response: any) => {
       this.currentQuestion.image = response.path;
     })
   }

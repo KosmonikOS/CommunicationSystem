@@ -4,8 +4,8 @@ using MediatR;
 
 namespace CommunicationSystem.Services.Commands
 {
-    public class UpdateUserCommand :IRequest<IResponse>
+    public class AddUserByAdminCommand :IRequest<IResponse>
     {
-        public UserAccountUpdateDto Dto { get; set; }
+        public UserAccountAdminAddDto Dto { get; set; }
     }
 }

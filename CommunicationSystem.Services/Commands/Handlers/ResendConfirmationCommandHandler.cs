@@ -9,14 +9,14 @@ namespace CommunicationSystem.Services.Commands.Handlers
 {
     public class ResendConfirmationCommandHandler : IRequestHandler<ResendConfirmationCommand, IResponse>
     {
-        private readonly IAccountRepository accountRepository;
+        private readonly IUserRepository userRepository;
         private readonly IMailService mailService;
         private readonly ILogger<ResendConfirmationCommandHandler> logger;
 
-        public ResendConfirmationCommandHandler(IAccountRepository accountRepository
+        public ResendConfirmationCommandHandler(IUserRepository userRepository
             ,IMailService mailService,ILogger<ResendConfirmationCommandHandler> logger)
         {
-            this.accountRepository = accountRepository;
+            this.userRepository = userRepository;
             this.mailService = mailService;
             this.logger = logger;
         }
@@ -24,7 +24,7 @@ namespace CommunicationSystem.Services.Commands.Handlers
         {
             try
             {
-                var user = accountRepository.GetUsersByEmail(request.Email)
+                var user = userRepository.GetUsers(x => x.Email == request.Email)
                     .FirstOrDefault();
                 if (user == null)
                 {

@@ -1,0 +1,209 @@
+﻿using AutoFixture;
+using CommunicationSystem.Domain.Dtos;
+using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Domain.Enums;
+using CommunicationSystem.Services.Infrastructure.Enums;
+using CommunicationSystem.Services.Repositories;
+using CommunicationSystem.Tests.Infrastructure.DataInitializers;
+using CommunicationSystem.Tests.Infrastructure.Helpers;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace CommunicationSystem.Tests.UnitTests
+{
+    public class UserRepositoryTest
+    {
+        [Fact]
+        public void ItShould_Create_Instance()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context,logger);
+            //Act
+            //Assert
+            Assert.NotNull(sut);
+        }
+        [Fact]
+        public void ItShould_Add_User()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            var expected = new RegistrationDto()
+            {
+                Email = "test@test.test",
+                NickName = "Test",
+                Password = "Test"
+            };
+            var token = "TOKEN";
+            var saltPass = FixtureHelper.Fixture.Create<UserSaltPass>();
+            //Act
+            sut.AddUser(expected,saltPass,token);
+            sut.SaveChanges();
+            var actual = context.Users.Include(x => x.PassHash).FirstOrDefault();
+            //Assert
+            Assert.NotNull(actual);
+            Assert.Equal(expected.NickName, actual.NickName);
+            Assert.Equal(expected.Email, actual.Email);
+            Assert.Equal(saltPass.PasswordHash, actual.PassHash.PasswordHash);
+        }
+        [Fact]
+        public void ItShould_Add_User_By_Admin()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            var expected = new User()
+            {
+                Email = "test@test.test",
+                NickName = "Test",
+                FirstName = "Test",
+                LastName = "Test",
+                MiddleName = "Test",
+                Grade = 1,
+                GradeLetter = "T",
+                RoleId = 1,
+            };
+            //Act
+            sut.AddUser(expected);
+            sut.SaveChanges();
+            var actual = context.Users.FirstOrDefault();
+            //Assert
+            Assert.NotNull(actual);
+            Assert.Equal(expected.NickName, actual.NickName);
+            Assert.Equal(expected.Email, actual.Email);
+            Assert.Equal(expected.Grade, actual.Grade);
+            Assert.Equal(expected.RoleId, actual.RoleId);
+        }
+        [Fact]
+        public void ItShould_Find_User_By_Email()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            UserRepositoryDataInitializer.Initialize(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            var email = "test@test.test";
+            //Act
+            var actual = sut.GetUsers(x => x.Email == email)
+                .FirstOrDefault();
+            //Assert
+            Assert.Equal(email, actual.Email);
+        }
+        [Fact]
+        public void ItShould_Not_Find_User_By_Email()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            var email = "test@test.test";
+            //Act
+            var actual = sut.GetUsers(x => x.Email == email)
+                .FirstOrDefault();
+            //Assert
+            Assert.Null(actual);
+        }
+        [Fact]
+        public void ItShould_Get_Users_By_Page()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            UserRepositoryDataInitializer.Initialize(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            //Act
+            var actual = sut.GetUsersPage(0,"",UserSearchOption.Email)
+                .ToList();
+            //Arrange
+            Assert.Equal(2,actual.Count);
+        }
+        [Fact]
+        public void ItShould_Not_Get_Users_By_Page()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            UserRepositoryDataInitializer.Initialize(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            //Act
+            var actual = sut.GetUsersPage(1, "", UserSearchOption.Email)
+                .ToList();
+            //Arrange
+            Assert.Empty(actual);
+        }
+        [Fact]
+        public void ItShould_Set_Recover_Password()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            UserRepositoryDataInitializer.Initialize(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            var user = context.Users
+                .Include(x => x.PassHash).FirstOrDefault();
+            var saltPass = new UserSaltPass()
+            {
+                PasswordHash = "A8@#gRGA3",
+                Salt = "NPNZH435FNU3",
+            };
+            //Act
+            var actual = sut.UpdateUserPasswordByEmail(saltPass,user.Email);
+            var res = sut.SaveChanges();
+            var ac = context.UserSaltPass.FirstOrDefault();
+            //Assert
+            Assert.True(actual.IsSuccess);
+            Assert.Null(actual.Message);
+            Assert.Equal(saltPass.Salt, user.PassHash.Salt);
+            Assert.Equal(saltPass.PasswordHash, user.PassHash.PasswordHash);
+        }
+        public void ItShould_Return_NotFound_While_Set_Recover_Password()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            var saltPass = new UserSaltPass()
+            {
+                PasswordHash = "A8@#gRGA3",
+                Salt = "NPNZH435FNU3",
+            };
+            //Act
+            var actual = sut.UpdateUserPasswordByEmail(saltPass, "test@test.test");
+            //Assert
+            Assert.True(!actual.IsSuccess);
+            Assert.Equal(ResponseStatus.NotFound, actual.Status);
+            Assert.NotNull(actual.Message);
+        }
+        [Fact]
+        public async Task ItShould_Delete_User()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            UserRepositoryDataInitializer.Initialize(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            //Act
+            await sut.DeleteUserAsync(1);
+            sut.SaveChanges();
+            var users = context.Users.ToList();
+            var questions = context.Questions.ToList();
+            var options = context.Options.ToList();
+            var hashes = context.UserSaltPass.ToList();
+            var tests = context.Tests.ToList();
+            var groups = context.Groups.ToList();
+            //Assert
+            Assert.Single(users);
+            Assert.Empty(questions);
+            Assert.Empty(options);
+            Assert.Empty(hashes);
+            Assert.Single(tests);
+            Assert.Single(groups);
+        }
+    }
+}

@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace CommunicationSystem.Services.Commands
 {
-    public class UpdateUserImageCommand :IRequest<IContentResponse<string>>
+    public class SaveImageCommand :IRequest<IContentResponse<string>>
     {
-        public int Id { get; set; }
-        public IFormFile ImageToSave { get; set; }
+        public IFormFile File { get; set; }
     }
 }

@@ -29,14 +29,14 @@ namespace CommunicationSystem.Services.Repositories
             return context.Remove(subject);
         }
 
-        public IQueryable<Subject> GetSubjectsPage(int page,string search)
+        public IQueryable<Subject> GetSubjectsPage(int page, string search)
         {
             var query = context.Subject.AsNoTracking();
-            if(!string.IsNullOrWhiteSpace(search))
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                query = query.Where(x => EF.Functions.ILike(x.Name,$"%{search}%"));
+                query = query.Where(x => EF.Functions.ILike(x.Name, $"%{search}%"));
             }
-            if(page > 0)
+            if (page > 0)
             {
                 query = query.Skip(page * 50);
             }

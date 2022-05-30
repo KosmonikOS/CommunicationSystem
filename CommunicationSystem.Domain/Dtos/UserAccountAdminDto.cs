@@ -1,7 +1,7 @@
 ﻿
 namespace CommunicationSystem.Domain.Dtos
 {
-    public class UserAccountDto
+    public class UserAccountAdminDto
     {
         public int Id { get; set; }
         public string Email { get; set; }
@@ -14,5 +14,6 @@ namespace CommunicationSystem.Domain.Dtos
         public string AccountImage { get; set; }
         public string? Phone { get; set; }
         public int Role { get; set; }
+        public string RoleName { get; set; }
     }
 }

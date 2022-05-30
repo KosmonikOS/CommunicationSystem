@@ -39,29 +39,15 @@ namespace CommunicationSystem
                     if (context.HostingEnvironment.IsDevelopment())
                     {
                         builder.AddUserSecrets<Program>();
+                        builder.AddJsonFile("logging.json");
                     }
                 })
             .UseSerilog((context, services, configuration) =>
                 {
                     configuration
-                            .ReadFrom.Configuration(context.Configuration)
-                            .ReadFrom.Services(services)
-                            .Enrich.FromLogContext()
-                            .WriteTo.Console()
-                            .WriteTo.Conditional("@l in ['Information']", config =>
-                            {
-                                config.Logger(x => x.Filter.ByExcluding(Matching.FromSource("Microsoft"))
-                                .WriteTo.File(context.Configuration["LoggingPath:Info"]));
-                            })
-                            .WriteTo.Conditional("@l in ['Warning']", config =>
-                            {
-                                config.File(context.Configuration["LoggingPath:Warn"]);
-                            })
-                            .WriteTo.Conditional("@l in ['Error']", config =>
-                            {
-                                config.File(context.Configuration["LoggingPath:Err"]);
-                            });
-
+                        .ReadFrom.Configuration(context.Configuration)
+                        .ReadFrom.Services(services)
+                        .Enrich.FromLogContext();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
