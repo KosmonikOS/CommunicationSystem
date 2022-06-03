@@ -50,6 +50,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\infrastructure\error.handler.ts" />
+    <None Remove="ClientApp\src\app\infrastructure\guid.ts" />
   </ItemGroup>
 
   <ItemGroup>

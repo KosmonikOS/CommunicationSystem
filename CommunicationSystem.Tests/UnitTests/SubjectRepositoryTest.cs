@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Services.Infrastructure.Enums;
 using CommunicationSystem.Services.Repositories;
 using CommunicationSystem.Tests.Infrastructure.DataInitializers;
 using CommunicationSystem.Tests.Infrastructure.Helpers;
@@ -53,11 +54,12 @@ namespace CommunicationSystem.Tests.UnitTests
             var sut = new SubjectRepository(context);
             var subject = FixtureHelper.Fixture.Create<Subject>();
             //Act
-            var actual = sut.AddSubject(subject) ;
+            sut.AddSubject(subject) ;
             sut.SaveChanges();
+            var actual = context.Subject.FirstOrDefault();
             //Assert
-            Assert.Equal(subject.Id,actual.Entity.Id);
-            Assert.Equal(subject.Name, actual.Entity.Name);
+            Assert.Equal(subject.Id,actual.Id);
+            Assert.Equal(subject.Name, actual.Name);
         }
         [Fact]
         public async Task ItShould_Update_Subject()
@@ -72,11 +74,12 @@ namespace CommunicationSystem.Tests.UnitTests
                 Name = "Test"
             };
             //Act
-            var actual = sut.UpdateSubject(subject);
+            sut.UpdateSubject(subject);
             sut.SaveChanges();
+            var actual = context.Subject.FirstOrDefault();
             //Assert
-            Assert.Equal(subject.Id, actual.Entity.Id);
-            Assert.Equal(subject.Name, actual.Entity.Name);
+            Assert.Equal(subject.Id, actual.Id);
+            Assert.Equal(subject.Name, actual.Name);
         }
         [Fact]
         public async Task ItShould_Delete_Subject()
@@ -86,13 +89,29 @@ namespace CommunicationSystem.Tests.UnitTests
             SubjectRepositoryDataInitializer.Initialize(context);
             var sut = new SubjectRepository(context);
             //Act
-            var actual = sut.DeleteSubject(1);
+            var actual = await sut.DeleteSubjectAsync(1);
             sut.SaveChanges();
             var subjects = context.Subject.ToList();
             var tests = context.Tests.ToList();
             //Assert
+            Assert.True(actual.IsSuccess);
+            Assert.Null(actual.Message);
             Assert.Equal(2, subjects.Count);
             Assert.Equal(0, tests.Count);
+        }
+        [Fact]
+        public async Task ItShould_Return_NotFound_While_Delete_Subject()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            SubjectRepositoryDataInitializer.Initialize(context);
+            var sut = new SubjectRepository(context);
+            //Act
+            var actual = await sut.DeleteSubjectAsync(5);
+            //Assert
+            Assert.False(actual.IsSuccess);
+            Assert.Equal(ResponseStatus.NotFound, actual.Status);
+            Assert.NotNull(actual.Message);
         }
     }
 }

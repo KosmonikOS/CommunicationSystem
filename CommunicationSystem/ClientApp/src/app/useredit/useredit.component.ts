@@ -140,6 +140,8 @@ export class UsereditComponent implements OnInit {
   GetUsers(page: number, search: string = "") {
     this.dataService.getUsers(page, search, this.currentSearchOption).subscribe((data: any) => {
       this.users = data;
+      this.currentUser = new Account();
+      this.currentRow = -1;
     }, error => {
       this.errorHandler.Handle(error);
     })

@@ -34,8 +34,7 @@ namespace CommunicationSystem.Services.Repositories
         }
         public IQueryable<User> GetUsersPage(int page, string search, UserSearchOption searchOption)
         {
-            var query = context.Users.Include(x => x.Role)
-                .AsNoTracking();
+            var query = context.Users.AsNoTracking();
             if (!string.IsNullOrWhiteSpace(search))
             {
                 switch (searchOption)
@@ -45,25 +44,27 @@ namespace CommunicationSystem.Services.Repositories
                         break;
                     case UserSearchOption.FullName:
                         query = query.Where(x => EF.Functions.ILike(
-                            x.LastName + x.FirstName + x.MiddleName, $"%{search}%"));
+                            x.LastName + " " + x.FirstName + " " + x.MiddleName, $"%{search}%"));
                         break;
                     case UserSearchOption.Email:
                         query = query.Where(x => EF.Functions.ILike(x.Email, $"%{search}%"));
                         break;
                     case UserSearchOption.Role:
-                        query = query.Where(x => EF.Functions.ILike(x.Role.Name, $"%{search}%"));
+                        query = query.Include(x => x.Role)
+                            .Where(x => EF.Functions.ILike(x.Role.Name, $"%{search}%"));
                         break;
                 }
             }
+            query = query.OrderBy(x => x.Id);
             if (page > 0)
             {
                 query = query.Skip(page * 50);
             }
             return query.Take(50);
         }
-        public EntityEntry<User> AddUser(RegistrationDto user, UserSaltPass saltPass, string token)
+        public void AddUser(RegistrationDto user, UserSaltPass saltPass, string token)
         {
-            return context.Add(new User()
+            context.Add(new User()
             {
                 Email = user.Email,
                 NickName = user.NickName,
@@ -71,11 +72,11 @@ namespace CommunicationSystem.Services.Repositories
                 IsConfirmed = token,
             });
         }
-        public EntityEntry<User> AddUser(User user)
+        public void AddUser(User user)
         {
-            return context.Add(user);
+            context.Add(user);
         }
-        public EntityEntry<User> UpdateUser(User user, bool updateRole)
+        public void UpdateUser(User user, bool updateRole)
         {
             var userEntry = context.Update(user);
             userEntry.Property(x => x.RoleId).IsModified = updateRole;
@@ -83,7 +84,6 @@ namespace CommunicationSystem.Services.Repositories
             userEntry.Property(x => x.LeaveTime).IsModified = false;
             userEntry.Property(x => x.IsConfirmed).IsModified = false;
             userEntry.Property(x => x.RefreshToken).IsModified = false;
-            return userEntry;
         }
         public IResponse UpdateUserPasswordByEmail(UserSaltPass hash, string email)
         {
@@ -101,7 +101,7 @@ namespace CommunicationSystem.Services.Repositories
             return new BaseResponse(ResponseStatus.Ok);
 
         }
-        public async Task<EntityEntry<User>> DeleteUserAsync(int id)
+        public async Task<IResponse> DeleteUserAsync(int id)
         {
             var user = await context.Users
                 .Include(x => x.PassHash)
@@ -114,7 +114,10 @@ namespace CommunicationSystem.Services.Repositories
                 .Include(x => x.CreatedTests)
                 .ThenInclude(y => y.StudentAnswers)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            return context.Remove(user);
+            if (user == null)
+                return new BaseResponse(ResponseStatus.NotFound) { Message = "Пользователь не найден" };
+            context.Remove(user);
+            return new BaseResponse(ResponseStatus.Ok);
         }
         public int SaveChanges()
         {

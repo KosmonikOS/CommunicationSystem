@@ -39,7 +39,8 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.HasKey("Id");
 
@@ -115,7 +116,6 @@ namespace CommunicationSystem.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Points")
@@ -232,7 +232,8 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("QuestionsQuantity")
                         .HasColumnType("integer");
@@ -240,16 +241,49 @@ namespace CommunicationSystem.Data.Migrations
                     b.Property<int>("SubjectId")
                         .HasColumnType("integer");
 
-                    b.Property<long>("Time")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Time")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
 
+                    b.HasIndex("Date");
+
+                    b.HasIndex("Grade");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Grade"), "gin");
+                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Grade"), new[] { "gin_trgm_ops" });
+
+                    b.HasIndex("Name");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Name"), "gin");
+                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Name"), new[] { "gin_trgm_ops" });
+
                     b.HasIndex("SubjectId");
 
                     b.ToTable("Tests");
+                });
+
+            modelBuilder.Entity("CommunicationSystem.Domain.Entities.TestUser", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TestId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("Mark")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "TestId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("TestUser");
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.User", b =>
@@ -373,21 +407,6 @@ namespace CommunicationSystem.Data.Migrations
                     b.ToTable("GroupUser");
                 });
 
-            modelBuilder.Entity("TestUser", b =>
-                {
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("TestsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("StudentsId", "TestsId");
-
-                    b.HasIndex("TestsId");
-
-                    b.ToTable("TestUser");
-                });
-
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.Message", b =>
                 {
                     b.HasOne("CommunicationSystem.Domain.Entities.User", "From")
@@ -475,6 +494,23 @@ namespace CommunicationSystem.Data.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("CommunicationSystem.Domain.Entities.TestUser", b =>
+                {
+                    b.HasOne("CommunicationSystem.Domain.Entities.Test", null)
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CommunicationSystem.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.User", b =>
                 {
                     b.HasOne("CommunicationSystem.Domain.Entities.Role", "Role")
@@ -508,21 +544,6 @@ namespace CommunicationSystem.Data.Migrations
                     b.HasOne("CommunicationSystem.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TestUser", b =>
-                {
-                    b.HasOne("CommunicationSystem.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CommunicationSystem.Domain.Entities.Test", null)
-                        .WithMany()
-                        .HasForeignKey("TestsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

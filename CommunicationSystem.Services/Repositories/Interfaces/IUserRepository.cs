@@ -11,10 +11,10 @@ namespace CommunicationSystem.Services.Repositories.Interfaces
     {
         public IQueryable<User> GetUsersPage(int page,string search, UserSearchOption searchOption);
         public IQueryable<User> GetUsers(Expression<Func<User, bool>> expression);
-        public EntityEntry<User> AddUser(RegistrationDto user,UserSaltPass hash, string token);
-        public EntityEntry<User> AddUser(User user);
+        public void AddUser(RegistrationDto user,UserSaltPass hash, string token);
+        public void AddUser(User user);
         public IResponse UpdateUserPasswordByEmail(UserSaltPass hash, string email);
-        public EntityEntry<User> UpdateUser(User user,bool updateRole);
-        public Task<EntityEntry<User>> DeleteUserAsync(int id);
+        public void UpdateUser(User user,bool updateRole);
+        public Task<IResponse> DeleteUserAsync(int id);
     }
 }

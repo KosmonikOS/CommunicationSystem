@@ -106,6 +106,8 @@ export class SubjectsComponent implements OnInit {
     this.dataService.getSubjects(search, page).subscribe(
       (data: any) => {
         this.subjects = data;
+        this.currentSubject = new Subject();
+        this.currentRow = -1;
       },
       error => {
         this.errorHandler.Handle(error);

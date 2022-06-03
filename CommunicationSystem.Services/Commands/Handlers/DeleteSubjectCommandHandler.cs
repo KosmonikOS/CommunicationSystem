@@ -11,7 +11,7 @@ namespace CommunicationSystem.Services.Commands.Handlers
         private readonly ISubjectRepository subjectRepository;
         private readonly ILogger<AddSubjectCommandHandler> logger;
 
-        public DeleteSubjectCommandHandler(ISubjectRepository subjectRepository,ILogger<AddSubjectCommandHandler> logger)
+        public DeleteSubjectCommandHandler(ISubjectRepository subjectRepository, ILogger<AddSubjectCommandHandler> logger)
         {
             this.subjectRepository = subjectRepository;
             this.logger = logger;
@@ -20,11 +20,12 @@ namespace CommunicationSystem.Services.Commands.Handlers
         {
             try
             {
-                subjectRepository.DeleteSubject(request.Id);
+                var result = await subjectRepository.DeleteSubjectAsync(request.Id);
+                if (!result.IsSuccess) return result;
                 await subjectRepository.SaveChangesAsync();
                 return new BaseResponse(ResponseStatus.Ok);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError(e.Message);
                 return new BaseResponse(ResponseStatus.InternalServerError);

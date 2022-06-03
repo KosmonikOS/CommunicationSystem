@@ -1,13 +1,15 @@
 ﻿using CommunicationSystem.Domain.Entities;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+using CommunicationSystem.Services.Infrastructure.Responses;
+using System.Linq.Expressions;
 
 namespace CommunicationSystem.Services.Repositories.Interfaces
 {
     public interface ISubjectRepository : IBaseRepository
     {
         public IQueryable<Subject> GetSubjectsPage(int page,string search);
-        public EntityEntry<Subject> AddSubject(Subject subject);
-        public EntityEntry<Subject> UpdateSubject(Subject subject);
-        public EntityEntry<Subject> DeleteSubject(int id);
+        public IQueryable<Subject> GetSubjects();
+        public void AddSubject(Subject subject);
+        public void UpdateSubject(Subject subject);
+        public Task<IResponse> DeleteSubjectAsync(int id);
     }
 }

@@ -19,6 +19,15 @@ namespace CommunicationSystem.Tests.Infrastructure.Helpers
                 return fixture;
             }
         }
+        public static Fixture FixtureNoNested
+        {
+            get
+            {
+                var fixture = new Fixture();
+                fixture.OmitAutoProperties = true;
+                return fixture;
 
+            }
+        }
     }
 }

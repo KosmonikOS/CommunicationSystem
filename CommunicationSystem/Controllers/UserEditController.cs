@@ -21,7 +21,7 @@ namespace CommunicationSystem.Controllers
             this.mediator = mediator;
         }
         [HttpGet("{page}/{searchOption}/{search?}")]
-        public async Task<ActionResult<List<UserAccountAdminDto>>> GetUsers(int page, UserSearchOption searchOption, string search)
+        public async Task<ActionResult<List<UserAccountAdminDto>>> GetUsersPage(int page, UserSearchOption searchOption, string search)
         {
             var query = new GetUsersQuery()
             {

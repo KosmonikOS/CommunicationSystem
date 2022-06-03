@@ -40,7 +40,7 @@ export class TestsComponent implements OnInit {
     }
   }
   submitTest() {
-    this.dataService.postTest(this.currentTest.questionsList, this.accountDataService.currentAccount.id, this.currentTest.id).subscribe(() => {
+    this.dataService.postTest(this.currentTest.questions, this.accountDataService.currentAccount.id, this.currentTest.id).subscribe(() => {
       this.modalService.dismissAll();
       this.getTests();
     });

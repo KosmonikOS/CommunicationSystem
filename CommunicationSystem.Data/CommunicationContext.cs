@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CommunicationSystem.Data
 {
-    public class CommunicationContext: DbContext
+    public class CommunicationContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -15,7 +15,8 @@ namespace CommunicationSystem.Data
         public DbSet<UserSaltPass> UserSaltPass { get; set; }
         public DbSet<Subject> Subject { get; set; }
         public DbSet<Role> Role { get; set; }
-        public CommunicationContext(DbContextOptions<CommunicationContext> options): base(options)
+        public DbSet<TestUser> TestUser { get; set; }
+        public CommunicationContext(DbContextOptions<CommunicationContext> options) : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,6 +37,13 @@ namespace CommunicationSystem.Data
             modelBuilder.Entity<Subject>().HasIndex(x => x.Name)
                 .HasMethod("gin")
                 .HasOperators("gin_trgm_ops");
+            modelBuilder.Entity<Test>().HasIndex(x => x.Name)
+                .HasMethod("gin")
+                .HasOperators("gin_trgm_ops");
+            modelBuilder.Entity<Test>().HasIndex(x => x.Grade)
+                .HasMethod("gin")
+                .HasOperators("gin_trgm_ops");
+            modelBuilder.Entity<Test>().HasIndex(x => x.Date);
             modelBuilder.Entity<Group>().Property("GroupImage")
                 .HasDefaultValue("/assets/group.png");
             modelBuilder.Entity<Message>().HasOne(x => x.From)
@@ -44,6 +52,10 @@ namespace CommunicationSystem.Data
                 .WithMany().HasForeignKey("ToId");
             modelBuilder.Entity<Test>().HasOne(x => x.Creator)
                 .WithMany(x => x.CreatedTests).HasForeignKey("CreatorId");
+            modelBuilder.Entity<Test>().HasMany(x => x.Students)
+                .WithMany(x => x.Tests).UsingEntity<TestUser>();
+            modelBuilder.Entity<TestUser>()
+                .HasKey(x => new { x.UserId, x.TestId });
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasPostgresExtension("pg_trgm");
         }

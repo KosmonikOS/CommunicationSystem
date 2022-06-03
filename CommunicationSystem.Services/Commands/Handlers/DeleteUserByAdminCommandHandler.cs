@@ -19,7 +19,8 @@ namespace CommunicationSystem.Services.Commands.Handlers
         {
             try
             {
-                await userRepository.DeleteUserAsync(request.Id);
+                var result = await userRepository.DeleteUserAsync(request.Id);
+                if (!result.IsSuccess) return result;
                 await userRepository.SaveChangesAsync();
                 return new BaseResponse(ResponseStatus.Ok);
             }

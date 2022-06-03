@@ -1,15 +1,19 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CommunicationSystem.Domain.Entities
 {
     public class Test
     {
-        public Guid Id { get; set; }        
+        public Guid Id { get; set; }
+        [Required(ErrorMessage = "Это поле обязательное")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "Введите от 2 до 50 символов")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "Это поле обязательное")]
         public string Grade { get; set; }
         public int QuestionsQuantity { get; set; }
-        public long Time { get; set; }
+        [Required(ErrorMessage = "Это поле обязательное")]
+        public int Time { get; set; }
         public DateTime Date { get; set; }
 
         public int CreatorId { get; set; }

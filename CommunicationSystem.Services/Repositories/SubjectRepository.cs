@@ -1,8 +1,9 @@
 ﻿using CommunicationSystem.Data;
 using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Services.Infrastructure.Enums;
+using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CommunicationSystem.Services.Repositories
 {
@@ -14,21 +15,6 @@ namespace CommunicationSystem.Services.Repositories
         {
             this.context = context;
         }
-        public EntityEntry<Subject> AddSubject(Subject subject)
-        {
-            return context.Add(subject);
-        }
-
-        public EntityEntry<Subject> DeleteSubject(int id)
-        {
-            var subject = context.Subject
-                .Include(x => x.Tests).ThenInclude(x => x.StudentAnswers)
-                .Include(x => x.Tests).ThenInclude(x => x.Questions)
-                .ThenInclude(x => x.Options)
-                .FirstOrDefault(x => x.Id == id);
-            return context.Remove(subject);
-        }
-
         public IQueryable<Subject> GetSubjectsPage(int page, string search)
         {
             var query = context.Subject.AsNoTracking();
@@ -36,6 +22,7 @@ namespace CommunicationSystem.Services.Repositories
             {
                 query = query.Where(x => EF.Functions.ILike(x.Name, $"%{search}%"));
             }
+            query = query.OrderBy(x => x.Id);
             if (page > 0)
             {
                 query = query.Skip(page * 50);
@@ -43,9 +30,31 @@ namespace CommunicationSystem.Services.Repositories
             return query.Take(50);
         }
 
-        public EntityEntry<Subject> UpdateSubject(Subject subject)
+        public IQueryable<Subject> GetSubjects()
         {
-            return context.Update(subject);
+            return context.Subject;
+        }
+
+        public void AddSubject(Subject subject)
+        {
+            context.Add(subject);
+        }
+        public void UpdateSubject(Subject subject)
+        {
+            context.Update(subject);
+        }
+
+        public async Task<IResponse> DeleteSubjectAsync(int id)
+        {
+            var subject = await context.Subject
+                .Include(x => x.Tests).ThenInclude(x => x.StudentAnswers)
+                .Include(x => x.Tests).ThenInclude(x => x.Questions)
+                .ThenInclude(x => x.Options)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (subject == null)
+                return new BaseResponse(ResponseStatus.NotFound) { Message = "Предмет не найден" };
+            context.Remove(subject);
+            return new BaseResponse(ResponseStatus.Ok);
         }
 
         public int SaveChanges()
@@ -57,6 +66,5 @@ namespace CommunicationSystem.Services.Repositories
         {
             return context.SaveChangesAsync();
         }
-
     }
 }

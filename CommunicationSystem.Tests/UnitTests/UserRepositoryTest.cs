@@ -176,7 +176,7 @@ namespace CommunicationSystem.Tests.UnitTests
             //Act
             var actual = sut.UpdateUserPasswordByEmail(saltPass, "test@test.test");
             //Assert
-            Assert.True(!actual.IsSuccess);
+            Assert.False(actual.IsSuccess);
             Assert.Equal(ResponseStatus.NotFound, actual.Status);
             Assert.NotNull(actual.Message);
         }
@@ -189,7 +189,7 @@ namespace CommunicationSystem.Tests.UnitTests
             var logger = LoggerHelper.GetLogger<UserRepository>();
             var sut = new UserRepository(context, logger);
             //Act
-            await sut.DeleteUserAsync(1);
+            var actual = await sut.DeleteUserAsync(1);
             sut.SaveChanges();
             var users = context.Users.ToList();
             var questions = context.Questions.ToList();
@@ -198,12 +198,52 @@ namespace CommunicationSystem.Tests.UnitTests
             var tests = context.Tests.ToList();
             var groups = context.Groups.ToList();
             //Assert
+            Assert.True(actual.IsSuccess);
+            Assert.Null(actual.Message);
             Assert.Single(users);
             Assert.Empty(questions);
             Assert.Empty(options);
             Assert.Empty(hashes);
             Assert.Single(tests);
             Assert.Single(groups);
+        }
+        [Fact]
+        public async Task ItShould_Return_NotFound_While_Delete_User()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            UserRepositoryDataInitializer.Initialize(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            //Act
+            var actual = await sut.DeleteUserAsync(5);
+            //Assert
+            Assert.False(actual.IsSuccess);
+            Assert.Equal(ResponseStatus.NotFound, actual.Status);
+            Assert.NotNull(actual.Message);
+        }
+        [Fact]
+        public void ItShould_Update_User()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            UserRepositoryDataInitializer.Initialize(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            var expected = context.Users.AsNoTracking().FirstOrDefault();
+            //Act
+            expected.NickName = "Test";
+            expected.AccountImage = "UpdatedImage";
+            expected.Email = "test@test.test";
+            expected.IsConfirmed = "hh$G*G*$@#*BF";
+            sut.UpdateUser(expected,false);
+            sut.SaveChanges();
+            var actual = context.Users.AsNoTracking().FirstOrDefault();
+            //Assert
+            Assert.Equal(expected.NickName, actual.NickName);
+            Assert.Equal(expected.AccountImage,actual.AccountImage);
+            Assert.Equal(expected.FirstName,actual.FirstName);
+            Assert.NotEqual(expected.IsConfirmed, actual.IsConfirmed);
         }
     }
 }
