@@ -128,7 +128,7 @@ namespace CommunicationSystem.Tests.UnitTests
                 {
                     UserId = 2,
                     State = StudentState.Modified,
-                    IsCompleted = true
+                    IsCompleted = false
                 },
                 new TestStudentStateDto()
                 {
@@ -139,10 +139,44 @@ namespace CommunicationSystem.Tests.UnitTests
             //Act
             sut.UpdateTestStudents(students, Guid.Parse("41d34938-a4c6-4e67-86f2-e56380c738b6"));
             sut.SaveChanges();
-            var actual = context.TestUser.ToList();
+            var testusers = context.TestUser.ToList();
+            var answers = context.StudentAnswers.ToList();
+            //Assert
+            Assert.Equal(2, testusers.Count);
+            Assert.False(testusers[0].IsCompleted);
+            Assert.Empty(answers);
+        }
+        [Fact]
+        public void ItShould_Add_Student_Answers()
+        {
+            //Arrange
+            var context = DbContextHelper.CreateInMemoryContext();
+            var sut = new StudentRepository(context);
+            var answer = new StudentFullTestAnswerDto()
+            {
+                UserId = 1,
+                TestId = Guid.Parse("41d34938-a4c6-4e67-86f2-e56380c738b6"),
+                Questions = new List<StudentQuestionAnswerDto>()
+                {
+                    new StudentQuestionAnswerDto()
+                    {
+                        Id = Guid.Parse("41d34938-a4c6-4e67-86f2-e56380c738b6"),
+                        Points = 50,
+                        QuestionType = QuestionType.Multy,
+                        Answers = new List<string>()
+                        {
+                            "51d34938-a4c6-4e67-86f2-e56380c738b6",
+                            "56d34938-a4c6-4e67-86f2-e56380c738b6",
+                        }
+                    }
+                }
+            };
+            //Act
+            sut.AddStudentAnswers(answer);
+            sut.SaveChanges();
+            var actual = context.StudentAnswers.ToList();
             //Assert
             Assert.Equal(2, actual.Count);
-            Assert.True(actual[0].IsCompleted);
         }
     }
 }

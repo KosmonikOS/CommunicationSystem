@@ -20,6 +20,13 @@ namespace CommunicationSystem.Domain.MapperProfiles
                 .ForMember(dest => dest.Subject, x => x.Ignore())
                 .ForMember(dest => dest.SubjectId, x => x.MapFrom(src => src.Subject))
                 .ForMember(dest => dest.Questions, x => x.MapFrom(src => src.Questions));
+            CreateMap<TestUser, TestShowDto>()
+                .ForMember(dest => dest.Id, x => x.MapFrom(src => src.TestId))
+                .ForMember(dest => dest.SubjectName, x => x.MapFrom(src => src.Test.Subject.Name))
+                .ForMember(dest => dest.Name, x => x.MapFrom(src => src.Test.Name))
+                .ForMember(dest => dest.QuestionsQuantity, x => x.MapFrom(src => src.Test.QuestionsQuantity))
+                .ForMember(dest => dest.Time, x => x.MapFrom(src => src.Test.Time))
+                .ForMember(dest => dest.Date, x => x.MapFrom(src => src.Test.Date));
         }
     }
 }

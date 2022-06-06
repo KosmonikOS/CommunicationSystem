@@ -12,7 +12,8 @@ export class ConfirmationComponent implements OnInit {
   constructor(private dataService: ConfirmationDataService,
     private router: Router, private activateRoute: ActivatedRoute) { }
   ngOnInit(): void {
-    var token = this.activateRoute.snapshot.params["token"] + "==";
+    var token = this.activateRoute.snapshot.params["token"];
+    console.log(token);
     this.dataService.getConfirmAccount(token).subscribe(
       result => {
         this.router.navigate([""]);

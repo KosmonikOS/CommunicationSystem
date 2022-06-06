@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CommunicationSystem.Services.Queries.Handlers
 {
-    public class GetStudentAnswersQueryHandler : IRequestHandler<GetStudentAnswersQuery, IContentResponse<List<StudentAnswerDto>>>
+    public class GetStudentAnswersQueryHandler : IRequestHandler<GetStudentAnswersQuery, IContentResponse<List<StudentAnswerShowDto>>>
     {
         private readonly IStudentRepository studentRepository;
         private readonly ILogger<GetTestStudentsQueryHandler> logger;
@@ -19,18 +19,18 @@ namespace CommunicationSystem.Services.Queries.Handlers
             this.studentRepository = studentRepository;
             this.logger = logger;
         }
-        public async Task<IContentResponse<List<StudentAnswerDto>>> Handle(GetStudentAnswersQuery request, CancellationToken cancellationToken)
+        public async Task<IContentResponse<List<StudentAnswerShowDto>>> Handle(GetStudentAnswersQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 var dtos = await studentRepository
                     .GetStudentAnswers(request.UserId,request.TestId).ToListAsync();
-                return new ContentResponse<List<StudentAnswerDto>>(ResponseStatus.Ok) { Content = dtos };
+                return new ContentResponse<List<StudentAnswerShowDto>>(ResponseStatus.Ok) { Content = dtos };
             }
             catch (Exception e)
             {
                 logger.LogError(e.Message);
-                return new ContentResponse<List<StudentAnswerDto>>(ResponseStatus.InternalServerError);
+                return new ContentResponse<List<StudentAnswerShowDto>>(ResponseStatus.InternalServerError);
             }
         }
     }

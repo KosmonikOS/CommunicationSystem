@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace CommunicationSystem.Tests.Infrastructure.DataInitializers
 {
-    public static class CreateQuestionRepositoryDataInitializer
+    public static class QuestionRepositoryDataInitializer
     {
         public static void Initialize(CommunicationContext context)
         {

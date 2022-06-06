@@ -7,10 +7,13 @@ import { Test } from "./test";
 export class TestsDataService {
   url = "api/tests/";
   constructor(private http: HttpClient) { }
-  getTests(id: number) {
-    return this.http.get(this.url + id);
+  getTests(userId: number, page: number, searchOption: number, search: string) {
+    return this.http.get(this.url + "tests/" + userId + "/" + page + "/" + searchOption + "/" + search);
   }
-  postTest(questions: Question[], id: number, testId: string) {
-    return this.http.post(this.url, { "questions": questions, "userId": id, "testId": testId });
+  getQuestions(testId: string) {
+    return this.http.get(this.url + "questions/" + testId);
+  }
+  postTest(questions: Question[], userId: number, testId: string) {
+    return this.http.post(this.url, { "questions": questions, "userId": userId, "testId": testId });
   }
 }

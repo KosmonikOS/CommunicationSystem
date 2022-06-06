@@ -13,6 +13,7 @@ namespace CommunicationSystem.Extentions
             services.AddScoped<IPasswordHashService, PasswordHashService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IStudentMarkService, StudentMarkService>();
             return services;
         }
     }

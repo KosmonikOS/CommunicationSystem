@@ -10,6 +10,7 @@ namespace CommunicationSystem.Domain.MapperProfiles
         {
             CreateMap<Question, CreateQuestionDto>();
             CreateMap<CreateQuestionDto, Question>();
+            CreateMap<Question, QuestionShowDto>();
         }
     }
 }

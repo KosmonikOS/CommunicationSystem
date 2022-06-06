@@ -10,12 +10,12 @@ namespace CommunicationSystem.Services.Commands.Handlers
 {
     public class UpdateTestCommandHandler : IRequestHandler<UpdateTestCommand, IResponse>
     {
-        private readonly ICreateTestRepository testRepository;
+        private readonly ITestRepository testRepository;
         private readonly IStudentRepository studentRepository;
         private readonly IMapper mapper;
         private readonly ILogger<AddTestCommandHandler> logger;
 
-        public UpdateTestCommandHandler(ICreateTestRepository testRepository, IStudentRepository studentRepository
+        public UpdateTestCommandHandler(ITestRepository testRepository, IStudentRepository studentRepository
             , IMapper mapper, ILogger<AddTestCommandHandler> logger)
         {
             this.testRepository = testRepository;

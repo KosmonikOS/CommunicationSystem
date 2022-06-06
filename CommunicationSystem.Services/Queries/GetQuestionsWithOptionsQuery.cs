@@ -4,7 +4,7 @@ using MediatR;
 
 namespace CommunicationSystem.Services.Queries
 {
-    public class GetQuestionsWithOptionsQuery :IRequest<IContentResponse<List<CreateQuestionDto>>>
+    public class GetQuestionsWithOptionsQuery :IRequest<IContentResponse<List<QuestionShowDto>>>
     {
         public Guid TestId { get; set; }
     }

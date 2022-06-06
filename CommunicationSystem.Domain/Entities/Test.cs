@@ -11,7 +11,7 @@ namespace CommunicationSystem.Domain.Entities
         public string Name { get; set; }
         [Required(ErrorMessage = "Это поле обязательное")]
         public string Grade { get; set; }
-        public int QuestionsQuantity { get; set; }
+        public int QuestionsQuantity { get; private set; }
         [Required(ErrorMessage = "Это поле обязательное")]
         public int Time { get; set; }
         public DateTime Date { get; set; }
@@ -25,5 +25,9 @@ namespace CommunicationSystem.Domain.Entities
         public ICollection<User> Students { get; set; }
         public ICollection<StudentAnswer> StudentAnswers { get; set; }
 
+        public void CalculateQuestionsQuantity()
+        {
+            this.QuestionsQuantity = this.Questions.Count;
+        }
     }
 }

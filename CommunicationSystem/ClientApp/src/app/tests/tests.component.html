@@ -1,17 +1,23 @@
 <div class="container-fluide pt-3 px-md-4 px-1 h-100" style="position:relative;">
   <div class="btn-group toolbar w-100">
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="openTest()">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="Reload()">
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="OpenTest()">
       <i class="bi bi-pencil"></i>
       <span class="d-none d-md-block" style="padding-left:5px">Открыть</span>
     </button>
+    <select class="form-select w-25 d-none d-sm-block" [(ngModel)]="currentSearchOption">
+      <option *ngFor="let option of searchOptions" value="{{option.id}}">{{option.name}}</option>
+    </select>
     <div class="input-group w-100">
-      <input placeholder="Поиск" type="search" class="form-control" [(ngModel)]="search" />
-      <button class="btn btn-outline-primary">
+      <input placeholder="{{searchOptions[currentSearchOption].searchOn}}" type="search" class="form-control" [(ngModel)]="search" (keyup.enter)="Search()" />
+      <button class="btn btn-outline-primary d-none d-md-block" (click)="Search()">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </div>
-  <div class="scrollable w-100" style="height:90%">
+  <div class="scrollable w-100" style="height:90%" #testsList>
     <table class="table">
       <thead style="border-bottom: solid 2px #DEE2E6">
         <tr>
@@ -23,15 +29,27 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let test of tests | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="set(test,i)" (dblclick)="dblSet(test,i)">
+        <tr *ngFor="let test of tests;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="Set(test,i)" (dblclick)="DblSet(test,i)">
           <th scope="row">{{test.subjectName}}</th>
           <td>{{test.name}}</td>
-          <td class="d-none d-md-table-cell">{{test.questions}}</td>
+          <td class="d-none d-md-table-cell">{{test.questionsQuantity}}</td>
           <td>{{test.time | number :'1.0-1'}}</td>
           <td class="d-none d-md-table-cell">{{test.date | date:'dd.MM.yyyy'}}</td>
         </tr>
       </tbody>
     </table>
+    <div class="text-center">
+      <div class="btn-group toolbar">
+        <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="PreviousPage()" *ngIf="page > 0">
+          <i class="bi bi-chevron-left"></i>
+          <span class="d-none d-md-block" style="padding-left:5px">Назад</span>
+        </button>
+        <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="NextPage()" *ngIf="tests.length == 50">
+          <span class="d-none d-md-block" style="padding-left:5px">Вперед</span>
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -55,14 +73,14 @@
           <div *ngIf="question.questionType < 2;else openAnswer">
             <div class="form-check">
               <div *ngFor="let option of question.options">
-                <input class="form-check-input" name="question.id" type="{{question.questionType == 0? 'radio':'checkbox'}}" (change)="setAnswer(question,option)">
+                <input class="form-check-input" name="question.id" type="{{question.questionType == 0? 'radio':'checkbox'}}" (change)="SetAnswer(question,option)">
                 <label class="form-check-label">{{option.text}}</label>
               </div>
             </div>
 
           </div>
           <ng-template #openAnswer>
-            <textarea type="text" class="form-control" [style.resize]="question.questionType == 2 ? 'none':''" rows="{{question.questionType == 2 ? '1':'2'}}" placeholder="Ответ" [(ngModel)]="question.studentAnswers[0]"></textarea>
+            <textarea type="text" class="form-control" [style.resize]="question.questionType == 2 ? 'none':''" rows="{{question.questionType == 2 ? '1':'2'}}" placeholder="Ответ" [(ngModel)]="question.answers[0]"></textarea>
           </ng-template>
         </div>
       </div>
@@ -70,6 +88,6 @@
   </div>
   <div class="modal-footer justify-content-center" style="position:relative">
     <span style="position:absolute;top:15px;left:20px;font-size:20px">{{currentTest.time * 1000 | date:'mm:ss'}}</span>
-    <div class="text-center"><button class="btn btn-primary" type="button" (click)="submitTest()">Отправить</button></div>
+    <div class="text-center"><button class="btn btn-primary" type="button" (click)="SubmitTest()">Отправить</button></div>
   </div>
 </ng-template>

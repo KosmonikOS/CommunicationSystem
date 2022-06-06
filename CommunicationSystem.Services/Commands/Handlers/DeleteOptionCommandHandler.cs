@@ -8,10 +8,10 @@ namespace CommunicationSystem.Services.Commands.Handlers
 {
     public class DeleteOptionCommandHandler : IRequestHandler<DeleteOptionCommand, IResponse>
     {
-        private readonly ICreateOptionRepository optionRepository;
+        private readonly IOptionRepository optionRepository;
         private readonly ILogger<DeleteOptionCommandHandler> logger;
 
-        public DeleteOptionCommandHandler(ICreateOptionRepository optionRepository, ILogger<DeleteOptionCommandHandler> logger)
+        public DeleteOptionCommandHandler(IOptionRepository optionRepository, ILogger<DeleteOptionCommandHandler> logger)
         {
             this.optionRepository = optionRepository;
             this.logger = logger;

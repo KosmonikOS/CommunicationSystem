@@ -8,10 +8,10 @@ namespace CommunicationSystem.Services.Commands.Handlers
 {
     public class DeleteTestCommandHandler : IRequestHandler<DeleteTestCommand, IResponse>
     {
-        private readonly ICreateTestRepository testRepository;
+        private readonly ITestRepository testRepository;
         private readonly ILogger<DeleteTestCommandHandler> logger;
 
-        public DeleteTestCommandHandler(ICreateTestRepository testRepository, ILogger<DeleteTestCommandHandler> logger)
+        public DeleteTestCommandHandler(ITestRepository testRepository, ILogger<DeleteTestCommandHandler> logger)
         {
             this.testRepository = testRepository;
             this.logger = logger;

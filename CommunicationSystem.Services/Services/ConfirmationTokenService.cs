@@ -27,7 +27,7 @@ namespace CommunicationSystem.Services.Services
                 logger.LogWarning($"User with {token} token not found");
                 return new BaseResponse(ResponseStatus.NotFound) { Message = "Пользователь не найден" };
             }
-            var timeStamp = Convert.ToDateTime(Encoding.UTF8.GetString(Convert.FromBase64String(token.Split("@d@")[1]))).AddSeconds(3600);
+            var timeStamp = Convert.ToDateTime(Encoding.UTF8.GetString(Convert.FromHexString(token.Split("@d@")[1]))).AddSeconds(3600);
             if (timeStamp < DateTime.Now)
             {
                 context.Users.Remove(user);
@@ -43,8 +43,8 @@ namespace CommunicationSystem.Services.Services
 
         public string GenerateToken(string email)
         {
-            var token = Convert.ToBase64String(Encoding.ASCII.GetBytes(email)) + "@d@" +
-                Convert.ToBase64String(Encoding.ASCII.GetBytes(DateTime.Now.ToString()));
+            var token = Convert.ToHexString(Encoding.ASCII.GetBytes(email)) + "@d@" +
+                Convert.ToHexString(Encoding.ASCII.GetBytes(DateTime.Now.ToString()));
             return token;
         }
     }

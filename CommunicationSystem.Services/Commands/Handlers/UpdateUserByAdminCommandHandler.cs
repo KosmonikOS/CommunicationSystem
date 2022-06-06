@@ -32,7 +32,8 @@ namespace CommunicationSystem.Services.Commands.Handlers
                 if (!string.IsNullOrEmpty(request.Dto.Password))
                 {
                     var hash = hashService.GenerateSaltPass(request.Dto.Password);
-                    userRepository.UpdateUserPasswordByEmail(hash, user.Email);
+                    var passUpdateResult = userRepository.UpdateUserPasswordByEmail(hash, user.Email);
+                    if (!passUpdateResult.IsSuccess) return passUpdateResult;
                 }
                 userRepository.UpdateUser(user, false);
                 await userRepository.SaveChangesAsync();

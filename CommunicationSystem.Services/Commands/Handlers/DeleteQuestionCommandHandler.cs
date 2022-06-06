@@ -8,10 +8,10 @@ namespace CommunicationSystem.Services.Commands.Handlers
 {
     public class DeleteQuestionCommandHandler : IRequestHandler<DeleteQuestionCommand, IResponse>
     {
-        private readonly ICreateQuestionRepository questionRepository;
+        private readonly IQuestionRepository questionRepository;
         private readonly ILogger<DeleteQuestionCommandHandler> logger;
 
-        public DeleteQuestionCommandHandler(ICreateQuestionRepository questionRepository, ILogger<DeleteQuestionCommandHandler> logger)
+        public DeleteQuestionCommandHandler(IQuestionRepository questionRepository, ILogger<DeleteQuestionCommandHandler> logger)
         {
             this.questionRepository = questionRepository;
             this.logger = logger;

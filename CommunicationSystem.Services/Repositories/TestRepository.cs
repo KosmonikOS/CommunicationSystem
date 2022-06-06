@@ -5,19 +5,18 @@ using CommunicationSystem.Services.Infrastructure.Enums;
 using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CommunicationSystem.Services.Repositories
 {
-    public class CreateTestRepository : ICreateTestRepository
+    public class TestRepository : ITestRepository
     {
         private readonly CommunicationContext context;
 
-        public CreateTestRepository(CommunicationContext context)
+        public TestRepository(CommunicationContext context)
         {
             this.context = context;
         }
-        public IQueryable<Test> GetUserTestsPage(int userId, int role, int page, string search, TestSearchOption searchOption)
+        public IQueryable<Test> GetUserCreateTestsPage(int userId, int role, int page, string search, TestSearchOption searchOption)
         {
             var query = (role != 3
                 ? context.Tests.Where(x => x.CreatorId == userId)
@@ -38,7 +37,32 @@ namespace CommunicationSystem.Services.Repositories
                         break;
                 }
             }
-            query = query.OrderBy(x => x.Date);
+            query = query.OrderByDescending(x => x.Date);
+            if (page > 0)
+            {
+                query = query.Skip(page * 50);
+            }
+            return query.Take(50);
+        }
+
+        public IQueryable<TestUser> GetUserTestsPage(int userId, int page, string search, TestSearchOption searchOption)
+        {
+            var query = context.TestUser
+                .Include(x => x.Test)
+                .Where(x => x.UserId == userId && !x.IsCompleted);                     
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                switch (searchOption)
+                {
+                    case TestSearchOption.Name:
+                        query = query.Where(x => EF.Functions.ILike(x.Test.Name, $"%{search}%"));
+                        break;
+                    case TestSearchOption.Subject:
+                        query = query.Where(x => EF.Functions.ILike(x.Test.Subject.Name, $"%{search}%"));
+                        break;
+                }
+            }
+            query = query.OrderByDescending(x => x.Test.Date);
             if (page > 0)
             {
                 query = query.Skip(page * 50);
@@ -80,6 +104,6 @@ namespace CommunicationSystem.Services.Repositories
         public Task<int> SaveChangesAsync()
         {
             return context.SaveChangesAsync();
-        }
+        }        
     }
 }

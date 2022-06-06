@@ -9,8 +9,9 @@ namespace CommunicationSystem.Services.Repositories.Interfaces
     {
         public IQueryable<User> GetStudents(string search, StudentsSearchOption searchOption);
         public IQueryable<TestUser> GetStudents(Guid id);
-        public IQueryable<StudentAnswerDto> GetStudentAnswers(int userId, Guid testId);
+        public IQueryable<StudentAnswerShowDto> GetStudentAnswers(int userId, Guid testId);
         public IResponse UpdateStudentMark(UpdateStudentMarkDto dto);
         public void UpdateTestStudents(IEnumerable<TestStudentStateDto> students,Guid testId);
+        public void AddStudentAnswers(StudentFullTestAnswerDto dto);
     }
 }

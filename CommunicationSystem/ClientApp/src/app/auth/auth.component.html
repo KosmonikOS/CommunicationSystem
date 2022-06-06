@@ -8,11 +8,11 @@
 
             <h3 class="mb-5">Авторизация</h3>
             <div class="form-outline mb-4">
-              <input type="email" id="typeEmailX" class="form-control form-control-lg rounded" [error]="{Error:errors.Email,PlaceHolder:'Почта'}" [(ngModel)]="login.email" />
+              <input type="email" id="typeEmailX" class="form-control form-control-lg rounded" [error]="{Error:errors?.Email,PlaceHolder:'Почта'}" [(ngModel)]="login.email" />
             </div>
 
             <div class="form-outline mb-4">
-              <input type="password" id="typePasswordX" class="form-control form-control-lg rounded" [error]="{Error:errors.Password,PlaceHolder:'Пароль'}" [(ngModel)]="login.password" />
+              <input type="password" id="typePasswordX" class="form-control form-control-lg rounded" [error]="{Error:errors?.Password,PlaceHolder:'Пароль'}" [(ngModel)]="login.password" />
             </div>
 
             <!-- Checkbox -->

@@ -49,9 +49,21 @@ namespace CommunicationSystem.Tests.Infrastructure.DataInitializers
                 .With(x => x.IsCompleted,false).Create()
             };
             var users = FixtureHelper.FixtureNoNested.CreateMany<User>(3);
+            var answers = new List<StudentAnswer>()
+            {
+                FixtureHelper.FixtureNoNested.Build<StudentAnswer>()
+                .With(x => x.Id,2)
+                .With(x => x.TestId,Guid.Parse("41d34938-a4c6-4e67-86f2-e56380c738b6"))
+                .With(x => x.UserId,2).Create(),
+                FixtureHelper.FixtureNoNested.Build<StudentAnswer>()
+                .With(x => x.Id,3)
+                .With(x => x.TestId,Guid.Parse("41d34938-a4c6-4e67-86f2-e56380c738b6"))
+                .With(x => x.UserId,1).Create()
+            };
             context.Add(question);
             context.AddRange(teststousers);
             context.AddRange(users);
+            context.AddRange(answers);
             context.SaveChanges();
             context.ChangeTracker.Clear();
         }

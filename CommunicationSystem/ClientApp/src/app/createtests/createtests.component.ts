@@ -6,18 +6,18 @@ import { Subject } from '../subjects/subject';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Question } from '../tests/question';
 import { Option } from '../tests/option';
-import { ToastService } from '../toast.service';
 import { TestMember } from './testmember';
 import { QuestionType } from "../tests/question"
 import { UtilitesService } from '../utilites.service';
 import { ErrorHandler } from '../infrastructure/error.handler';
 import { Guid } from '../infrastructure/guid';
+import { ToastService } from '../toast.service';
 
 @Component({
   selector: 'app-createtests',
   templateUrl: './createtests.component.html',
   styleUrls: ['./createtests.component.css', '../app.component.css'],
-  providers: [CreatetestsDataService, ToastService, ErrorHandler]
+  providers: [CreatetestsDataService, ErrorHandler]
 })
 export class CreatetestsComponent implements OnInit {
   tests: Test[] = [];
@@ -31,6 +31,7 @@ export class CreatetestsComponent implements OnInit {
   currentStudentRow: number = -1;
   testStudents: TestMember[] = [];
   searchStudents: TestMember[] = [];
+  fullStudentList: TestMember[] = [];
   subjects: Subject[] = [];
   errors: any = {};
   search: string = "";
@@ -45,21 +46,21 @@ export class CreatetestsComponent implements OnInit {
   tempModals: ElementRef[] = [];
   questionTypes = QuestionType
   searchOptions = [
-    { "id": 0, "name": "Название", "searchOn": "Поиск по Названию" },
-    { "id": 1, "name": "Класс", "searchOn": "Поиск по Классу" },
-    { "id": 2, "name": "Предмет", "searchOn": "Поиск по предмету" },
+    { "id": 0, "name": "Название", "searchOn": "Поиск по названию" },
+    { "id": 1, "name": "Предмет", "searchOn": "Поиск по предмету" },
+    { "id": 2, "name": "Класс", "searchOn": "Поиск по классу" }
   ];
   currentSearchOption: number = 0;
   searchStudent: string = "";
   studentSearchOptions = [
     { "id": 0, "name": "ФИО", "searchOn": "Поиск по ФИО" },
-    { "id": 1, "name": "Класс", "searchOn": "Поиск по Классу" },
+    { "id": 1, "name": "Класс", "searchOn": "Поиск по классу" },
   ];
   currentStudentSearchOption: number = 0;
 
   constructor(private dataService: CreatetestsDataService, public accountDataService: AccountDataService,
-    private modalService: NgbModal, private toastService: ToastService,
-    private utilitesService: UtilitesService, private errorHandler: ErrorHandler) { }
+    private modalService: NgbModal, private utilitesService: UtilitesService
+    , private errorHandler: ErrorHandler, private toastService: ToastService) { }
 
   NextPage() {
     this.page++;
@@ -149,11 +150,12 @@ export class CreatetestsComponent implements OnInit {
     }
   }
   OpenStudentAnswers() {
-    this.dataService.getAnswers(this.currentStudent.userId, this.currentTest.id).subscribe((data: any) => {
-      this.currentStudent.answers = data;
-      console.log(data);
-      this.OpenModal(this.studentModal);
-    })
+    if (this.currentStudent.testId !== undefined) {
+      this.dataService.getAnswers(this.currentStudent.userId, this.currentTest.id).subscribe((data: any) => {
+        this.currentStudent.answers = data;
+        this.OpenModal(this.studentModal);
+      })
+    }
   }
   SaveStudent() {
     this.dataService.putMark(this.currentStudent)
@@ -161,13 +163,14 @@ export class CreatetestsComponent implements OnInit {
         result => {
           this.modalService.dismissAll();
           this.currentStudent = new TestMember();
-        }, error => this.errorHandler.Handle(error))
+        }, error => { this.errors = this.errorHandler.Handle(error); console.log(this.errors); })
   }
   CreateTest() {
     this.search = "";
     this.currentTest = new Test();
     this.testStudents = [];
     this.searchStudents = [];
+    this.fullStudentList = [];
     this.OpenModal(this.testModal);
   }
   EditTest() {
@@ -225,6 +228,18 @@ export class CreatetestsComponent implements OnInit {
   }
   SaveQuestion() {
     this.currentQuestion.questionType = Number(this.currentQuestion.questionType);
+    if (this.currentQuestion.questionType != 3) {
+      if (this.currentQuestion.options.length == 0) {
+        console.log("0");
+        this.toastService.showError("Добавьте вариант ответа");
+        return;
+      }
+      if (this.FindRightAnswer(this.currentQuestion) == "") {
+        console.log("-1");
+        this.toastService.showError("Добавьте верный вариант ответа");
+        return;
+      }
+    }
     if (!this.questionAdding) {
       this.currentTest.questions[this.currentQuestionRow] = this.currentQuestion;
     } else {
@@ -246,20 +261,19 @@ export class CreatetestsComponent implements OnInit {
   }
   SaveTest() {
     this.currentTest.creator = this.accountDataService.currentAccount.id;
-    this.currentTest.questionsQuantity = this.currentTest.questions.length;
     this.currentTest.subject = Number(this.currentTest.subject);
     if (Guid.IsEmpty(this.currentTest.id)) {
       this.dataService.postTest(this.currentTest).subscribe(result => {
         this.modalService.dismissAll();
-        this.searchStudent = ""
         this.GetTests(this.page, this.search);
-      }, error => this.errors = this.errorHandler.Handle(error));
+      }, error => this.errors = this.errorHandler.HandleWitoutValidation(error));
     } else {
       this.dataService.putTest(this.currentTest).subscribe(result => {
         this.modalService.dismissAll();
         this.GetTests(this.page, this.search);
-      }, error => this.errors = this.errorHandler.Handle(error));
+      }, error => this.errors = this.errorHandler.HandleWitoutValidation(error));
     }
+    this.searchStudent = "";
   }
   FindRightAnswer(question: Question) {
     let answer = "";
@@ -290,18 +304,22 @@ export class CreatetestsComponent implements OnInit {
   GetStudents() {
     this.dataService.getStudents(this.currentTest.id).subscribe((data: any) => {
       this.testStudents = data;
+      this.GetStudentsList();
     }, error => this.errorHandler.Handle(error));
   }
   SearchStudents() {
     if (this.searchStudent != "") {
       this.dataService.getSearchStudents(this.currentStudentSearchOption, this.searchStudent).subscribe((data: any) => {
         this.searchStudents = data;
+        this.GetStudentsList();
       }, error => this.errorHandler.Handle(error));
+    } else {
+      this.searchStudents = [];
+      this.GetStudentsList();
     }
-    this.searchStudents = [];
   }
   GetStudentsList() {
-    return [...new Map(this.searchStudents.concat(this.testStudents).map(item =>
+    this.fullStudentList = [...new Map(this.searchStudents.concat(this.testStudents).map(item =>
       [item.userId, item])).values()];
   }
   ChangeStudentState(student: TestMember) {
@@ -324,12 +342,12 @@ export class CreatetestsComponent implements OnInit {
         student.state = 1;
         this.testStudents.unshift(student);
         this.currentTest.students.push(student);
-      }
-      if (!student.isSelected) {
+      } else {
         var subindex = this.testStudents.findIndex(s => s.userId == student.userId);
         this.testStudents.splice(subindex, 1);
         this.currentTest.students?.splice(index, 1);
       }
+      this.GetStudentsList();
     }
   }
   ChangeStudent(student: TestMember) {

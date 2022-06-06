@@ -3,7 +3,7 @@ using CommunicationSystem.Domain.Enums;
 
 namespace CommunicationSystem.Domain.Dtos
 {
-    public class StudentAnswerDto
+    public class StudentAnswerShowDto
     {
         public Guid Id { get; set; }
         public string Image { get; set; }
@@ -11,6 +11,6 @@ namespace CommunicationSystem.Domain.Dtos
         public QuestionType QuestionType { get; set; }
         public string Text { get; set; }
         public string OpenAnswer { get; set; }
-        public IEnumerable<StudentAnswerOptionDto> Options { get; set; }
+        public IEnumerable<StudentAnswerOptionShowDto> Options { get; set; }
     }
 }

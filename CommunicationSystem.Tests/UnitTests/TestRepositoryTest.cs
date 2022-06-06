@@ -13,14 +13,14 @@ using Xunit;
 
 namespace CommunicationSystem.Tests.UnitTests
 {
-    public class CreateTestRepositoryTest
+    public class TestRepositoryTest
     {
         [Fact]
         public void ItShould_Create_Instance()
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            var sut = new CreateTestRepository(context);
+            var sut = new TestRepository(context);
             //Act
             //Assert
             Assert.NotNull(sut);
@@ -30,11 +30,11 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            CreateTestRepositoryDataInitializer.Initialize(context);
-            var sut = new CreateTestRepository(context);
+            TestRepositoryDataInitializer.Initialize(context);
+            var sut = new TestRepository(context);
             var test = context.Tests.FirstOrDefault();
             //Act
-            var actual = sut.GetUserTestsPage(1, 2, 0, "", TestSearchOption.Name)
+            var actual = sut.GetUserCreateTestsPage(1, 2, 0, "", TestSearchOption.Name) //2 is teacher role
                 .ToList();
             //Assert
             Assert.Single(actual);
@@ -47,23 +47,35 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            CreateTestRepositoryDataInitializer.Initialize(context);
-            var sut = new CreateTestRepository(context);
+            TestRepositoryDataInitializer.Initialize(context);
+            var sut = new TestRepository(context);
             //Act
-            var actual = sut.GetUserTestsPage(1, 3, 0, "", TestSearchOption.Name) // 3 is admin role
+            var actual = sut.GetUserCreateTestsPage(1, 3, 0, "", TestSearchOption.Name) // 3 is admin role
                 .ToList();
             //Assert
             Assert.Equal(2,actual.Count);
+        }
+        [Fact]
+        public void ItShould_Get_Student_Tests()
+        {
+            var context = DbContextHelper.CreateInMemoryContext();
+            TestRepositoryDataInitializer.Initialize(context);
+            var sut = new TestRepository(context);
+            //Act
+            var actual = sut.GetUserTestsPage(1, 0, "", TestSearchOption.Name)
+                .ToList();
+            //Assert
+            Assert.Equal(1, actual.Count);
         }
         [Fact]
         public void ItShould_Get_Empty_Tests_List()
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            CreateTestRepositoryDataInitializer.Initialize(context);
-            var sut = new CreateTestRepository(context);
+            TestRepositoryDataInitializer.Initialize(context);
+            var sut = new TestRepository(context);
             //Act
-            var actual = sut.GetUserTestsPage(5, 2, 0, "", TestSearchOption.Name)
+            var actual = sut.GetUserCreateTestsPage(5, 2, 0, "", TestSearchOption.Name)
                 .ToList();
             //Assert
             Assert.Empty(actual);
@@ -73,7 +85,7 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            var sut = new CreateTestRepository(context);
+            var sut = new TestRepository(context);
             var test = new Test()
             {
                 Id = Guid.NewGuid(),
@@ -108,8 +120,8 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            CreateTestRepositoryDataInitializer.Initialize(context);
-            var sut = new CreateTestRepository(context);
+            TestRepositoryDataInitializer.Initialize(context);
+            var sut = new TestRepository(context);
             var expected = context.Tests.AsNoTracking().FirstOrDefault();
             //Act
             expected.Name = "Test";
@@ -127,8 +139,8 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            CreateTestRepositoryDataInitializer.Initialize(context);
-            var sut = new CreateTestRepository(context);
+            TestRepositoryDataInitializer.Initialize(context);
+            var sut = new TestRepository(context);
             //Act
             var actual = await sut.DeleteTestAsync(Guid.Parse("41d34938-a4c6-4e67-86f2-e56380c738b6"));
             sut.SaveChanges();
@@ -149,8 +161,8 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            CreateTestRepositoryDataInitializer.Initialize(context);
-            var sut = new CreateTestRepository(context);
+            TestRepositoryDataInitializer.Initialize(context);
+            var sut = new TestRepository(context);
             //Act
             var actual = await sut.DeleteTestAsync(Guid.Parse("41d34958-a4c6-4e67-86f2-e56380c738b6"));
             //Assert

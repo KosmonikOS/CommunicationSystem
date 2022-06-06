@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CommunicationSystem.Services.Repositories
 {
-    public class CreateQuestionRepository : ICreateQuestionRepository
+    public class QuestionRepository : IQuestionRepository
     {
         private readonly CommunicationContext context;
 
-        public CreateQuestionRepository(CommunicationContext context)
+        public QuestionRepository(CommunicationContext context)
         {
             this.context = context;
         }

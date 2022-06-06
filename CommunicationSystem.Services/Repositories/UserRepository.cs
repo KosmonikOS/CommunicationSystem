@@ -93,7 +93,7 @@ namespace CommunicationSystem.Services.Repositories
             if (userHash == null)
             {
                 logger.LogWarning($"User with {email} wasn't found");
-                return new BaseResponse(ResponseStatus.NotFound) { Message = "Пользователь не найден" };
+                return new BaseResponse(ResponseStatus.NotFound) { Message = "Невозможно обновить пароль" };
             }
             userHash.Salt = hash.Salt;
             userHash.PasswordHash = hash.PasswordHash;

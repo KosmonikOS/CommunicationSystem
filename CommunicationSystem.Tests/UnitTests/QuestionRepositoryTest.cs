@@ -11,14 +11,14 @@ using Xunit;
 
 namespace CommunicationSystem.Tests.UnitTests
 {
-    public class CreateQuestionRepositoryTest
+    public class QuestionRepositoryTest
     {
         [Fact]
         public void ItShould_Create_Instance()
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            var sut = new CreateQuestionRepository(context);
+            var sut = new QuestionRepository(context);
             //Act
             //Assert
             Assert.NotNull(sut);
@@ -28,8 +28,8 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            CreateQuestionRepositoryDataInitializer.Initialize(context);
-            var sut = new CreateQuestionRepository(context);
+            QuestionRepositoryDataInitializer.Initialize(context);
+            var sut = new QuestionRepository(context);
             //Act
             var actual = sut.GetQuestions(Guid.Parse("41d34938-a4c6-4e67-86f2-e56380c738b6"))
                 .ToList();
@@ -41,8 +41,8 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            CreateQuestionRepositoryDataInitializer.Initialize(context);
-            var sut = new CreateQuestionRepository(context);
+            QuestionRepositoryDataInitializer.Initialize(context);
+            var sut = new QuestionRepository(context);
             //Act
             var actual = sut.GetQuestions(Guid.Empty)
                 .ToList();
@@ -54,8 +54,8 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            CreateQuestionRepositoryDataInitializer.Initialize(context);
-            var sut = new CreateQuestionRepository(context);
+            QuestionRepositoryDataInitializer.Initialize(context);
+            var sut = new QuestionRepository(context);
             //Act
             var actual = await sut.DeleteQuestionAsync(
                 Guid.Parse("51d34938-a4c6-4e67-86f2-e56380c738b6"));
@@ -73,8 +73,8 @@ namespace CommunicationSystem.Tests.UnitTests
         {
             //Arrange
             var context = DbContextHelper.CreateInMemoryContext();
-            CreateQuestionRepositoryDataInitializer.Initialize(context);
-            var sut = new CreateQuestionRepository(context);
+            QuestionRepositoryDataInitializer.Initialize(context);
+            var sut = new QuestionRepository(context);
             //Act
             var actual = await sut.DeleteQuestionAsync(
                 Guid.Parse("51d34738-a4c6-4e67-86f2-e56380c738b6"));

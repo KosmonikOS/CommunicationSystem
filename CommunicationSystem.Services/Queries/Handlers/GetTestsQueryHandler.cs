@@ -9,32 +9,32 @@ using Microsoft.Extensions.Logging;
 
 namespace CommunicationSystem.Services.Queries.Handlers
 {
-    public class GetCreateTestsQueryHandler : IRequestHandler<GetCreateTestsQuery, IContentResponse<List<CreateTestShowDto>>>
+    public class GetTestsQueryHandler : IRequestHandler<GetTestsQuery, IContentResponse<List<TestShowDto>>>
     {
         private readonly ITestRepository testRepository;
         private readonly IMapper mapper;
         private readonly ILogger<GetCreateTestsQueryHandler> logger;
 
-        public GetCreateTestsQueryHandler(ITestRepository testRepository,IMapper mapper
-            ,ILogger<GetCreateTestsQueryHandler> logger)
+        public GetTestsQueryHandler(ITestRepository testRepository
+            ,IMapper mapper,ILogger<GetCreateTestsQueryHandler> logger)
         {
             this.testRepository = testRepository;
             this.mapper = mapper;
             this.logger = logger;
         }
-        public async Task<IContentResponse<List<CreateTestShowDto>>> Handle(GetCreateTestsQuery request, CancellationToken cancellationToken)
+        public async Task<IContentResponse<List<TestShowDto>>> Handle(GetTestsQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var dtos = await mapper.ProjectTo<CreateTestShowDto>(testRepository
-                    .GetUserCreateTestsPage(request.UserId, request.Role
-                    , request.Page, request.Search, request.SearchOption)).ToListAsync();
-                return new ContentResponse<List<CreateTestShowDto>>(ResponseStatus.Ok) { Content = dtos };
+                var dtos = await mapper.ProjectTo<TestShowDto>(testRepository
+                    .GetUserTestsPage(request.UserId,request.Page,request.Searh
+                    ,request.SearchOption)).ToListAsync();
+                return new ContentResponse<List<TestShowDto>>(ResponseStatus.Ok) { Content = dtos};
             }
             catch(Exception e)
             {
                 logger.LogError(e.Message);
-                return new ContentResponse<List<CreateTestShowDto>>(ResponseStatus.InternalServerError);
+                return new ContentResponse<List<TestShowDto>>(ResponseStatus.InternalServerError);
             }
         }
     }

@@ -12,9 +12,9 @@ namespace CommunicationSystem.Extentions
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<ICreateTestRepository, CreateTestRepository>();
-            services.AddScoped<ICreateQuestionRepository, CreateQuestionRepository>();
-            services.AddScoped<ICreateOptionRepository, CreateOptionRepository>();
+            services.AddScoped<ITestRepository, TestRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<IOptionRepository, OptionRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();
             return services;
         }

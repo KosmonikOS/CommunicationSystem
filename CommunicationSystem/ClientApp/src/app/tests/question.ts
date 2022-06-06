@@ -15,7 +15,7 @@ export class Question {
     public questionType: number = 0,
     public image?: string,
     public points: number = 1,
-    public studentAnswers: string[] = [],
+    public answers: string[] = [],
     public openAnswer: string = "",
   ) { }
 }

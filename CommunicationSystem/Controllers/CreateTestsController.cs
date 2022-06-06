@@ -37,7 +37,7 @@ namespace CommunicationSystem.Controllers
         [HttpGet("questions/{testId}")]
         public async Task<ActionResult<List<CreateQuestionDto>>> GetQuestionsWithOptions(Guid testId)
         {
-            var query = new GetQuestionsWithOptionsQuery() { TestId = testId };
+            var query = new GetCreateQuestionsWithOptionsQuery() { TestId = testId };
             var result = await mediator.Send(query);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
@@ -56,7 +56,7 @@ namespace CommunicationSystem.Controllers
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("answers/{userId}/{testId}")]
-        public async Task<ActionResult<List<StudentAnswerDto>>> GetStudentAnswers(int userid, Guid testId)
+        public async Task<ActionResult<List<StudentAnswerShowDto>>> GetStudentAnswers(int userid, Guid testId)
         {
             var query = new GetStudentAnswersQuery() { UserId = userid,TestId = testId };
             var result = await mediator.Send(query);

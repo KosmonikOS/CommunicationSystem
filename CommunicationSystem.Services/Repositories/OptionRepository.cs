@@ -1,15 +1,19 @@
 ﻿using CommunicationSystem.Data;
+using CommunicationSystem.Domain.Dtos;
+using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Domain.Enums;
 using CommunicationSystem.Services.Infrastructure.Enums;
 using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommunicationSystem.Services.Repositories
 {
-    public class CreateOptionRepository : ICreateOptionRepository
+    public class OptionRepository : IOptionRepository
     {
         private readonly CommunicationContext context;
 
-        public CreateOptionRepository(CommunicationContext context)
+        public OptionRepository(CommunicationContext context)
         {
             this.context = context;
         }
@@ -21,6 +25,14 @@ namespace CommunicationSystem.Services.Repositories
             context.Remove(option);
             return new BaseResponse(ResponseStatus.Ok);
         }
+
+        public IQueryable<Option> GetRightOptions(Guid testId)
+        {
+            return context.Options.Include(x => x.Question)
+                .Where(x => x.Question.TestId == testId && x.IsRightOption)
+                .AsNoTracking();
+        }
+
         public int SaveChanges()
         {
             return context.SaveChanges();
