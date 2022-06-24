@@ -12,7 +12,12 @@ using CommunicationSystem.Extentions;
 using Microsoft.Extensions.Options;
 using MediatR;
 using System.Reflection;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using CommunicationSystem.Middlewares;
+using Microsoft.AspNetCore.SignalR;
+using CommunicationSystem.Services.Hubs.Infrastructure;
+using CommunicationSystem.Services.Hubs;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace CommunicationSystem
 {
@@ -29,7 +34,6 @@ namespace CommunicationSystem
         public void ConfigureServices(IServiceCollection services)
         {
             //Variables
-            var authOptions = Configuration.GetSection("Auth").Get<AuthOptions>();
             var spaOptions = Configuration.GetSection("Spa").Get<SpaOptions>();
             var connection = Configuration.GetConnectionString("PostgreSQL");
 
@@ -39,15 +43,25 @@ namespace CommunicationSystem
             services.Configure<SmtpOptions>(Configuration.GetSection("SmtpClient"));
             services.Configure<SpaOptions>(Configuration.GetSection("Spa"));
             services.Configure<MailOptions>(Configuration.GetSection("Mail"));
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.Limits.MaxRequestBodySize = 209715200;
+            });
+            services.Configure<FormOptions>(x =>
+            {
+                x.ValueLengthLimit = 209715200;
+                x.MultipartBodyLengthLimit = 209715200;
+            });
 
             //Authentication 
-            services.AddCustomJwt(authOptions);
+            services.AddCustomJwt(Configuration);
 
             //CustomServices
             services.AddServices();
             services.AddRepositories();
 
             services.AddSignalR();
+            services.AddSingleton<IUserIdProvider, UserIdProvider>();
 
             services.AddAutoMapper(Assembly.Load("CommunicationSystem.Domain"));
 
@@ -55,7 +69,7 @@ namespace CommunicationSystem
 
             services.AddDbContext<CommunicationContext>(options => options.UseNpgsql(connection));
 
-            services.AddControllersWithViews()
+            services.AddControllers()
                 .AddNewtonsoftJson(
                     options =>
                     {
@@ -71,14 +85,11 @@ namespace CommunicationSystem
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<SpaOptions> spaOptions)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            if (!env.IsDevelopment())
             {
                 app.UseHsts();
-
                 app.UseSpaStaticFiles();
             }
             app.UseStaticFiles();
@@ -92,7 +103,7 @@ namespace CommunicationSystem
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapHub<VideoChatHub>("/videochathub");
-                //endpoints.MapHub<MessengerHub>("/messengerhub");
+                endpoints.MapHub<MessengerHub>("/messengerhub");
                 endpoints.MapControllers();
             });
 

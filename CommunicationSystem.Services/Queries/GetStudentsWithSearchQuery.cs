@@ -8,6 +8,6 @@ namespace CommunicationSystem.Services.Queries
     public class GetStudentsWithSearchQuery :IRequest<IContentResponse<List<SearchStudentDto>>>
     {
         public string Search { get; set; }
-        public StudentsSearchOption SearchOption { get; set; }
+        public UserSearchOption SearchOption { get; set; }
     }
 }

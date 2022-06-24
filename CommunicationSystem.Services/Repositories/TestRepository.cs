@@ -16,7 +16,7 @@ namespace CommunicationSystem.Services.Repositories
         {
             this.context = context;
         }
-        public IQueryable<Test> GetUserCreateTestsPage(int userId, int role, int page, string search, TestSearchOption searchOption)
+        public IQueryable<Test> GetUserCreateTestsPage(int userId, int role, int page, string search, TestPageSearchOption searchOption)
         {
             var query = (role != 3
                 ? context.Tests.Where(x => x.CreatorId == userId)
@@ -25,13 +25,13 @@ namespace CommunicationSystem.Services.Repositories
             {
                 switch (searchOption)
                 {
-                    case TestSearchOption.Name:
+                    case TestPageSearchOption.Name:
                         query = query.Where(x => EF.Functions.ILike(x.Name, $"%{search}%"));
                         break;
-                    case TestSearchOption.Grade:
+                    case TestPageSearchOption.Grade:
                         query = query.Where(x => EF.Functions.ILike(x.Grade, $"%{search}%"));
                         break;
-                    case TestSearchOption.Subject:
+                    case TestPageSearchOption.Subject:
                         query = query.Include(x => x.Subject)
                             .Where(x => EF.Functions.ILike(x.Subject.Name, $"%{search}%"));
                         break;
@@ -45,19 +45,18 @@ namespace CommunicationSystem.Services.Repositories
             return query.Take(50);
         }
 
-        public IQueryable<TestUser> GetUserTestsPage(int userId, int page, string search, TestSearchOption searchOption)
+        public IQueryable<TestUser> GetUserTestsPage(int userId, int page, string search, TestPageSearchOption searchOption)
         {
             var query = context.TestUser
-                .Include(x => x.Test)
-                .Where(x => x.UserId == userId && !x.IsCompleted);                     
+                .Where(x => x.UserId == userId && !x.IsCompleted);
             if (!string.IsNullOrWhiteSpace(search))
             {
                 switch (searchOption)
                 {
-                    case TestSearchOption.Name:
+                    case TestPageSearchOption.Name:
                         query = query.Where(x => EF.Functions.ILike(x.Test.Name, $"%{search}%"));
                         break;
-                    case TestSearchOption.Subject:
+                    case TestPageSearchOption.Subject:
                         query = query.Where(x => EF.Functions.ILike(x.Test.Subject.Name, $"%{search}%"));
                         break;
                 }
@@ -104,6 +103,6 @@ namespace CommunicationSystem.Services.Repositories
         public Task<int> SaveChangesAsync()
         {
             return context.SaveChangesAsync();
-        }        
+        }
     }
 }

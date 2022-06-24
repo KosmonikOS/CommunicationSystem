@@ -10,6 +10,6 @@ namespace CommunicationSystem.Services.Queries
         public int UserId { get; set; }
         public int Page { get; set; }
         public string Searh { get; set; }
-        public TestSearchOption SearchOption { get; set; }
+        public TestPageSearchOption SearchOption { get; set; }
     }
 }

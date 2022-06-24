@@ -24,7 +24,7 @@ namespace CommunicationSystem.Tests.Infrastructure.DataInitializers
                 {
                     new Group()
                     {
-                        Id = 1,
+                        Id = Guid.Parse("7049545a-e131-40c4-8227-da9a0d52677f"),
                         Name = "Group"
                     }
                 }
@@ -94,6 +94,34 @@ namespace CommunicationSystem.Tests.Infrastructure.DataInitializers
             context.AddRange(tests);
             context.Add(question);
             context.Add(option);
+            context.SaveChanges();
+            context.ChangeTracker.Clear();
+        }
+        public static void InitializePostgreSql(CommunicationContext context)
+        {
+            var user = FixtureHelper.Fixture.Build<User>()
+                .Without(x => x.CreatedTests)
+                .Without(x => x.Tests)
+                .Without(x => x.StudentAnswers)
+                .Without(x => x.Groups)
+                .Without(x => x.PassHash)
+                .Without(x => x.FromMessages)
+                .Without(x => x.ToMessages)
+                .With(x => x.EnterTime, DateTime.UtcNow)
+                .With(x => x.LeaveTime, DateTime.UtcNow)
+                .With(x => x.NickName, "Test")
+                .With(x => x.Role, new Role()
+                {
+                    RoleId = Random.Shared.Next(),
+                    Name = "Role"
+                })
+                .With(x => x.Email, "test@test.test")
+                .With(x => x.LastName, "Last")
+                .With(x => x.Grade, 11)
+                .With(x => x.GradeLetter, "A")
+                .With(x => x.FirstName, "First")
+                .With(x => x.MiddleName, "Middle").Create();
+            context.Add(user);
             context.SaveChanges();
             context.ChangeTracker.Clear();
         }

@@ -16,6 +16,7 @@ namespace CommunicationSystem.Tests.Infrastructure.DataInitializers
             {
                 FixtureHelper.FixtureNoNested.Build<Test>()
                 .With(x => x.CreatorId, 1)
+                .With(x => x.Date,DateTime.UtcNow)
                 .With(x => x.Id, Guid.Parse("41d34938-a4c6-4e67-86f2-e56380c738b6")).Create(),
                 FixtureHelper.FixtureNoNested.Create<Test>()
             };
@@ -52,6 +53,42 @@ namespace CommunicationSystem.Tests.Infrastructure.DataInitializers
             context.Add(question);
             context.Add(teststousers);
             context.AddRange(users);
+            context.SaveChanges();
+            context.ChangeTracker.Clear();
+        }
+        public static void InitializePostgreSql(CommunicationContext context)
+        {
+            var test = FixtureHelper.FixtureNoNested.Build<Test>()
+                .With(x => x.Name, "111")
+                .With(x => x.Date, DateTime.UtcNow)
+                .With(x => x.CreatorId, 1)
+                .With(x => x.Grade, "11 a")
+                .With(x => x.Id, Guid.NewGuid)
+                .With(x => x.SubjectId, 1).Create();
+            var user = FixtureHelper.Fixture.Build<User>()
+                .Without(x => x.CreatedTests)
+                .Without(x => x.Tests)
+                .Without(x => x.StudentAnswers)
+                .Without(x => x.Groups)
+                .Without(x => x.PassHash)
+                .Without(x => x.FromMessages)
+                .Without(x => x.ToMessages)
+                .With(x => x.EnterTime, DateTime.Now)
+                .With(x => x.LeaveTime, DateTime.Now)
+                .With(x => x.Id, 1).Create();
+            var subject = FixtureHelper.FixtureNoNested.Build<Subject>()
+                .With(x => x.Id, 1)
+                .With(x => x.Name, "Subject").Create();
+            var testuser = new TestUser()
+            {
+                UserId = user.Id,
+                TestId = test.Id,
+                IsCompleted = false,
+            };
+            context.Add(subject);
+            context.Add(user);
+            context.Add(test);
+            context.Add(testuser);
             context.SaveChanges();
             context.ChangeTracker.Clear();
         }

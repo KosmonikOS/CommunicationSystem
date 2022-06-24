@@ -14,7 +14,7 @@ namespace CommunicationSystem.Services.Commands.Handlers
         private readonly ILogger<ResendConfirmationCommandHandler> logger;
 
         public ResendConfirmationCommandHandler(IUserRepository userRepository
-            ,IMailService mailService,ILogger<ResendConfirmationCommandHandler> logger)
+            , IMailService mailService, ILogger<ResendConfirmationCommandHandler> logger)
         {
             this.userRepository = userRepository;
             this.mailService = mailService;
@@ -22,27 +22,19 @@ namespace CommunicationSystem.Services.Commands.Handlers
         }
         public async Task<IResponse> Handle(ResendConfirmationCommand request, CancellationToken cancellationToken)
         {
-            try
+            var user = userRepository.GetUsers(x => x.Email == request.Email)
+                .FirstOrDefault();
+            if (user == null)
             {
-                var user = userRepository.GetUsers(x => x.Email == request.Email)
-                    .FirstOrDefault();
-                if (user == null)
-                {
-                    logger.LogWarning($"User with {request.Email} wasn't found");
-                    return new BaseResponse(ResponseStatus.NotFound) { Message = "Пользователь не найден" };
-                }
-                if(user.IsConfirmed == "true")
-                {
-                    return new BaseResponse(ResponseStatus.BadRequest) { Message = "Аккаунт уже подтвержден" };
-                }
-                await mailService.SendConfirmationAsync(user.Email, user.IsConfirmed);
-                return new BaseResponse(ResponseStatus.Ok);
+                logger.LogWarning($"User with {request.Email} wasn't found");
+                return new BaseResponse(ResponseStatus.NotFound) { Message = "Пользователь не найден" };
             }
-            catch (Exception e)
+            if (user.IsConfirmed == "true")
             {
-                logger.LogError(e.Message);
-                return new BaseResponse(ResponseStatus.InternalServerError);
+                return new BaseResponse(ResponseStatus.BadRequest) { Message = "Аккаунт уже подтвержден" };
             }
+            await mailService.SendConfirmationAsync(user.Email, user.IsConfirmed);
+            return new BaseResponse(ResponseStatus.Ok);
         }
     }
 }

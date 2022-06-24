@@ -1,5 +1,6 @@
 ﻿using CommunicationSystem.Domain.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
@@ -8,8 +9,9 @@ namespace CommunicationSystem.Extentions
 {
     public static class AddCustomJwtExtention
     {
-        public static IServiceCollection AddCustomJwt(this IServiceCollection services,AuthOptions authOptions)
+        public static IServiceCollection AddCustomJwt(this IServiceCollection services,IConfiguration configuration)
         {
+            var authOptions = configuration.GetSection("Auth").Get<AuthOptions>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 options =>
                 {

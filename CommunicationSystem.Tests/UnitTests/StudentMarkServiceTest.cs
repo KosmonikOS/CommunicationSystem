@@ -108,7 +108,7 @@ namespace CommunicationSystem.Tests.UnitTests
                 new RightOptionDto()
                 {
                     QuestionId = Guid.Parse("b6e6b7a9-c1aa-46b8-8761-61010874bffe"),
-                    Value = "tEst"
+                    Value = "test"
                 },
             }.AsAsyncQueryable();
             var mock = new Mock<IOptionRepository>();
@@ -119,7 +119,7 @@ namespace CommunicationSystem.Tests.UnitTests
             var sut = new StudentMarkService(mock.Object, mapper.Object);
             var dto = new StudentFullTestAnswerDto()
             {
-                TestId = Guid.Parse("b6e6b7a9-c1aa-46b8-8761-61010874bffe"),
+                TestId = Guid.Parse("b5e6b7a9-c1aa-46b8-8761-61010874bffe"),
                 UserId = 1,
                 Questions = new List<StudentQuestionAnswerDto>()
                 {
@@ -179,7 +179,7 @@ namespace CommunicationSystem.Tests.UnitTests
                 new RightOptionDto()
                 {
                     QuestionId = Guid.Parse("b6e6b7a9-c1aa-46b8-8761-61010874bffe"),
-                    Value = "tEst"
+                    Value = "test"
                 },
             }.AsAsyncQueryable();
             var mock = new Mock<IOptionRepository>();

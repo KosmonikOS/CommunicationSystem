@@ -34,7 +34,7 @@ namespace CommunicationSystem.Tests.UnitTests
             var sut = new TestRepository(context);
             var test = context.Tests.FirstOrDefault();
             //Act
-            var actual = sut.GetUserCreateTestsPage(1, 2, 0, "", TestSearchOption.Name) //2 is teacher role
+            var actual = sut.GetUserCreateTestsPage(1, 2, 0, "", TestPageSearchOption.Name) //2 is teacher role
                 .ToList();
             //Assert
             Assert.Single(actual);
@@ -50,10 +50,49 @@ namespace CommunicationSystem.Tests.UnitTests
             TestRepositoryDataInitializer.Initialize(context);
             var sut = new TestRepository(context);
             //Act
-            var actual = sut.GetUserCreateTestsPage(1, 3, 0, "", TestSearchOption.Name) // 3 is admin role
+            var actual = sut.GetUserCreateTestsPage(1, 3, 0, "", TestPageSearchOption.Name) // 3 is admin role
                 .ToList();
             //Assert
             Assert.Equal(2,actual.Count);
+        }
+        [Fact]
+        public void ItShould_Get_Admin_Tests_By_Search_Name()
+        {
+            //Arrange
+            var context = DbContextHelper.CreatePostgreSqlContext("Tests");
+            TestRepositoryDataInitializer.InitializePostgreSql(context);
+            var sut = new TestRepository(context);
+            //Act
+            var actual = sut.GetUserCreateTestsPage(1, 3, 0, "111", TestPageSearchOption.Name)
+                .ToList();
+            //Assert
+            Assert.Single(actual);
+        }
+        [Fact]
+        public void ItShould_Get_Admin_Tests_By_Search_Subject()
+        {
+            //Arrange
+            var context = DbContextHelper.CreatePostgreSqlContext("Tests");
+            TestRepositoryDataInitializer.InitializePostgreSql(context);
+            var sut = new TestRepository(context);
+            //Act
+            var actual = sut.GetUserCreateTestsPage(1, 3, 0, "Subj", TestPageSearchOption.Subject)
+                .ToList();
+            //Assert
+            Assert.Single(actual);
+        }
+        [Fact]
+        public void ItShould_Get_Admin_Tests_By_Search_Grage()
+        {
+            //Arrange
+            var context = DbContextHelper.CreatePostgreSqlContext("Tests");
+            TestRepositoryDataInitializer.InitializePostgreSql(context);
+            var sut = new TestRepository(context);
+            //Act
+            var actual = sut.GetUserCreateTestsPage(1, 3, 0, "11", TestPageSearchOption.Grade)
+                .ToList();
+            //Assert
+            Assert.Single(actual);
         }
         [Fact]
         public void ItShould_Get_Student_Tests()
@@ -62,10 +101,34 @@ namespace CommunicationSystem.Tests.UnitTests
             TestRepositoryDataInitializer.Initialize(context);
             var sut = new TestRepository(context);
             //Act
-            var actual = sut.GetUserTestsPage(1, 0, "", TestSearchOption.Name)
+            var actual = sut.GetUserTestsPage(1, 0, "", TestPageSearchOption.Name)
                 .ToList();
             //Assert
             Assert.Equal(1, actual.Count);
+        }
+        [Fact]
+        public void ItShould_Get_Student_Tests_By_Search_Name()
+        {
+            var context = DbContextHelper.CreatePostgreSqlContext("Tests");
+            TestRepositoryDataInitializer.InitializePostgreSql(context);
+            var sut = new TestRepository(context);
+            //Act
+            var actual = sut.GetUserTestsPage(1, 0, "11", TestPageSearchOption.Name)
+                .ToList();
+            //Assert
+            Assert.Single(actual);
+        }
+        [Fact]
+        public void ItShould_Get_Student_Tests_By_Search_Subject()
+        {
+            var context = DbContextHelper.CreatePostgreSqlContext("Tests");
+            TestRepositoryDataInitializer.InitializePostgreSql(context);
+            var sut = new TestRepository(context);
+            //Act
+            var actual = sut.GetUserTestsPage(1, 0, "Subject", TestPageSearchOption.Subject)
+                .ToList();
+            //Assert
+            Assert.Single(actual);
         }
         [Fact]
         public void ItShould_Get_Empty_Tests_List()
@@ -75,7 +138,7 @@ namespace CommunicationSystem.Tests.UnitTests
             TestRepositoryDataInitializer.Initialize(context);
             var sut = new TestRepository(context);
             //Act
-            var actual = sut.GetUserCreateTestsPage(5, 2, 0, "", TestSearchOption.Name)
+            var actual = sut.GetUserCreateTestsPage(5, 2, 0, "", TestPageSearchOption.Name)
                 .ToList();
             //Assert
             Assert.Empty(actual);

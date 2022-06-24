@@ -1,5 +1,4 @@
 ﻿using DataAnnotationsExtensions;
-using NpgsqlTypes;
 using System.ComponentModel.DataAnnotations;
 
 namespace CommunicationSystem.Domain.Entities
@@ -35,7 +34,8 @@ namespace CommunicationSystem.Domain.Entities
         public ICollection<Group> Groups { get; set; }
         public ICollection<Test> Tests { get; set; }
         public ICollection<Test> CreatedTests { get; set; }
-        public ICollection<StudentAnswer> StudentAnswers { get; set; } 
-        public string GetFullGrade => Grade + " " + GradeLetter;
+        public ICollection<StudentAnswer> StudentAnswers { get; set; }
+        public ICollection<Message> ToMessages { get; set; }
+        public ICollection<Message> FromMessages { get; set; }
     }
 }

@@ -35,6 +35,18 @@ namespace CommunicationSystem.Tests.UnitTests
             Assert.Equal(3, actual.Count);
             Assert.Equal(1, actual[0].Id);
         }
+        [Fact]
+        public void ItShould_Get_Subject_By_Search()
+        {
+            //Arrange
+            var context = DbContextHelper.CreatePostgreSqlContext("Subjects");
+            SubjectRepositoryDataInitializer.InitializePostgreSql(context);
+            var sut = new SubjectRepository(context);
+            //Act
+            var actual = sut.GetSubjectsPage(0, "test").ToList();
+            //Assert
+            Assert.Single(actual);
+        }
         public void ItShould_Not_Get_Subjects_By_Page()
         {
             //Arrange

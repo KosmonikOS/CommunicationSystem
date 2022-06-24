@@ -30,13 +30,13 @@ namespace CommunicationSystem.Services.Services
             var timeStamp = Convert.ToDateTime(Encoding.UTF8.GetString(Convert.FromHexString(token.Split("@d@")[1]))).AddSeconds(3600);
             if (timeStamp < DateTime.Now)
             {
-                context.Users.Remove(user);
+                context.Remove(user);
                 await context.SaveChangesAsync();
                 logger.LogWarning($"Confirmation time of {token} token is up");
                 return new BaseResponse(ResponseStatus.BadRequest) { Message = "Время подтверждения истекло" };
             }
             user.IsConfirmed = "true";
-            context.Users.Update(user);
+            context.Update(user);
             await context.SaveChangesAsync();
             return new BaseResponse(ResponseStatus.Ok);
         }

@@ -7,7 +7,7 @@ namespace CommunicationSystem.Domain.Dtos
         public Guid Id { get; set; }
         public string Text { get; set; }
         public int Points { get; set; }
-        public QuestionType QuestionType { get; set; } = QuestionType.Single;
+        public QuestionType QuestionType { get; set; }
         public string? Image { get; set; }
         public Guid TestId { get; set; }
         public IEnumerable<OptionShowDto> Options { get; set; }

@@ -11,6 +11,6 @@ namespace CommunicationSystem.Services.Queries
         public int Role { get; set; }
         public int Page { get; set; }
         public string Search { get; set; }
-        public TestSearchOption SearchOption { get; set; }
+        public TestPageSearchOption SearchOption { get; set; }
     }
 }

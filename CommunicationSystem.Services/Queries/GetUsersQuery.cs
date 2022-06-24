@@ -8,7 +8,7 @@ namespace CommunicationSystem.Services.Queries
     public class GetUsersQuery :IRequest<IContentResponse<List<UserAccountAdminDto>>>
     {
         public int Page { get; set; }
-        public UserSearchOption SearchOption { get; set; }
+        public UserPageSearchOption SearchOption { get; set; }
         public string Search { get; set; }
     }
 }

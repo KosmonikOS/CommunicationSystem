@@ -3,7 +3,6 @@ using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Repositories.Interfaces;
 using CommunicationSystem.Services.Services.Interfaces;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace CommunicationSystem.Services.Commands.Handlers
 {
@@ -12,33 +11,23 @@ namespace CommunicationSystem.Services.Commands.Handlers
         private readonly IUserRepository userRepository;
         private readonly IMailService mailService;
         private readonly IPasswordHashService hashService;
-        private readonly ILogger<RecoverPasswordCommandHandler> logger;
 
-        public RecoverPasswordCommandHandler(IUserRepository userRepository,IMailService mailService
-            , IPasswordHashService hashService, ILogger<RecoverPasswordCommandHandler> logger)
+        public RecoverPasswordCommandHandler(IUserRepository userRepository, IMailService mailService
+            , IPasswordHashService hashService)
         {
             this.userRepository = userRepository;
             this.mailService = mailService;
             this.hashService = hashService;
-            this.logger = logger;
         }
         public async Task<IResponse> Handle(RecoverPasswordCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var newPass = Guid.NewGuid().ToString();
-                var saltPass = hashService.GenerateSaltPass(newPass);
-                var setPass = userRepository.UpdateUserPasswordByEmail(saltPass,request.Dto.Email);
-                if (!setPass.IsSuccess) return setPass;
-                await userRepository.SaveChangesAsync();
-                await mailService.SendRecoveredPasswordAsync(request.Dto.Email, newPass);
-                return new BaseResponse(ResponseStatus.Ok);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.Message);
-                return new BaseResponse(ResponseStatus.InternalServerError);
-            }
+            var newPass = Guid.NewGuid().ToString();
+            var saltPass = hashService.GenerateSaltPass(newPass);
+            var setPass = userRepository.UpdateUserPasswordByEmail(saltPass, request.Dto.Email);
+            if (!setPass.IsSuccess) return setPass;
+            await userRepository.SaveChangesAsync();
+            await mailService.SendRecoveredPasswordAsync(request.Dto.Email, newPass);
+            return new BaseResponse(ResponseStatus.Ok);
         }
     }
 }

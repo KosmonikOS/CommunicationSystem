@@ -14,6 +14,7 @@ namespace CommunicationSystem.Extentions
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IStudentMarkService, StudentMarkService>();
+            services.AddScoped<IMessageService, MessageService>();
             return services;
         }
     }

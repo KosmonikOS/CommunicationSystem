@@ -16,6 +16,9 @@ namespace CommunicationSystem.Extentions
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<IOptionRepository, OptionRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IContactRepository, ContactRepository>();
             return services;
         }
     }

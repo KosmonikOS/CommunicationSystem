@@ -232,6 +232,7 @@ _Pvt_Extensions
 
 # Assets
 /ClientApp/src/assets
+/ClientApp/src/upload
 
 #Logs
 /Logs

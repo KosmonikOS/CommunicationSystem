@@ -22,7 +22,7 @@ export class AuthDataService {
         localStorage.setItem("CURRENT_COMMUNICATION_ID", token.currentAccountId);
         this.currentUserEmail = email;
       })
-    );
+    )
   }
   setRefreshTimer() {
     var time = JSON.parse(atob(localStorage.getItem("COMMUNICATION_ACCESS_TOKEN_KEY")!.split('.')[1])).exp * 1000 - new Date().getTime() - 60000;
@@ -44,7 +44,7 @@ export class AuthDataService {
     if (this.isAuthenticated()) {
       return this.http.put(this.url + "settime", {
         "Id": id,
-        "Action": action
+        "Activity": action
       }).subscribe(() => { });
     }
   }

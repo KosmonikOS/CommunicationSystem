@@ -23,16 +23,97 @@ namespace CommunicationSystem.Data.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "pg_trgm");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CommunicationSystem.Domain.Entities.Group", b =>
+            modelBuilder.Entity("CommunicationSystem.Domain.Dtos.ContactDto", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("AccountImage")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsGroup")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LastActivity")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastMessage")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastMessageDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("NotViewedMessages")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<Guid?>("ToGroup")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("ToId")
+                        .HasColumnType("integer");
+
+                    b.ToView(null);
+                });
+
+            modelBuilder.Entity("CommunicationSystem.Domain.Dtos.ContactMessageDto", b =>
+                {
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsMine")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.ToView(null);
+                });
+
+            modelBuilder.Entity("CommunicationSystem.Domain.Dtos.GroupMessageDto", b =>
+                {
+                    b.Property<string>("AccountImage")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsMine")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.ToView(null);
+                });
+
+            modelBuilder.Entity("CommunicationSystem.Domain.Entities.Group", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("GroupImage")
-                        .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text")
                         .HasDefaultValue("/assets/group.png");
@@ -44,7 +125,22 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
+                });
+
+            modelBuilder.Entity("CommunicationSystem.Domain.Entities.GroupUser", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("UserId", "GroupId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("GroupUser", (string)null);
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.Message", b =>
@@ -59,16 +155,19 @@ namespace CommunicationSystem.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("Date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("FromId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ToGroup")
-                        .HasColumnType("integer");
+                    b.Property<bool>("IsGroup")
+                        .HasColumnType("boolean");
 
-                    b.Property<int>("ToId")
+                    b.Property<Guid?>("ToGroup")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("ToId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Type")
@@ -81,9 +180,11 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.HasIndex("FromId");
 
+                    b.HasIndex("ToGroup");
+
                     b.HasIndex("ToId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.Option", b =>
@@ -106,7 +207,7 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Options");
+                    b.ToTable("Options", (string)null);
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.Question", b =>
@@ -135,7 +236,7 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.HasIndex("TestId");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.Role", b =>
@@ -157,7 +258,7 @@ namespace CommunicationSystem.Data.Migrations
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Name"), "gin");
                     NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Name"), new[] { "gin_trgm_ops" });
 
-                    b.ToTable("Role");
+                    b.ToTable("Role", (string)null);
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.StudentAnswer", b =>
@@ -189,7 +290,7 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("StudentAnswers");
+                    b.ToTable("StudentAnswers", (string)null);
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.Subject", b =>
@@ -211,7 +312,7 @@ namespace CommunicationSystem.Data.Migrations
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Name"), "gin");
                     NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Name"), new[] { "gin_trgm_ops" });
 
-                    b.ToTable("Subject");
+                    b.ToTable("Subject", (string)null);
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.Test", b =>
@@ -262,7 +363,7 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Tests");
+                    b.ToTable("Tests", (string)null);
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.TestUser", b =>
@@ -283,7 +384,7 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.HasIndex("TestId");
 
-                    b.ToTable("TestUser");
+                    b.ToTable("TestUser", (string)null);
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.User", b =>
@@ -362,7 +463,7 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.UserSaltPass", b =>
@@ -389,39 +490,47 @@ namespace CommunicationSystem.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserSaltPass");
+                    b.ToTable("UserSaltPass", (string)null);
                 });
 
-            modelBuilder.Entity("GroupUser", b =>
+            modelBuilder.Entity("CommunicationSystem.Domain.Entities.GroupUser", b =>
                 {
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("integer");
+                    b.HasOne("CommunicationSystem.Domain.Entities.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("UsersId")
-                        .HasColumnType("integer");
+                    b.HasOne("CommunicationSystem.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasKey("GroupsId", "UsersId");
+                    b.Navigation("Group");
 
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("GroupUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.Message", b =>
                 {
                     b.HasOne("CommunicationSystem.Domain.Entities.User", "From")
-                        .WithMany()
+                        .WithMany("FromMessages")
                         .HasForeignKey("FromId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CommunicationSystem.Domain.Entities.User", "To")
+                    b.HasOne("CommunicationSystem.Domain.Entities.Group", "Group")
                         .WithMany()
-                        .HasForeignKey("ToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ToGroup");
+
+                    b.HasOne("CommunicationSystem.Domain.Entities.User", "To")
+                        .WithMany("ToMessages")
+                        .HasForeignKey("ToId");
 
                     b.Navigation("From");
+
+                    b.Navigation("Group");
 
                     b.Navigation("To");
                 });
@@ -496,7 +605,7 @@ namespace CommunicationSystem.Data.Migrations
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.TestUser", b =>
                 {
-                    b.HasOne("CommunicationSystem.Domain.Entities.Test", null)
+                    b.HasOne("CommunicationSystem.Domain.Entities.Test", "Test")
                         .WithMany()
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -507,6 +616,8 @@ namespace CommunicationSystem.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Test");
 
                     b.Navigation("User");
                 });
@@ -531,21 +642,6 @@ namespace CommunicationSystem.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GroupUser", b =>
-                {
-                    b.HasOne("CommunicationSystem.Domain.Entities.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CommunicationSystem.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.Question", b =>
@@ -576,10 +672,14 @@ namespace CommunicationSystem.Data.Migrations
                 {
                     b.Navigation("CreatedTests");
 
+                    b.Navigation("FromMessages");
+
                     b.Navigation("PassHash")
                         .IsRequired();
 
                     b.Navigation("StudentAnswers");
+
+                    b.Navigation("ToMessages");
                 });
 #pragma warning restore 612, 618
         }

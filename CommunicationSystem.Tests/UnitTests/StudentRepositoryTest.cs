@@ -58,18 +58,6 @@ namespace CommunicationSystem.Tests.UnitTests
             Assert.Equal(actual.Mark, expected.Mark);
         }
         [Fact]
-        public void ItShould_Search_Test_Students()
-        {
-            //Arrange
-            var context = DbContextHelper.CreateInMemoryContext();
-            StudentRepositoryDataInitializer.Initialize(context);
-            var sut = new StudentRepository(context);
-            //Act
-            var actual = sut.GetStudents("", StudentsSearchOption.FullName).ToList();
-            //Assert
-            Assert.Equal(3, actual.Count);
-        }
-        [Fact]
         public void ItShould_Update_Student_Mark()
         {
             //Arrange
@@ -122,18 +110,18 @@ namespace CommunicationSystem.Tests.UnitTests
                 new TestStudentStateDto()
                 {
                     UserId = 1,
-                    State = StudentState.Deleted
+                    State = DbEntityState.Deleted
                 },
                 new TestStudentStateDto()
                 {
                     UserId = 2,
-                    State = StudentState.Modified,
+                    State = DbEntityState.Modified,
                     IsCompleted = false
                 },
                 new TestStudentStateDto()
                 {
                     UserId = 3,
-                    State = StudentState.Added
+                    State = DbEntityState.Added
                 }
             };
             //Act

@@ -17,7 +17,7 @@ namespace CommunicationSystem.Services.Commands.Handlers
 
         public RegistrateUserCommandHandler(IConfirmationTokenService tokenService
             , IUserRepository userRepository, IMailService mailService
-            ,IPasswordHashService hashService, ILogger<RegistrateUserCommandHandler> logger)
+            , IPasswordHashService hashService, ILogger<RegistrateUserCommandHandler> logger)
         {
             this.tokenService = tokenService;
             this.userRepository = userRepository;
@@ -27,32 +27,20 @@ namespace CommunicationSystem.Services.Commands.Handlers
         }
         public async Task<IResponse> Handle(RegistrateUserCommand request, CancellationToken cancellationToken)
         {
-            try
+            var user = userRepository.GetUsers(x => x.Email == request.Dto.Email)
+                .FirstOrDefault();
+            if (user != null)
             {
-                if (request.Dto != null)
-                {
-                    var user = userRepository.GetUsers(x => x.Email == request.Dto.Email)
-                        .FirstOrDefault();
-                    if (user != null)
-                    {
-                        logger.LogWarning("User with same email has already added");
-                        return new BaseResponse(ResponseStatus.BadRequest) { Message = "Почта уже используется" };
-                    }
-                    var token = tokenService.GenerateToken(request.Dto.Email);
-                    var saltPass = hashService.GenerateSaltPass(request.Dto.Password);
-                    userRepository.AddUser(request.Dto,saltPass ,token);
-                    await userRepository.SaveChangesAsync();
-                    await mailService.SendConfirmationAsync(request.Dto.Email, token);
-                    logger.LogInformation($"User with {request.Dto.Email} successfully created");
-                    return new BaseResponse(ResponseStatus.Ok);
-                }
-                return new BaseResponse(ResponseStatus.BadRequest);
+                logger.LogWarning("User with same email has already added");
+                return new BaseResponse(ResponseStatus.BadRequest) { Message = "Почта уже используется" };
             }
-            catch (Exception e)
-            {
-                logger.LogError(e.Message);
-                return new BaseResponse(ResponseStatus.InternalServerError);
-            }
+            var token = tokenService.GenerateToken(request.Dto.Email);
+            var saltPass = hashService.GenerateSaltPass(request.Dto.Password);
+            userRepository.AddUser(request.Dto, saltPass, token);
+            await userRepository.SaveChangesAsync();
+            await mailService.SendConfirmationAsync(request.Dto.Email, token);
+            logger.LogInformation($"User with {request.Dto.Email} successfully created");
+            return new BaseResponse(ResponseStatus.Ok);
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2,Input, OnChanges, SimpleChanges } from "@angular/core"
+import { Directive, ElementRef, Renderer2, Input, OnChanges, SimpleChanges } from "@angular/core"
 
 @Directive({
   selector: "[error]",
@@ -17,5 +17,5 @@ export class ErrorDirective implements OnChanges {
       this.render.removeClass(this.elem.nativeElement, "border-danger");
       this.render.removeClass(this.elem.nativeElement, "input-danger");
     }
-    }
+  }
 }

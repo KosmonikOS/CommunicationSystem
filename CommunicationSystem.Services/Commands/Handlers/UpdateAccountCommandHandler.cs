@@ -5,7 +5,6 @@ using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Repositories.Interfaces;
 using CommunicationSystem.Services.Services.Interfaces;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace CommunicationSystem.Services.Commands.Handlers
 {
@@ -14,35 +13,25 @@ namespace CommunicationSystem.Services.Commands.Handlers
         private readonly IPasswordHashService hashService;
         private readonly IMapper mapper;
         private readonly IUserRepository userRepository;
-        private readonly ILogger<UpdateAccountCommandHandler> logger;
 
         public UpdateAccountCommandHandler(IPasswordHashService hashService, IMapper mapper
-            , IUserRepository userRepository, ILogger<UpdateAccountCommandHandler> logger)
+            , IUserRepository userRepository)
         {
             this.hashService = hashService;
             this.mapper = mapper;
             this.userRepository = userRepository;
-            this.logger = logger;
         }
         public async Task<IResponse> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
         {
-            try
+            var user = mapper.Map<User>(request.Dto);
+            if (!string.IsNullOrEmpty(request.Dto.Password))
             {
-                var user = mapper.Map<User>(request.Dto);
-                if (!string.IsNullOrEmpty(request.Dto.Password))
-                {
-                    var hash = hashService.GenerateSaltPass(request.Dto.Password);
-                    userRepository.UpdateUserPasswordByEmail(hash, user.Email);
-                }
-                userRepository.UpdateUser(user,false);
-                await userRepository.SaveChangesAsync();
-                return new BaseResponse(ResponseStatus.Ok);
+                var hash = hashService.GenerateSaltPass(request.Dto.Password);
+                userRepository.UpdateUserPasswordByEmail(hash, user.Email);
             }
-            catch (Exception e)
-            {
-                logger.LogError(e.Message);
-                return new BaseResponse(ResponseStatus.InternalServerError);
-            }
+            userRepository.UpdateUser(user, false);
+            await userRepository.SaveChangesAsync();
+            return new BaseResponse(ResponseStatus.Ok);
         }
     }
 }

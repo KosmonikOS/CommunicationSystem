@@ -5,36 +5,24 @@ using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Repositories.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace CommunicationSystem.Services.Queries.Handlers
 {
     public class GetStudentsWithSearchQueryHandler : IRequestHandler<GetStudentsWithSearchQuery, IContentResponse<List<SearchStudentDto>>>
     {
-        private readonly IStudentRepository studentRepository;
+        private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
-        private readonly ILogger<GetStudentsWithSearchQueryHandler> logger;
 
-        public GetStudentsWithSearchQueryHandler(IStudentRepository studentRepository
-            ,IMapper mapper,ILogger<GetStudentsWithSearchQueryHandler> logger)
+        public GetStudentsWithSearchQueryHandler(IUserRepository userRepository, IMapper mapper)
         {
-            this.studentRepository = studentRepository;
+            this.userRepository = userRepository;
             this.mapper = mapper;
-            this.logger = logger;
         }
         public async Task<IContentResponse<List<SearchStudentDto>>> Handle(GetStudentsWithSearchQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var dtos = await mapper.ProjectTo<SearchStudentDto>(studentRepository
-                    .GetStudents(request.Search,request.SearchOption)).ToListAsync();
-                return new ContentResponse<List<SearchStudentDto>>(ResponseStatus.Ok) { Content = dtos };
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.Message);
-                return new ContentResponse<List<SearchStudentDto>>(ResponseStatus.InternalServerError);
-            }
+            var dtos = await mapper.ProjectTo<SearchStudentDto>(userRepository
+                .GetUsersWithSearch(request.Search, request.SearchOption)).ToListAsync();
+            return new ContentResponse<List<SearchStudentDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }
 }

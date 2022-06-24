@@ -16,9 +16,23 @@ namespace CommunicationSystem.Tests.Infrastructure.DataInitializers
                     .With(x => x.Id,1)
                     .With(x => x.Name,"Test").Create(),
                 FixtureHelper.Fixture.Build<Subject>()
-                    .With(x => x.Tests,new List<Test>()).Create(),
+                    .Without(x => x.Tests)
+                    .With(x => x.Id,2).Create(),
                 FixtureHelper.Fixture.Build<Subject>()
-                    .With(x => x.Tests,new List<Test>()).Create(),
+                    .Without(x => x.Tests)
+                    .With(x => x.Id,3).Create(),
+            };
+            context.AddRange(subjects);
+            context.SaveChanges();
+            context.ChangeTracker.Clear();
+        }
+        public static void InitializePostgreSql(CommunicationContext context)
+        {
+            var subjects = new List<Subject>()
+            {
+                FixtureHelper.FixtureNoNested.Build<Subject>()
+                    .With(x => x.Id,1)
+                    .With(x => x.Name,"Test").Create()
             };
             context.AddRange(subjects);
             context.SaveChanges();

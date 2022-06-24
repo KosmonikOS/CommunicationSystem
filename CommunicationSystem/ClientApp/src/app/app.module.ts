@@ -5,6 +5,7 @@ import { AdminGuard } from "./guards/admin.guard"
 import { TeacherGuard } from "./guards/teacher.guard"
 import { AuthDataService } from "./auth/auth.data.service"
 import { AccountDataService } from "./account/account.data.service"
+import '@angular/common/locales/global/ru';
 ///////////////////////COMPONENTS///////////////////////////////////
 import { AuthComponent } from "./auth/auth.component";
 import { AppComponent } from './app.component';

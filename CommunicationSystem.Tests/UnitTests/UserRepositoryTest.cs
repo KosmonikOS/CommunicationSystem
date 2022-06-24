@@ -118,7 +118,7 @@ namespace CommunicationSystem.Tests.UnitTests
             var logger = LoggerHelper.GetLogger<UserRepository>();
             var sut = new UserRepository(context, logger);
             //Act
-            var actual = sut.GetUsersPage(0,"",UserSearchOption.Email)
+            var actual = sut.GetUsersPage(0,"",UserPageSearchOption.Email)
                 .ToList();
             //Arrange
             Assert.Equal(2,actual.Count);
@@ -132,10 +132,92 @@ namespace CommunicationSystem.Tests.UnitTests
             var logger = LoggerHelper.GetLogger<UserRepository>();
             var sut = new UserRepository(context, logger);
             //Act
-            var actual = sut.GetUsersPage(1, "", UserSearchOption.Email)
+            var actual = sut.GetUsersPage(1, "", UserPageSearchOption.Email)
                 .ToList();
             //Arrange
             Assert.Empty(actual);
+        }
+        [Fact]
+        public void ItShould_Not_Get_Users_By_Search_NickName()
+        {
+            //Arrange
+            var context = DbContextHelper.CreatePostgreSqlContext("Users");
+            UserRepositoryDataInitializer.InitializePostgreSql(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            //Act
+            var actual = sut.GetUsersPage(0, "tes", UserPageSearchOption.NickName)
+                .ToList();
+            //Arrange
+            Assert.Single(actual);
+        }
+        [Fact]
+        public void ItShould_Get_Test_Students_By_Search_Name()
+        {
+            //Arrange
+            var context = DbContextHelper.CreatePostgreSqlContext("Users");
+            UserRepositoryDataInitializer.InitializePostgreSql(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context,logger);
+            //Act
+            var actual = sut.GetUsersWithSearch("first mid", UserSearchOption.FullName).ToList();
+            //Assert
+            Assert.Single(actual);
+        }
+        [Fact]
+        public void ItShould_Get_Test_Students_By_Search_Grade()
+        {
+            //Arrange
+            var context = DbContextHelper.CreatePostgreSqlContext("Users");
+            UserRepositoryDataInitializer.InitializePostgreSql(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            //Act
+            var actual = sut.GetUsersWithSearch("11 a", UserSearchOption.Grade).ToList();
+            //Assert
+            Assert.Single(actual);
+        }
+        [Fact]
+        public void ItShould_Not_Get_Users_By_Search_Email()
+        {
+            //Arrange
+            var context = DbContextHelper.CreatePostgreSqlContext("Users");
+            UserRepositoryDataInitializer.InitializePostgreSql(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            //Act
+            var actual = sut.GetUsersPage(0, "test@te", UserPageSearchOption.Email)
+                .ToList();
+            //Arrange
+            Assert.Single(actual);
+        }
+        [Fact]
+        public void ItShould_Not_Get_Users_By_Search_FullName()
+        {
+            //Arrange
+            var context = DbContextHelper.CreatePostgreSqlContext("Users");
+            UserRepositoryDataInitializer.InitializePostgreSql(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            //Act
+            var actual = sut.GetUsersPage(0, "Last First mi", UserPageSearchOption.FullName)
+                .ToList();
+            //Arrange
+            Assert.Single(actual);
+        }
+        [Fact]
+        public void ItShould_Not_Get_Users_By_Search_Role()
+        {
+            //Arrange
+            var context = DbContextHelper.CreatePostgreSqlContext("Users");
+            UserRepositoryDataInitializer.InitializePostgreSql(context);
+            var logger = LoggerHelper.GetLogger<UserRepository>();
+            var sut = new UserRepository(context, logger);
+            //Act
+            var actual = sut.GetUsersPage(0, "Ro", UserPageSearchOption.Role)
+                .ToList();
+            //Arrange
+            Assert.Single(actual);
         }
         [Fact]
         public void ItShould_Set_Recover_Password()
@@ -196,7 +278,7 @@ namespace CommunicationSystem.Tests.UnitTests
             var options = context.Options.ToList();
             var hashes = context.UserSaltPass.ToList();
             var tests = context.Tests.ToList();
-            var groups = context.Groups.ToList();
+            var Users = context.Users.ToList();
             //Assert
             Assert.True(actual.IsSuccess);
             Assert.Null(actual.Message);
@@ -205,7 +287,7 @@ namespace CommunicationSystem.Tests.UnitTests
             Assert.Empty(options);
             Assert.Empty(hashes);
             Assert.Single(tests);
-            Assert.Single(groups);
+            Assert.Single(Users);
         }
         [Fact]
         public async Task ItShould_Return_NotFound_While_Delete_User()

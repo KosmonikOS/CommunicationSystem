@@ -30,26 +30,25 @@ namespace CommunicationSystem.Services.Repositories
                 query = query.Where(expression);
             }
             return query;
-
         }
-        public IQueryable<User> GetUsersPage(int page, string search, UserSearchOption searchOption)
+        public IQueryable<User> GetUsersPage(int page, string search, UserPageSearchOption searchOption)
         {
             var query = context.Users.AsNoTracking();
             if (!string.IsNullOrWhiteSpace(search))
             {
                 switch (searchOption)
                 {
-                    case UserSearchOption.NickName:
+                    case UserPageSearchOption.NickName:
                         query = query.Where(x => EF.Functions.ILike(x.NickName, $"%{search}%"));
                         break;
-                    case UserSearchOption.FullName:
+                    case UserPageSearchOption.FullName:
                         query = query.Where(x => EF.Functions.ILike(
                             x.LastName + " " + x.FirstName + " " + x.MiddleName, $"%{search}%"));
                         break;
-                    case UserSearchOption.Email:
+                    case UserPageSearchOption.Email:
                         query = query.Where(x => EF.Functions.ILike(x.Email, $"%{search}%"));
                         break;
-                    case UserSearchOption.Role:
+                    case UserPageSearchOption.Role:
                         query = query.Include(x => x.Role)
                             .Where(x => EF.Functions.ILike(x.Role.Name, $"%{search}%"));
                         break;
@@ -61,6 +60,28 @@ namespace CommunicationSystem.Services.Repositories
                 query = query.Skip(page * 50);
             }
             return query.Take(50);
+        }
+        public IQueryable<User> GetUsersWithSearch(string search, UserSearchOption searchOption, int limit = 50)
+        {
+            var query = context.Users.AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                switch (searchOption)
+                {
+                    case UserSearchOption.FullName:
+                        query = query.Where(x => EF.Functions.ILike(
+                            x.LastName + " " + x.FirstName + " " + x.MiddleName, $"%{search}%"));
+                        break;
+                    case UserSearchOption.Grade:
+                        query = query.Where(x => EF.Functions.ILike(
+                            x.Grade + " " + x.GradeLetter, $"%{search}%"));
+                        break;
+                    case UserSearchOption.NickName:
+                        query = query.Where(x => EF.Functions.ILike(x.NickName, $"%{search}%"));
+                        break;
+                }
+            }
+            return query.OrderByDescending(x => x.Id).Take(limit);
         }
         public void AddUser(RegistrationDto user, UserSaltPass saltPass, string token)
         {
@@ -107,6 +128,8 @@ namespace CommunicationSystem.Services.Repositories
                 .Include(x => x.PassHash)
                 .Include(x => x.Tests)
                 .Include(x => x.Groups)
+                .Include(x => x.FromMessages)
+                .Include(x => x.ToMessages)
                 .Include(x => x.StudentAnswers)
                 .Include(x => x.CreatedTests)
                 .ThenInclude(x => x.Questions)

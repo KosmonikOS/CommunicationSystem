@@ -334,8 +334,8 @@ export class CreatetestsComponent implements OnInit {
       } else {
         if (!student.isSelected) {
           student.state = 3;
+          this.currentTest.students.push(student); //Проверить
         }
-        this.currentTest.students.push(student);
       }
     } else {
       if (student.isSelected) {

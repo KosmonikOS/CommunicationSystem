@@ -2,109 +2,141 @@
   <div class="row rounded-lg overflow-hidden shadow">
     <div class="col-md-3 cl-12 vh-100 d-md-block" [ngClass]="{'d-none':!isOpen}">
       <div class="rounded input-group">
-        <input type="search" class="form-control rounded" placeholder="Поиск по Никнейму" [(ngModel)]="search" (keyup.enter)="searchUsers(true)" />
+        <input type="search" class="form-control rounded" placeholder="Поиск по Никнейму" [(ngModel)]="search" (keyup.enter)="SearchContacts()" />
         <span class="input-group-text border-0" id="search-addon">
-          <i class="bi bi-search" style="cursor:pointer" (click)="searchUsers(true)"></i>
+          <i class="bi bi-search" style="cursor:pointer" (click)="SearchContacts()"></i>
         </span>
         <span class="input-group-text border-0" id="search-addon">
-          <i style="cursor:pointer" class="bi bi-plus-lg" (click)="openGroupModal(groupModal)"></i>
+          <i style="cursor:pointer" class="bi bi-plus-lg" (click)="AddGroup(groupModal)"></i>
         </span>
         <span class="input-group-text border-0" id="search-addon">
-          <i class="bi bi-arrow-clockwise" (click)="searchUsers(false)"></i>
+          <i class="bi bi-arrow-clockwise" (click)="GetContacts()"></i>
         </span>
       </div>
       <div class="bg-white" style="overflow-y:auto;height:80%">
-        <a *ngFor="let user of usersList; let i = index" class="list-group-item list-group-item-action rounded-0 text-dark" style="max-height: 130px" (click)="selectUser(i,user)" [ngClass]="{'active-user':selectedUser == i}">
-          <div class="media">
-            <img src="{{user.accountImage}}" alt="user" width="30" class="rounded-circle text">
-            <i *ngIf="!user.accountImage" class="bi bi-person-circle" style="font-size: 25px;"></i>
-            <div *ngIf="((currentMessage.auto && selectedUser == i) || selectedUser != i) && user.notViewed != 0" style="width: 27px;position:absolute;top:5px;right:10px" class="text-center small text-white font-weight-bold p-1 bg-primary rounded-circle">{{user.notViewed}}</div>
-            <div class="media-body ml-4">
-              <div class="d-flex align-items-center justify-content-between mb-1">
-                <h6 class="mb-0">
-                  {{user.nickName}}
-                </h6>
-                <small class="small font-weight-bold">{{user.date | date:'shortTime'}}</small>
+        <a *ngFor="let contact of contacts; let i = index" class="d-flex justify-content-between py-1 px-2 rounded"
+           style="border-bottom: 1px solid #E0E0E0;border-right: 1px solid #E0E0E0; position: relative"
+           [ngClass]="{'active-user':currentContactRow == i}" (click)="SetContact(contact,i)">
+          <div class="d-flex flex-row contact">
+            <img src="{{contact.accountImage}}"
+                 class="rounded-circle d-flex align-self-center me-2 shadow-1-strong" width="40">
+            <div class="pt-1 w-100">
+              <p class="fw-bold mb-0" style="max-width:65%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{contact.nickName}}</p>
+              <div class="small text-muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                <p *ngIf="contact.lastMessageType == 0">{{contact.lastMessage}}</p>
+                <p *ngIf="contact.lastMessageType == 1">Изображение</p>
+                <p *ngIf="contact.lastMessageType == 2">Файл</p>
               </div>
-              <p class="font-italic mb-0 text-small" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{user.content}}</p>
             </div>
           </div>
+          <div class="pt-1 d-flex flex-row" style="position:absolute;top:7px;right:5px;">
+            <p class="small text-muted mb-1" style="font-size:10px">{{contact.lastMessageDate | date:'H:mm'}}</p>
+          </div>
+          <div style="position:absolute;bottom:0px;left:2px">
+            <p style="margin-right:8px;font-size:10px" *ngIf="contact.notViewedMessages !== undefined && contact.notViewedMessages != 0 && currentContactRow != i" class="badge bg-primary float-end">{{contact.notViewedMessages}}</p>
+          </div>
         </a>
+
       </div>
 
     </div>
     <div class="col-md-9 col-12 vh-100 d-md-block" [ngClass]="{'d-none':isOpen}">
-      <div class="rounded row text-white" style="min-height: 35px;position:relative; font-size: 18px; background-color: #0275d8">
-        <div class="col-6" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-          <div class="row">
-            <div class="col-1 d-md-none" style="line-height:35px">
-              <i class="d-md-none bi bi-caret-left" (click)="openUserList()"></i>
+      <div class="vh-100" *ngIf="currentContactRow != -1">
+        <div class="rounded row text-white" style="min-height: 35px;position:relative; font-size: 18px; background-color: #0275d8">
+          <div class="col-6" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+            <div class="row">
+              <div class="col-1 d-md-none" style="line-height:35px">
+                <i class="d-md-none bi bi-caret-left" (click)="OpenUserList()"></i>
+              </div>
+              <div class="col-10 col-md-12" [style.line-height]="currentContact.isGroup ? '36px':'18px'">
+                <span>{{currentContact.nickName}}</span>
+                <br />
+                <span style="font-size:12px">{{currentContact.lastActivity}}</span>
+              </div>
             </div>
-            <div class="col-10 col-md-12" [style.line-height]="currentUser.email == 'Group'? '35px':'18px'">
-              <span>{{currentUser.nickName}}</span>
-              <br />
-              <span style="font-size:12px">{{currentUser.userActivity}}</span>
+          </div>
+          <div class="col-6 text-end action-bar" style="line-height: 35px;">
+            <!--<i *ngIf="!videochatDataService.callState" class="bi bi-telephone" (click)="videochatDataService.startCall(currentUser)"></i>-->
+            <!--<i *ngIf="videochatDataService.callState" class="bi bi-x-lg" (click)="videochatDataService.resetCall()"></i>-->
+            <i *ngIf="currentContact.isGroup" class="bi bi-gear" (click)="EditGroup(currentContact.toGroup,groupModal)"></i>
+          </div>
+        </div>
+        <div class="px-3 py-5 chat-box bg-white" style="overflow-y:auto;position:relative" #messagesArea (scroll)="onMessageScroll($event)">
+          <div *ngFor="let message of messages">
+            <!--Contact Message-->
+            <div class="media mb-3" *ngIf="!message.isMine" [ngClass]="{'receive-image-message':message.type == 1,'receive-text-message':message.type != 1}">
+              <div *ngIf="currentContact.isGroup">
+                <img src="{{message.accountImage}}" alt="user" width="30" class="rounded-circle">
+                <span style="margin-left:5px;" class="text-muted">{{message.nickName}}</span>
+              </div>
+              <div class="media-body ml-3">
+                <div class="bg-light rounded mb-2" align="{{message.type == 1 ? 'center':''}}" [ngClass]="{'py-2 px-3':message.type != 1}">
+                  <p *ngIf="message.type == 0" style="white-space: pre-wrap" class="text-small mb-0 text-break">{{message.content}}</p>
+                  <img *ngIf="message.type == 1" class="image rounded" src="{{message.content}}" (click)="OpenImage(message.content,imageModal)" />
+                  <a href="{{message.content}}" download *ngIf="message.type == 2" class="text-small mb-0 text-break">
+                    <i style="font-size:18px" class="bi bi-file-earmark-arrow-down"></i>
+                    {{GetFileName(message.content)}}
+                  </a>
+                </div>
+                <p class="small text-muted">{{message.date | date:'d MMM y H:mm':undefined:'ru'}}</p>
+              </div>
+            </div>
+            <!--User message-->
+            <div class="media ml-auto mb-3" *ngIf="message.isMine">
+              <div class="media-body message-container" style="width:100%" [ngClass]="{'image-message':message.type == 1,'text-message':message.type != 1}">
+                <div class="bg-primary rounded mb-2" align="{{message.type == 1 ? 'center':''}}" [ngClass]="{'py-2 px-3':message.type != 1}">
+                  <p *ngIf="message.type == 0" style="white-space: pre-wrap" class="text-small mb-0 text-white text-break">{{message.content}}</p>
+                  <img *ngIf="message.type == 1" class="image rounded" src="{{message.content}}" (click)="OpenImage(message.content,imageModal)" />
+                  <a href="{{message.content}}" download *ngIf="message.type == 2" class="link-light text-small mb-0 text-break">
+                    <i style="font-size:18px" class="bi bi-file-earmark-arrow-down"></i>
+                    {{GetFileName(message.content)}}
+                  </a>
+                </div>
+                <p class="small text-muted">
+                  {{message.date | date:'d MMM y H:mm':undefined:'ru'}}
+                  <i class="bi bi-trash message-action text-primary mx-2" (click)="DeleteMessage(message.id)"></i>
+                  <i *ngIf="message.type == 0" class="bi bi-pencil message-action text-primary" (click)="EditMessage(message.id,message.content)"></i>
+                </p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-6 text-end action-bar" style="line-height: 35px;">
-          <i *ngIf="!videochatDataService.callState" class="bi bi-telephone" (click)="videochatDataService.startCall(currentUser)"></i>
-          <i *ngIf="videochatDataService.callState" class="bi bi-x-lg" (click)="videochatDataService.resetCall()"></i>
-          <i *ngIf="currentUser.email == 'Group'" class="bi bi-gear" (click)="openGroupSettings(currentUser.id,groupModal)"></i>
-        </div>
-      </div>
-      <div class="px-4 py-5 chat-box bg-white" style="overflow-y:auto" #messagesArea>
 
-        <div *ngFor="let message of messagesList">
-          <!--Sender Message-->
-          <div class="media mb-3" *ngIf="message.nickName" [ngClass]="{'reciver-image-message':message.type == 1,'reciver-text-message':message.type != 1}">
-            <img src="{{message.accountImage}}" alt="user" width="30" class="rounded-circle">
-            <span style="margin-left:5px;" class="text-muted">{{message.nickName}}</span>
-            <div class="media-body ml-3">
-              <div class="bg-light rounded mb-2" align="{{message.type == 1 ? 'center':''}}" [ngClass]="{'py-2 px-3':message.type != 1}">
-                <p *ngIf="message.type == 0" class="text-small mb-0 text-break">{{message.content}}</p>
-                <img *ngIf="message.type == 1" style="width: 130px;max-height:200px" class="rounded" src="{{message.content}}" (click)="openImage(message.content,imageModal)" />
+        <div class="typing-area row justify-content-end px-2">
+          <div class="col-12 col-md-9" style="position:relative">
+            <form action="#" class="bg-light">
+              <div class="input-group">
+                <textarea rows="3" style="resize:none" type="text" placeholder="Введите сообшение" aria-describedby="button-addon2"
+                          class="form-control form-control-sm rounded-0 pt-2 border-0 bg-light" name="content"
+                          [(ngModel)]="currentMessage.content" (keyup.enter)="SendMessage()"></textarea>
+                <div class="input-group-append">
+                  <input type="file" style="display:none" (change)="FilesSelected($event)" #fileInput multiple />
+                  <button id="button-addon2" type="submit" class="btn btn-lg btn-link">
+                    <i class="bi bi-plus-lg" (click)="OpenFileInput()"></i>
+                  </button>
+                  <button id="button-addon2" type="submit" class="btn btn-lg btn-link"><i (click)="SendMessage()" class="bi bi-cursor-fill"></i></button>
+                </div>
               </div>
-              <p class="small text-muted">{{message.date | date:'shortTime'}}</p>
-            </div>
-          </div>
-
-
-
-          <div class="media ml-auto mb-3" *ngIf="!message.nickName">
-            <div class="media-body message-container" style="width:100%" [ngClass]="{'image-message':message.type == 1,'text-message':message.type != 1}">
-              <div class="bg-primary rounded mb-2" align="{{message.type == 1 ? 'center':''}}" [ngClass]="{'py-2 px-3':message.type != 1}">
-                <p *ngIf="message.type == 0" class="text-small mb-0 text-white text-break">{{message.content}}</p>
-                <img *ngIf="message.type == 1" style="width: 150px;max-height:240px;" class="rounded" src="{{message.content}}" (click)="openImage(message.content,imageModal)" />
-              </div>
-              <p class="small text-muted">{{message.date | date:'shortTime'}}<i *ngIf="message.content != 'Сообщение удалено'" class="bi bi-trash text-dark delete-message" (click)="deleteMessage(message.id)"></i></p>
+            </form>
+            <div *ngIf="uploadingFiles.length != 0" style="position:absolute;left:10px;bottom:5px;"
+                 class="spinner-border text-primary">
             </div>
           </div>
         </div>
-
-
       </div>
-
-      <div class="typing-area row justify-content-end px-2">
-        <div class="col-12 col-md-9">
-          <form action="#" class="bg-light">
-            <div class="input-group">
-              <input type="text" placeholder="Введите сообшение" aria-describedby="button-addon2" class="form-control form-control-sm rounded-0 border-0 py-4 bg-light" name="content" [(ngModel)]="currentMessage.content" (keyup.enter)="sendMessage()">
-              <div class="input-group-append">
-                <input type="file" style="display:none" (change)="fileSelected($event)" #fileInput multiple />
-                <button id="button-addon2" type="submit" class="btn btn-lg btn-link">
-                  <i (click)="openFileInput()" class="bi bi-card-image"></i>
-                  <!--<span *ngIf="currentFilesLength > 0" class="rounded-circle bg-primary text-white">{{currentFilesLength}}</span>-->
-
-
-                </button>
-
-                <button id="button-addon2" type="submit" class="btn btn-lg btn-link"><i (click)="sendMessage()" class="bi bi-cursor-fill"></i></button>
-              </div>
-            </div>
-          </form>
+      <div class="bg-white rounded-circle" *ngIf="currentContactRow != -1 && canScrollDown"
+           style="position: absolute; bottom:85px;right:25px;" (click)="ScrollDown()">
+        <div style="position:relative">
+          <div class="badge bg-primary text-white" *ngIf="currentContact.newMessages != 0"
+               style="position:absolute;top:-15px;left:0px;right:0px">{{currentContact.newMessages}}</div>
+          <button type="button" class="btn btn-outline-primary btn-circle">
+            <i class="bi bi-arrow-down"></i>
+          </button>
         </div>
       </div>
+    </div>
+    <div *ngIf="currentContactRow == -1" class="d-none d-md-block" style="position: absolute; top: 50%; left: 50%">
+      Выберите, кому хотели бы написать
     </div>
   </div>
 
@@ -113,14 +145,8 @@
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body row image-scroller">
-      <div class="col-1" style="position:relative">
-        <i class="bi bi-chevron-left images-toggles" style="left:10px;" (click)="toggleImage('previous')"></i>
-      </div>
-      <div class="col-10">
-        <img class="img-fluid rounded" style="max-height:80vh" src="{{ImagesList[currentImage]}}" />
-      </div>
-      <div class="col-1" style="position:relative">
-        <i class="bi bi-chevron-right images-toggles" style="right:10px" (click)="toggleImage('next')"></i>
+      <div class="col-12">
+        <img class="img-fluid rounded" style="max-height:80vh" src="{{currentImage}}" />
       </div>
     </div>
   </ng-template>
@@ -131,29 +157,45 @@
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body row">
-      <div class="col-12 col-md-8 pb-5 order-md-first order-last">
-        <input type="text" class="form-control rounded form-control-lg mt-3" placeholder="Название группы" [(ngModel)]="newGroup.name" />
-        <div class="mt-5 p-2 border rounded">
-          <angular2-multiselect [data]="userGroupList" [settings]="{singleSelection: false, text:'Добавить пользователей',enableSearchFilter: true}" [(ngModel)]="newGroup.users">
-            <c-item>
-              <ng-template let-item="item">
-                <img [src]="item.accountImage" style="width: 30px;" />
-                <label style="color: #333;padding-left:15px;font-size:18px">{{item.itemName}}</label>
-              </ng-template>
-            </c-item>
-          </angular2-multiselect>
+      <div class="col-12 col-md-8 order-md-first order-last">
+        <input type="text" class="form-control mt-3" [error]="{Error:errors?.Name,PlaceHolder:'Название'}" [(ngModel)]="currentGroup.name" />
+        <div class="mt-2">
+          <div class="input-group w-100">
+            <input placeholder="Поиск по никнейму" type="search" class="form-control" [(ngModel)]="membersSearch" (keyup.enter)="SearchMembers()" />
+            <button class="btn btn-outline-primary" (click)="SearchMembers()">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+          <div class="scrollable w-100" style="max-height:200px">
+            <table class="table">
+              <thead class="table-head">
+                <tr>
+                  <th></th>
+                  <th scope="col">Никнейм</th>
+                  <th scope="col">Добавлен</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="table-row" *ngFor="let member of fullMemberList">
+                  <td><img style="height:30px;width:30px" class="rounded-circle" src="{{member.accountImage}}" /></td>
+                  <td style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{member.nickName}}</td>
+                  <td><input class="form-check-input" type="checkbox" [(ngModel)]="member.isSelected" (change)="ChangeMemberState(member)" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <div class="d-flex flex-column align-items-center text-center p-3 pb-5 col-12 col-md-4 order-first order-md-last">
-        <div (mouseenter)="enterImage()" (mouseleave)="leaveImage()" [ngClass]="{'darker':isOnGroupImage}" (click)="openGroupFileInput()">
-          <img #groupImage class="rounded-circle" src="{{newGroup.groupImage}}" (error)="groupImage.src='/assets/group.png'" style="width:120px;max-height:120px">
+      <div class="d-flex flex-column align-items-center text-center p-3 col-12 col-md-4 order-first order-md-last">
+        <div (mouseenter)="EnterImage()" (mouseleave)="LeaveImage()" [ngClass]="{'darker':isOnGroupImage}" (click)="OpenGroupFileInput()">
+          <img #groupImage class="rounded-circle" src="{{currentGroup.groupImage}}" (error)="groupImage.src='/assets/group.png'" style="width:120px;max-height:120px">
           <i class="bi bi-pencil text-white" [ngClass]="{'icon-mask':isOnGroupImage}" style="font-size:20px;position:absolute"></i>
         </div>
       </div>
     </div>
 
     <div class="modal-footer justify-content-center">
-      <button type="button" class="btn btn-primary" (click)="saveGroup()">Сохранить</button>
+      <button type="button" class="btn btn-primary" (click)="SaveGroup()">Сохранить</button>
     </div>
-  </ng-template>  <input type="file" style="display:none" (change)="groupFileSelected($event)" #fileGroupInput />
+  </ng-template>  <input type="file" style="display:none" (change)="GroupFileSelected($event)" #fileGroupInput />
 </div>

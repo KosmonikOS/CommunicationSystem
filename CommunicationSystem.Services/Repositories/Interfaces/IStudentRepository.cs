@@ -7,7 +7,6 @@ namespace CommunicationSystem.Services.Repositories.Interfaces
 {
     public interface IStudentRepository :IBaseRepository
     {
-        public IQueryable<User> GetStudents(string search, StudentsSearchOption searchOption);
         public IQueryable<TestUser> GetStudents(Guid id);
         public IQueryable<StudentAnswerShowDto> GetStudentAnswers(int userId, Guid testId);
         public IResponse UpdateStudentMark(UpdateStudentMarkDto dto);

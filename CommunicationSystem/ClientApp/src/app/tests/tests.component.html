@@ -61,7 +61,7 @@
   <div class="modal-body row">
     <div>
       <div class="col-12 card px-2 py-2 mb-3" *ngFor="let question of currentTest.questions;let i = index">
-        <div class="col-12 mb-1" style="font-size:18px">
+        <div class="col-12 mb-1" style="font-size:18px; white-space:pre-wrap">
           {{question.text}}
         </div>
         <div *ngIf="question.image" class="col-md-12 mb-1 border rounded d-flex justify-content-center align-items-center h-100 w-100">

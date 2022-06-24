@@ -17,27 +17,6 @@ namespace CommunicationSystem.Services.Repositories
         {
             this.context = context;
         }
-
-        public IQueryable<User> GetStudents(string search, StudentsSearchOption searchOption)
-        {
-            var query = context.Users.AsNoTracking();
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                switch (searchOption)
-                {
-                    case StudentsSearchOption.FullName:
-                        query = query.Where(x => EF.Functions.ILike(
-                            x.LastName + " " + x.FirstName + " " + x.MiddleName, $"%{search}%"));
-                        break;
-                    case StudentsSearchOption.Grade:
-                        query = query.Where(x => EF.Functions.ILike(
-                            x.Grade + x.GradeLetter, $"%{search}%"));
-                        break;
-                }
-            }
-            return query.Take(50);
-        }
-
         public IQueryable<TestUser> GetStudents(Guid id)
         {
             return context.TestUser.Where(x => x.TestId == id);
@@ -45,93 +24,6 @@ namespace CommunicationSystem.Services.Repositories
 
         public IQueryable<StudentAnswerShowDto> GetStudentAnswers(int userId, Guid testId)
         {
-            //return (from q in context.Questions
-            //        where q.TestId == testId
-            //        join s in context.StudentAnswers
-            //        on new { UserId = userId, QuestionId = q.Id } equals new { UserId = s.UserId, QuestionId = s.QuestionId }
-            //        into Questions
-            //        from a in Questions.DefaultIfEmpty()
-            //        select new StudentAnswerShowDto()
-            //        {
-            //            Id = q.Id,
-            //            Image = q.Image,
-            //            Points = q.Points,
-            //            QuestionType = q.QuestionType,
-            //            Text = q.Text,
-            //            OpenAnswer = (int)q.QuestionType > 1
-            //            ? a.Answer : "",
-            //            Options = (from o in context.Options
-            //                       where q.Id == o.QuestionId
-            //                       select
-            //                       new StudentAnswerOptionShowDto()
-            //                       {
-            //                           Id = o.Id,
-            //                           Text = o.Text,
-            //                           IsRightOption = o.IsRightOption,
-            //                           IsSelected = q.QuestionType == QuestionType.OpenWithCheck
-            //                           ? a.Answer.ToLower() == o.Text.ToLower()
-            //                           : a.Answer == o.Id.ToString()
-            //                       })
-            //        }).AsNoTracking();
-            //return (from s in context.StudentAnswers
-            //        where s.UserId == userId && s.TestId == testId
-            //        join q in context.Questions
-            //        on s.QuestionId equals q.Id
-            //        into Questions
-            //        from a in Questions.DefaultIfEmpty()
-            //        select new StudentAnswerShowDto()
-            //        {
-            //            Id = a.Id,
-            //            Image = a.Image,
-            //            Points = a.Points,
-            //            QuestionType = a.QuestionType,
-            //            Text = a.Text,
-            //            OpenAnswer = (int)a.QuestionType > 1
-            //            ? s.Answer : "",
-            //            Options = (from o in context.Options
-            //                       where a.Id == o.QuestionId
-            //                       select
-            //                       new StudentAnswerOptionShowDto()
-            //                       {
-            //                           Id = o.Id,
-            //                           Text = o.Text,
-            //                           IsRightOption = o.IsRightOption,
-            //                           IsSelected = a.QuestionType == QuestionType.OpenWithCheck
-            //                           ? s.Answer.ToLower() == o.Text.ToLower()
-            //                           : s.Answer == o.Id.ToString()
-            //                       })
-            //        }).AsNoTracking();
-            //return (from q in context.Questions
-            //        where q.TestId == testId
-            //        select new StudentAnswerShowDto()
-            //        {
-            //            Id = q.Id,
-            //            Image = q.Image,
-            //            Points = q.Points,
-            //            QuestionType = q.QuestionType,
-            //            Text = q.Text,
-            //            OpenAnswer = (int)q.QuestionType > 1
-            //                ? context.StudentAnswers.FirstOrDefault(x => x.UserId == userId && x.QuestionId == q.Id).Answer
-            //                : "",
-            //            Options = (from o in context.Options
-            //                       where q.Id == o.QuestionId
-            //                       select
-            //                       new StudentAnswerOptionShowDto()
-            //                       {
-            //                           Id = o.Id,
-            //                           Text = o.Text,
-            //                           IsRightOption = o.IsRightOption,
-            //                           //IsSelected = q.QuestionType == QuestionType.OpenWithCheck
-            //                           //? a.Answer.ToLower() == o.Text.ToLower()
-            //                           //: a.Answer == o.Id.ToString()
-            //                           IsSelected = context.StudentAnswers
-            //                           .Where(x => x.UserId == userId && x.QuestionId == q.Id)
-            //                           .Any(x => x.Answer.ToLower() ==
-            //                           (q.QuestionType == QuestionType.OpenWithCheck
-            //                           ? o.Text.ToLower()
-            //                           : o.Id.ToString()))
-            //                       }).ToList()
-            //        }).AsNoTracking();
             return context.Questions
                 .Where(x => x.TestId == testId)
                 .Select(x => new StudentAnswerShowDto()
@@ -141,7 +33,7 @@ namespace CommunicationSystem.Services.Repositories
                     Points = x.Points,
                     QuestionType = x.QuestionType,
                     Text = x.Text,
-                    OpenAnswer = (int)x.QuestionType > 1?
+                    OpenAnswer = (int)x.QuestionType > 1 ?
                     x.StudentAnswers.FirstOrDefault(x => x.UserId == userId).Answer : "",
                     Options = context.Options.Where(y => y.QuestionId == x.Id)
                         .Select(y => new StudentAnswerOptionShowDto()
@@ -180,7 +72,7 @@ namespace CommunicationSystem.Services.Repositories
         public void UpdateTestStudents(IEnumerable<TestStudentStateDto> students, Guid testId)
         {
             context.AddRange(students
-                .Where(x => x.State == StudentState.Added)
+                .Where(x => x.State == DbEntityState.Added)
                 .Select(x => new TestUser()
                 {
                     UserId = x.UserId,
@@ -188,7 +80,7 @@ namespace CommunicationSystem.Services.Repositories
                     IsCompleted = x.IsCompleted
                 }));
             context.UpdateRange(students
-                .Where(x => x.State == StudentState.Modified)
+                .Where(x => x.State == DbEntityState.Modified)
                 .Select(x => new TestUser()
                 {
                     UserId = x.UserId,
@@ -196,14 +88,14 @@ namespace CommunicationSystem.Services.Repositories
                     IsCompleted = x.IsCompleted
                 }));
             context.RemoveRange(students
-                .Where(x => x.State == StudentState.Deleted)
+                .Where(x => x.State == DbEntityState.Deleted)
                 .Select(x => new TestUser()
                 {
                     UserId = x.UserId,
                     TestId = testId,
                 }));
-            foreach (var student in students.Where(x => x.State == StudentState.Deleted ||
-                (x.State == StudentState.Modified && !x.IsCompleted)))
+            foreach (var student in students.Where(x => x.State == Domain.Enums.DbEntityState.Deleted ||
+                (x.State == DbEntityState.Modified && !x.IsCompleted)))
             {
                 var answers = context.StudentAnswers.Where(x => x.UserId == student.UserId &&
                     x.TestId == testId).AsEnumerable();

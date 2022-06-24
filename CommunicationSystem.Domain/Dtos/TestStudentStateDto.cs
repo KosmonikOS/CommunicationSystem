@@ -6,6 +6,6 @@ namespace CommunicationSystem.Domain.Dtos
     {
         public int UserId { get; set; }
         public bool IsCompleted { get; set; }
-        public StudentState State { get; set; } = StudentState.Unchanged;
+        public DbEntityState State { get; set; } = DbEntityState.Unchanged;
     }
 }

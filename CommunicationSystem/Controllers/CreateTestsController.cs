@@ -21,7 +21,7 @@ namespace CommunicationSystem.Controllers
             this.mediator = mediator;
         }
         [HttpGet("tests/{userId}/{role}/{page}/{searchOption}/{search?}")]
-        public async Task<ActionResult<List<CreateTestShowDto>>> GetTestsPage(int userId, int role, int page, TestSearchOption searchOption, string search)
+        public async Task<ActionResult<List<CreateTestShowDto>>> GetTestsPage(int userId, int role, int page, TestPageSearchOption searchOption, string search)
         {
             var query = new GetCreateTestsQuery()
             {
@@ -42,7 +42,7 @@ namespace CommunicationSystem.Controllers
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("students/{searchOption}/{search?}")]
-        public async Task<ActionResult<List<SearchStudentDto>>> GetStudents(StudentsSearchOption searchOption,string search)
+        public async Task<ActionResult<List<SearchStudentDto>>> GetStudents(UserSearchOption searchOption,string search)
         {
             var query = new GetStudentsWithSearchQuery() { Search = search,SearchOption = searchOption }; ;
             var result = await mediator.Send(query);

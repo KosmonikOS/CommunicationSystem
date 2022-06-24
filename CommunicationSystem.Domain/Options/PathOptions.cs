@@ -2,7 +2,7 @@
 {
     public class PathOptions
     {
-        public string AssetsFolder { get; set; }
-        public string AssetsPath { get; set; }
+        public string UploadFolder { get; set; }
+        public string UploadPath { get; set; }
     }
 }

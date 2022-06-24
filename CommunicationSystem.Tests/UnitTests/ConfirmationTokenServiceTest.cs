@@ -46,7 +46,7 @@ namespace CommunicationSystem.Tests.UnitTests
             var logger = LoggerHelper.GetLogger<ConfirmationTokenService>();
             var sut = new ConfirmationTokenService(context,logger);
             var email = "test@test.test";
-            var token = Convert.ToBase64String(Encoding.ASCII.GetBytes(email)) + "@d@" + Convert.ToBase64String(Encoding.ASCII.GetBytes(DateTime.Now.ToString()));
+            var token = Convert.ToHexString(Encoding.ASCII.GetBytes(email)) + "@d@" + Convert.ToHexString(Encoding.ASCII.GetBytes(DateTime.Now.ToString()));
             ConfirmDataInitialazer.Initialize(context,token);
             //Act
             var actual = await sut.ConfirmTokenAsync(token);
@@ -79,7 +79,7 @@ namespace CommunicationSystem.Tests.UnitTests
             var logger = LoggerHelper.GetLogger<ConfirmationTokenService>();
             var sut = new ConfirmationTokenService(context,logger);
             var email = "test@test.test";
-            var token = Convert.ToBase64String(Encoding.ASCII.GetBytes(email)) + "@d@" + Convert.ToBase64String(Encoding.ASCII.GetBytes((DateTime.Now.AddDays(-3)).ToString()));
+            var token = Convert.ToHexString(Encoding.ASCII.GetBytes(email)) + "@d@" + Convert.ToHexString(Encoding.ASCII.GetBytes((DateTime.Now.AddDays(-3)).ToString()));
             ConfirmDataInitialazer.Initialize(context, token);
             //Act
             var actual = await sut.ConfirmTokenAsync(token);

@@ -1,4 +1,3 @@
-
 export class MessageBetweenUsers {
   constructor(
     public from: number,

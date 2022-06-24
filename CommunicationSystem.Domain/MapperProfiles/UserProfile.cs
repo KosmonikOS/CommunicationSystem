@@ -15,10 +15,14 @@ namespace CommunicationSystem.Domain.MapperProfiles
             CreateMap<UserAccountUpdateDto, User>();
             CreateMap<UserAccountAdminAddDto, User>()
                 .ForMember(dest => dest.Role, x => x.Ignore())
-                .ForMember(dest => dest.RoleId,x =>x.MapFrom(src => src.Role));
+                .ForMember(dest => dest.RoleId, x => x.MapFrom(src => src.Role));
             CreateMap<UserAccountAdminUpdateDto, User>()
                 .ForMember(dest => dest.Role, x => x.Ignore())
                 .ForMember(dest => dest.RoleId, x => x.MapFrom(src => src.Role));
+            CreateMap<User, GroupMemberShowDto>()
+                .ForMember(dest => dest.UserId, x => x.MapFrom(src => src.Id));
+            CreateMap<User, GroupSearchMemberDto>()
+                .ForMember(dest => dest.UserId, x => x.MapFrom(src => src.Id));
         }
     }
 }

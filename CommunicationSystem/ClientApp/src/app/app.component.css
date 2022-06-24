@@ -8,3 +8,7 @@
   outline: none !important;
   box-shadow: none;
 }
+
+.table-head {
+  border-bottom: solid 2px #DEE2E6
+}
