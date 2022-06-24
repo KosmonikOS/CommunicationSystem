@@ -226,7 +226,6 @@ export class MessengerComponent implements OnInit {
     contact.lastMessageType = dto.previousType;
   }
   onMessageScroll(event: any) {
-    //console.log("Scroll");
     if (this.messagesArea.nativeElement.scrollTop == 0 && this.canScrollDown) {
       this.page++;
       var currentScroll = this.messagesArea.nativeElement.scrollHeight;
