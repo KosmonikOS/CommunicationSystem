@@ -31,8 +31,11 @@ namespace CommunicationSystem.Data
             modelBuilder.Entity<ContactDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<ContactMessageDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<GroupMessageDto>().HasNoKey().ToView(null);
+
             modelBuilder.Entity<User>().Property("AccountImage")
                 .HasDefaultValue("/assets/user.png");
+            modelBuilder.Entity<Group>().Property("GroupImage")
+                .HasDefaultValue("/assets/group.png");
             modelBuilder.Entity<User>().Property("RoleId")
                 .HasDefaultValue(1);
             modelBuilder.Entity<User>().HasIndex(x => x.Email)
@@ -54,8 +57,6 @@ namespace CommunicationSystem.Data
                 .HasMethod("gin")
                 .HasOperators("gin_trgm_ops");
             modelBuilder.Entity<Test>().HasIndex(x => x.Date);
-            modelBuilder.Entity<Group>().Property("GroupImage")
-                .HasDefaultValue("/assets/group.png");
             modelBuilder.Entity<Message>().HasOne(x => x.From)
                 .WithMany(x => x.FromMessages).HasForeignKey("FromId");
             modelBuilder.Entity<Message>().HasOne(x => x.To)
@@ -73,10 +74,6 @@ namespace CommunicationSystem.Data
             modelBuilder.Entity<GroupUser>()
                 .HasKey(x => new { x.UserId, x.GroupId });
             modelBuilder.HasDbFunction(() => UserFunctions.GetNotViewedMessages(default(int), default(int)));
-            modelBuilder.HasDbFunction(() => UserFunctions.GetLastMessageDate(default(int), default(int)));
-            modelBuilder.HasDbFunction(() => UserFunctions.GetLastMessage(default(int), default(int)));
-            modelBuilder.HasDbFunction(() => UserFunctions.GetGroupLastMessageDate(default(Guid)));
-            modelBuilder.HasDbFunction(() => UserFunctions.GetGroupLastMessage(default(Guid)));
             modelBuilder.HasDbFunction(() => UserFunctions.GetUserLastActivity(default(int)));
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasPostgresExtension("pg_trgm");

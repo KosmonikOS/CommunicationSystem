@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Extentions
@@ -39,9 +40,15 @@ namespace CommunicationSystem.Extentions
                                 context.Token = accessToken;
                             }
                             return Task.CompletedTask;
+                        },
+                        OnAuthenticationFailed = context =>
+                        {
+                            Log.Logger.Warning(context.Exception.Message +
+                                $"Trying to request {context.Request.Path}");
+                            context.NoResult();
+                            return Task.CompletedTask;
                         }
                     };
-
                 });
             return services;
         }

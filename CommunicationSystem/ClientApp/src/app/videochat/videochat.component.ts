@@ -1,161 +1,174 @@
-import { HostListener, OnDestroy, QueryList } from '@angular/core';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import * as SimplePeer from 'simple-peer';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import Peer, { DataConnection, MediaConnection } from 'peerjs';
+import { DevicesService } from '../devices.service';
+import { ToastService } from '../toast.service';
 import { VideochatDataService } from './videochat.data.service';
 import { AccountDataService } from "../account/account.data.service"
-import { Router } from '@angular/router';
-import { ToastService } from '../toast.service';
-import { decode } from 'punycode';
-import { Member } from './member';
-import { AudioService } from '../audio.service';
-import { DevicesService } from '../devices.service';
-import { cwd } from 'process';
+import { Member } from './memberV2';
+import { State } from './state';
 @Component({
   selector: 'app-videochat',
   templateUrl: './videochat.component.html',
   styleUrls: ['./videochat.component.css'],
 })
 export class VideochatComponent implements OnInit, OnDestroy {
+  constructor(private activateRoute: ActivatedRoute, private dataService: VideochatDataService,
+    private deviceService: DevicesService, private toastService: ToastService,
+    private router: Router, private accountDataService: AccountDataService) { }
+  @ViewChild("videoArea") videoArea: ElementRef = new ElementRef("");
   @ViewChild("screenVideo") screenVideo: ElementRef = new ElementRef("");
-  screenStream: MediaStream = new MediaStream();
-  mediaConfig: any = { video: true, audio: true };
-  screenState: boolean = false;
-  screenInitiator: boolean = false;
-  chatRoom: { [key: string]: Member } = {
-    "myself": new Member(true, null, null, null, null, true, true, this.accountDataService.currentAccount.accountImage, this.accountDataService.currentAccount.nickName)
-  };
+  roomId: string = "";
+  myVideo = document.createElement("video");
+  peers: { [key: string]: Member } = {};
+  myPeer: Peer = new Peer({
+    host: "peerjs-server.herokuapp.com",
+    port: 443,
+    secure: true
+  });
   currentSize: any = {
     height: 0,
     width: 0
   };
-  currentQuantity: number = 1;
-  constructor(private dataService: VideochatDataService, public accountDataService: AccountDataService, public router: Router, private toastService: ToastService, private audioService: AudioService, private devicesService: DevicesService) { }
-  getConnectedMembers() {
-    var members = Object.keys(this.chatRoom);
-    return members.filter((key) => key != "myself" && this.chatRoom[key]["remoteStream"] != null);
+  showControls: boolean = true;
+  screenState: boolean = false;
+  screenInitiator: boolean = false;
+  screenStream: MediaStream = new MediaStream();
+  GetPeers() {
+    return Object.values(this.peers);
   }
-  toggleState(type: string) {
-    return new Promise(async (resolve, reject) => {
-      var state = false;
-      switch (type) {
-        case "audioState":
-          this.chatRoom["myself"]["audioState"] = !this.chatRoom["myself"]["audioState"];
-          state = this.chatRoom["myself"]["audioState"];
-          this.chatRoom["myself"].remoteStream.getAudioTracks()[0].enabled = state;
-          break;
-        case "videoState":
-          this.chatRoom["myself"]["videoState"] = !this.chatRoom["myself"]["videoState"];
-          state = this.chatRoom["myself"]["videoState"];
-          this.chatRoom["myself"].remoteStream.getVideoTracks()[0].enabled = state;
-          break;
-        case "screenState":
-          await this.toggleScreen();
-          this.calculateSize();
-          state = this.screenState;
-          break;
+  ConnectToRoom(roomId: string, peerId: string) {
+    this.dataService.connectToRoom(roomId, peerId);
+  }
+  async GetUserVideo() {
+    var mediaConfig = await this.deviceService.checkMedia();
+    navigator.mediaDevices.getUserMedia(mediaConfig).then(stream => {
+      var myVideo = new Member();
+      myVideo.myself = true;
+      myVideo.accountImage = this.accountDataService.currentAccount.accountImage!;
+      myVideo.nickName = this.accountDataService.currentAccount.nickName!;
+      myVideo.audioState = mediaConfig.audio;
+      myVideo.videoState = mediaConfig.video;
+      myVideo.stream = stream;
+      this.peers["myself"] = myVideo;
+      this.CalculateSize();
+      this.AddStreamListeners(stream);
+    });
+  }
+  AddStreamListeners(stream: MediaStream) {
+    this.myPeer.on("call", call => {
+      if (!(call.peer in this.peers)) {
+        call.answer(stream);
+        this.SubscribeVideoCall(call);
+      } else {
+        call.answer();
+        this.SubscribeScreenStream(call);
       }
-      this.getConnectedMembers().forEach((member) => {
-        this.dataService.hubConnection.invoke("ToggleState", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), { "Email": member }, type, state);
-      })
-      resolve("");
+    })
+    this.dataService.addConnectionListener("UserConnected", (peerId: string) => {
+      this.ConnectToNewUser(peerId, stream);
     })
   }
-  async toggleScreen() {
-    return new Promise((resolve, reject) => {
-      var video = this.screenVideo.nativeElement;
-      if (this.screenState) {
-        video.srcObject = null
-        this.screenStream?.getTracks()?.forEach((track: any) => {
-          this.getConnectedMembers().forEach((member: string) => {
-            this.chatRoom[member]["localPeer"]?.removeTrack(track, this.chatRoom["myself"]?.remoteStream);
-          });
-          this.chatRoom["myself"].remoteStream.removeTrack(track);
-          track?.stop();
-          this.screenStream = new MediaStream();
-        });
-        this.screenState = false;
+  SubscribeScreenStream(call: MediaConnection) {
+    call.on("stream", screenStream => {
+      if (!this.screenState) {
+        this.screenStream = screenStream;
+        this.screenVideo.nativeElement.srcObject = screenStream;
+        this.screenState = true;
         this.screenInitiator = false;
-        resolve("");
-      } else {
-        video.muted = true;
-        //@ts-ignore
-        navigator.mediaDevices.getDisplayMedia({ video: true, audio: true }).then((stream: any) => {
-          this.screenStream = stream;
-          stream.getTracks()?.forEach((track: any) => {
-            this.getConnectedMembers().forEach((member: string) => {
-              this.chatRoom[member]["localPeer"]?.addTrack(track, this.chatRoom["myself"]?.remoteStream);
-            });
-            this.chatRoom["myself"].remoteStream.addTrack(track);
+        this.CalculateSize();
+      }
+    });
+  }
+  CopyAccessCode() {
+    navigator.clipboard.writeText(this.roomId);
+    this.toastService.showSuccess("Код доступа скопирован");
+  }
+  SubscribeVideoCall(call: MediaConnection) {
+    call.on("stream", userVideoStream => {
+      this.peers[call.peer].stream = userVideoStream;
+    });
+    call.on("close", () => {
+      delete this.peers[call.peer];
+      this.CalculateSize();
+    })
+    this.peers[call.peer] = new Member(call);
+    this.CalculateSize();
+  }
+  AddScreenInitiatorListeners(call: MediaConnection) {
+    call.on("stream", () => {
+      this.myPeer.call(call.peer, this.screenStream);
+    })
+  }
+  AddListeners() {
+    this.myPeer.on("connection", conn => {
+      this.AddDataListeners(conn);
+    })
+    this.screenVideo.nativeElement.addEventListener("loadedmetadata", () => {
+      this.screenVideo.nativeElement.play()
+    })
+    this.dataService.addConnectionListener("UserDisconnected", (peerId: string) => {
+      if (this.peers[peerId]) {
+        this.peers[peerId].connection.close();
+        delete this.peers[peerId];
+      }
+    })
+    this.dataService.addConnectionListener("StateToggled", (peerId: string,
+      type: State, value: boolean) => {
+      switch (type) {
+        case State.Video:
+          this.peers[peerId].videoState = value;
+          break;
+        case State.Audio:
+          this.peers[peerId].audioState = value;
+          break;
+        case State.Screen:
+          this.screenStream.getTracks().forEach(track => {
+            track.stop();
           });
-          video.srcObject = stream;
-          this.screenState = true;
-          this.screenInitiator = true;
-          resolve("");
-        });
+          this.screenStream = new MediaStream();
+          this.screenVideo.nativeElement.srcObject = null;
+          this.screenState = false;
+          this.screenInitiator = false;
+          this.CalculateSize();
+          break;
+      }
+    })
+  }
+  AddDataListeners(connection: DataConnection) {
+    connection.on("data", (data: any) => {
+      try {
+        this.peers[connection.peer].accountImage = data.accountImage;
+        this.peers[connection.peer].nickName = data.nickName;
+        this.peers[connection.peer].audioState = data.audioState;
+        this.peers[connection.peer].videoState = data.videoState;
+      } catch { }
+    })
+    connection.on("open", () => {
+      var data = {
+        "nickName": this.accountDataService.currentAccount.nickName,
+        "accountImage": this.accountDataService.currentAccount.accountImage,
+        "videoState": this.peers["myself"].videoState,
+        "audioState": this.peers["myself"].audioState,
       };
+      connection.send(data);
     })
   }
-
-  CheckVideo() {
-    return new Promise(async (resolve, reject) => {
-      if (this.chatRoom["myself"]?.remoteStream == null) {
-        this.mediaConfig = await this.devicesService.checkMedia();
-        navigator.mediaDevices.getUserMedia(this.mediaConfig).then((stream) => {
-          this.chatRoom["myself"]["remoteStream"] = stream
-          resolve("");
-        }).catch(() => { });
-      } else {
-        resolve("");
-      }
-    });
+  ConnectToNewUser(peerId: string, stream: any) {
+    var call = this.myPeer.call(peerId, stream);
+    var conn = this.myPeer.connect(peerId);
+    this.AddDataListeners(conn);
+    this.SubscribeVideoCall(call);
+    if (this.screenInitiator && this.screenState)
+      this.AddScreenInitiatorListeners(call);
   }
-  createInitiatorPeer(email: string) {
-    var peer = new SimplePeer({ "initiator": true });
-    peer.addStream(this.chatRoom["myself"].remoteStream);
-    peer.on("error", (error: any) => { });
-    peer.on("connect", () => {
-      peer.send(this.accountDataService.currentAccount.accountImage + "@split@" + this.accountDataService.currentAccount.nickName + "@split@" + this.chatRoom["myself"].audioState + "@split@" + this.chatRoom["myself"].videoState + "@split@" + this.screenInitiator);
-    })
-    peer.on("signal", (data: any) => {
-      this.dataService.hubConnection.invoke("StartCall", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), { Email: email }, { Data: data, Dst: "RemotePeer" });
-    });
-    return peer;
-  }
-  createRemotePeer(email: string) {
-    var peer = new SimplePeer({ initiator: false });
-    peer.on("error", (error: any) => { console.error(error); });
-    peer.on("signal", (data: any) => {
-      this.dataService.hubConnection.invoke("StartCall", localStorage.getItem("CURRENT_COMMUNICATION_EMAIL"), { Email: email }, { Data: data, Dst: "LocalPeer" });
-    });
-    peer.on("connect", () => {
-      this.currentQuantity++;
-      this.calculateSize();
-      if (this.dataService.calling["Caller"] == false) {
-        this.CheckVideo().then(() => {
-          this.chatRoom[email]["localPeer"] = this.createInitiatorPeer(email);
-        })
-      }
-    });
-    peer.on("stream", (stream: any) => {
-      this.chatRoom[email]["remoteStream"] = stream
-    });
-    peer.on("data", (data: any) => {
-      var decoded = new TextDecoder().decode(data).split("@split@");
-      this.chatRoom[email]["accountImage"] = decoded[0];
-      this.chatRoom[email]["nickName"] = decoded[1];
-      this.chatRoom[email]["audioState"] = JSON.parse(decoded[2]);
-      this.chatRoom[email]["videoState"] = JSON.parse(decoded[3]);
-      //this.screenState = JSON.parse(decoded[4]);
-      if (JSON.parse(decoded[4])) {
-        this.toggleScreenHandler(email, true);
-      }
-    })
-    return peer;
+  Leave() {
+    this.router.navigate(['/messenger']);
   }
   @HostListener('window:resize', ['$event'])
-  calculateSize() {
+  CalculateSize() {
     if (!this.screenState) {
-      var length = this.currentQuantity;
+      var length = Object.keys(this.peers).length;
       if (window.innerWidth >= 576) {
         this.currentSize = {
           width: length <= 4 ? 6 : length <= 9 ? 4 : length <= 16 ? 3 : 2,
@@ -172,150 +185,82 @@ export class VideochatComponent implements OnInit, OnDestroy {
       this.currentSize.width = window.innerWidth >= 576 ? 12 : 4;
     }
   }
-  destroyPeers() {
+  ToggleVideo() {
+    this.peers["myself"].videoState = !this.peers["myself"].videoState;
+    this.peers["myself"].stream.getVideoTracks()[0].enabled = this.peers["myself"].videoState;
+    this.dataService.toggelState(this.roomId, this.myPeer.id, State.Video,
+      this.peers["myself"].videoState);
+  }
+  ToggleAudio() {
+    this.peers["myself"].audioState = !this.peers["myself"].audioState;
+    this.peers["myself"].stream.getAudioTracks()[0].enabled = this.peers["myself"].audioState;
+    this.dataService.toggelState(this.roomId, this.myPeer.id, State.Audio,
+      this.peers["myself"].audioState);
+  }
+  ToggleScreen() {
     return new Promise((resolve, reject) => {
-      Object.keys(this.chatRoom).forEach((key) => {
-        this.chatRoom[key]?.localPeer?.destroy();
-        this.chatRoom[key]?.remotePeer?.destroy();
-        this.chatRoom[key]?.remoteStream?.getTracks()?.forEach(function (track: any) {
-          track?.stop();
+      var video = this.screenVideo.nativeElement;
+      if (this.screenState) {
+        this.screenStream.getTracks().forEach(track => {
+          track.stop();
         });
-        this.chatRoom[key]?.localStream?.getTracks()?.forEach(function (track: any) {
-          track?.stop();
+        video.srcObject = null;
+        this.screenState = false;
+        this.screenInitiator = false;
+        this.dataService.toggelState(this.roomId, this.myPeer.id, State.Screen, false).then(() => {
+          this.CalculateSize();
+          resolve("");
         });
-      })
-      this.dataService.closeConnection();
-      this.screenStream?.getTracks()?.forEach(function (track: any) {
-        track?.stop();
-      });
-      this.dataService.calling = null;
-      this.dataService.callState = false;
-      this.chatRoom = {};
-      this.dataService.members = [];
-      resolve("");
-    });
-  };
-  toggleScreenHandler(caller: string, state: boolean) {
-    var video = this.screenVideo.nativeElement;
-    video.muted = false;
-    this.screenState = state;
-    if (this.screenState) {
-      this.currentSize.height = 10;
-      this.currentSize.width = window.innerWidth >= 576 ? 12 : 4;
-      setTimeout(async () => {
-        var tracks = await this.chatRoom[caller]?.remoteStream?.getTracks();
-        if (tracks != undefined && tracks[3] != undefined) {
-          if (tracks[1].kind == "audio") {
-            this.screenStream.addTrack(tracks[1]);
-          } else {
-            this.screenStream.addTrack(tracks[2]);
-          }
-          this.screenStream.addTrack(tracks[3]);
-        } else {
-          this.screenStream.addTrack(tracks[2]);
-        }
-        video.srcObject = this.screenStream;
-      }, 1000);
-    } else {
-      this.calculateSize();
-      video.srcObject = null;
-      this.screenStream = new MediaStream();
-    }
-  }
-  subscribeHubEvents() {
-    this.dataService.addConnectionListener("Accept", (caller: string, data: any) => {
-      if (this.dataService.calling == null) {
-        this.dataService.calling = { Email: caller, Caller: false };
-      }
-      if (data.Dst == "RemotePeer") {
-        this.chatRoom[caller]["remotePeer"].signal(data.Data);
       } else {
-        this.chatRoom[caller]["localPeer"].signal(data.Data);
+        video.muted = true;
+        //@ts-ignore
+        navigator.mediaDevices.getDisplayMedia({ video: true, audio: true }).then(stream => {
+          this.screenStream = stream;
+          this.GetPeers().filter(x => !x.myself).forEach(x => {
+            this.myPeer.call(x.connection.peer, stream);
+          })
+          video.srcObject = stream;
+          this.screenState = true;
+          this.screenInitiator = true;
+          this.CalculateSize();
+          resolve("");
+        });
       }
-    });
-    this.dataService.addConnectionListener("ToggleState", async (caller: string, type: string, state: boolean) => {
-      switch (type) {
-        case "audioState":
-          if (this.chatRoom[caller] != undefined) {
-            this.chatRoom[caller]["audioState"] = state
-          };
-          break;
-        case "videoState":
-          if (this.chatRoom[caller] != undefined) {
-            this.chatRoom[caller]["videoState"] = state
-          };
-          break;
-        case "screenState":
-          this.toggleScreenHandler(caller, state);
-          break;
-        case "disconnect":
-          if (this.chatRoom[caller].remoteStream.getTracks().length > 2) {
-            this.screenState = false;
-            this.screenStream = new MediaStream();
-          };
-          delete this.chatRoom[caller];
-          this.currentQuantity--;
-          this.calculateSize();
-          break;
-        case "disconnectAll":
-          this.destroyPeers().then(() => {
-            this.router.navigate(["/messenger"]);
-            this.toastService.showAlert("Звонок завершен");
-          });
-          break;
-      }
-    });
-    this.dataService.addConnectionListener("AddMember", (email: string) => {
-      var members = Object.keys(this.chatRoom);
-      members.shift();
-      this.dataService.hubConnection.invoke("NeedToConnect", email, members).then(() => {
-        this.createChatMember(email);
-      })
-    });
-    this.dataService.addConnectionListener("OfferToConnect", (members: string[]) => {
-      setTimeout(() => {
-        members.forEach((email) => {
-          if (this.chatRoom[email]?.localPeer == null) {
-            if (this.chatRoom[email] == undefined) {
-              this.chatRoom[email] = new Member();
-            }
-            var peer = this.createInitiatorPeer(email);
-            this.chatRoom[email]["localPeer"] = peer;
-          }
-        })
-      }, 1000)
-    });
-  };
-
-  createChatMember(email: string) {
-    var remotePeer = this.createRemotePeer(email);
-    var localPeer = this.createInitiatorPeer(email);
-    this.chatRoom[email] = new Member(false, localPeer, remotePeer, this.chatRoom["myself"]["remoteStream"]);
-  }
-  createRemotePeers() {
-    this.dataService.members.filter((member) => member.email != localStorage.getItem("CURRENT_COMMUNICATION_EMAIL")).forEach((member) => {
-      var email = member.email;
-      var remotePeer = this.createRemotePeer(email);
-      this.chatRoom[email] = new Member(false, null, remotePeer);
     })
   }
+  TurnOnScreen() {
+
+  }
+  TurnOffScreen() {
+
+  }
   ngOnInit(): void {
-    this.subscribeHubEvents();
-    if (this.dataService.calling == null) {
-      this.createRemotePeers();
-    }
-    this.CheckVideo().then(() => {
-      this.dataService.checkConnection()
-      if (this.dataService.calling != null && this.dataService.calling.email != "Group") {
-        this.createChatMember(this.dataService.calling.email);
-      }
-    });
-    this.calculateSize();
+    this.dataService.startConnection().then(async () => {
+      await this.GetUserVideo();
+      this.myPeer.on("open", peerId => {
+        this.AddListeners();
+        this.roomId = this.activateRoute.snapshot.params["roomId"];
+        this.ConnectToRoom(this.roomId, peerId);
+      })
+    }).catch(error => {
+      this.toastService.showError("Что-то пошло не так");
+      this.router.navigate(["/messenger"]);
+    })
   }
   ngOnDestroy(): void {
-    var dcst = (Object.keys(this.chatRoom).filter(value => this.chatRoom[value]["localPeer"] != null)).length >= 2 ? "disconnect" : "disconnectAll";
-    this.toggleState(dcst).then(() => {
-      this.destroyPeers();
+    this.dataService.disconnectFromRoom(this.roomId, this.myPeer.id).then(async () => {
+      try {
+        if (this.screenInitiator && this.screenState)
+          await this.ToggleScreen();
+        this.screenStream.getTracks().forEach(track => {
+          track.stop();
+        });
+        this.peers["myself"].stream.getTracks().forEach(track => {
+          track.stop();
+        })
+        this.myPeer.disconnect();
+        this.dataService.closeConnection();
+      } catch { document.location.reload(); }
     });
   }
 }

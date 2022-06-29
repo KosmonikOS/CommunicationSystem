@@ -44,7 +44,7 @@
               {
                 "Name": "ByIncludingOnly",
                 "Args": {
-                  "expression": "@Level = 'Warning'"
+                  "expression": "@l = 'Warning'"
                 }
               }
             ]

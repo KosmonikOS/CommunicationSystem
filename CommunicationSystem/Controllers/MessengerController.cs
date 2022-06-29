@@ -4,7 +4,9 @@ using CommunicationSystem.Services.Commands;
 using CommunicationSystem.Services.Queries;
 using CommunicationSystem.Services.Services.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,15 +15,16 @@ namespace CommunicationSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MessengerController : ControllerBase
     {
         private readonly IMediator mediator;
-        private readonly IFileService fileService;
+        private readonly ILogger<MessengerController> logger;
 
-        public MessengerController(IMediator mediator, IFileService fileService)
+        public MessengerController(IMediator mediator,ILogger<MessengerController> logger)
         {
             this.mediator = mediator;
-            this.fileService = fileService;
+            this.logger = logger;
         }
         [HttpGet("contact/messages/{userId}/{contactId}/{page}")]
         public async Task<ActionResult<List<ContactMessageDto>>> GetContactMessages(int userId, int contactId, int page)

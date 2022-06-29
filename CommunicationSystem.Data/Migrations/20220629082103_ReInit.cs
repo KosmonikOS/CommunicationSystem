@@ -114,17 +114,23 @@ namespace CommunicationSystem.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ToGroup = table.Column<bool>(type: "boolean", nullable: false),
+                    IsGroup = table.Column<bool>(type: "boolean", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ViewStatus = table.Column<int>(type: "integer", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     FromId = table.Column<int>(type: "integer", nullable: false),
-                    ToId = table.Column<int>(type: "integer", nullable: false)
+                    ToId = table.Column<int>(type: "integer", nullable: true),
+                    ToGroup = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Groups_ToGroup",
+                        column: x => x.ToGroup,
+                        principalTable: "Groups",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Messages_Users_FromId",
                         column: x => x.FromId,
@@ -135,8 +141,7 @@ namespace CommunicationSystem.Data.Migrations
                         name: "FK_Messages_Users_ToId",
                         column: x => x.ToId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -303,6 +308,11 @@ namespace CommunicationSystem.Data.Migrations
                 column: "FromId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_ToGroup",
+                table: "Messages",
+                column: "ToGroup");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Messages_ToId",
                 table: "Messages",
                 column: "ToId");
@@ -405,11 +415,33 @@ namespace CommunicationSystem.Data.Migrations
                 column: "UserId",
                 unique: true);
 
-            migrationBuilder.Sql("CREATE INDEX \"IX_Users_LastName_FirstName_MiddleName\" " +
+            migrationBuilder.Sql("CREATE INDEX \"IX_Users_FullName\" " +
                 "ON \"Users\" using gin (((((COALESCE(\"LastName\", '') || ' ') || COALESCE(\"FirstName\", '')) || ' ') || COALESCE(\"MiddleName\", '')) gin_trgm_ops)");
 
-            migrationBuilder.Sql("CREATE INDEX \"IX_Users_FullGrage\" " +
-                "ON \"Users\" using gin (((COALESCE(\"Grade\"::text, '') || ' ') || COALESCE(\"GradeLetter\", '')) gin_trgm_ops)");
+            migrationBuilder.Sql("CREATE INDEX \"IX_Users_FullGrade\" " +
+                            "ON \"Users\" using gin (((COALESCE(\"Grade\"::text, '') || ' ') || COALESCE(\"GradeLetter\", '')) gin_trgm_ops)");            
+
+            migrationBuilder.Sql("CREATE FUNCTION \"GetNotViewedMessages\"(from_id int,to_id int) " +
+                            "RETURNS int AS ' SELECT COUNT(*) FROM \"Messages\" " +
+                            "WHERE \"ViewStatus\" = 0 and \"ToId\" = to_id " +
+                            "and \"FromId\" = from_id' LANGUAGE SQL; ");
+
+            migrationBuilder.Sql("CREATE FUNCTION \"GetUserLastActivity\"(user_id int) " +
+                                             "RETURNS text AS 'SELECT CASE " +
+                                             "WHEN(\"EnterTime\" is not null and \"LeaveTime\" is not null " +
+                                                "and \"EnterTime\" <= now() and \"LeaveTime\" <= now()) THEN " +
+                                                "CASE " +
+                                                "WHEN(\"EnterTime\" > \"LeaveTime\") THEN ''В сети'' " +
+                                                "WHEN(\"LeaveTime\"::date = current_date) THEN to_char(\"LeaveTime\",''Был(a) в сети: HH24:MI'') " +
+                                                "WHEN(extract(week from \"LeaveTime\") = extract(week from current_date)) THEN to_char(\"LeaveTime\",''Был(a) в сети: TMDay'') " +
+                                                "WHEN(extract(year from \"LeaveTime\") = extract(year from current_date)) THEN to_char(\"LeaveTime\",''Был(a) в сети: TMMonth dd'') " +
+                                                "ELSE to_char(\"LeaveTime\",''Был(a) в сети: DD.MM.YYYY'') " +
+                                                "END " +
+                                            "ELSE ''Не в сети'' " +
+                                            "END " +
+                                            "FROM \"Users\" " +
+                                            "WHERE \"Id\" = user_id' " +
+                                            "LANGUAGE SQL;");
 
             migrationBuilder.Sql("INSERT INTO public.\"Role\"(\"RoleId\", \"Name\")VALUES(1, 'Ученик');");
             migrationBuilder.Sql("INSERT INTO public.\"Role\"(\"RoleId\", \"Name\")VALUES(2, 'Учитель');");
@@ -457,6 +489,12 @@ namespace CommunicationSystem.Data.Migrations
             migrationBuilder.Sql("DROP INDEX \"IX_Users_LastName_FirstName_MiddleName\"");
 
             migrationBuilder.Sql("DROP INDEX \"IX_Users_FullGrage\"");
+
+            migrationBuilder.Sql("DROP FUNCTION \"GetNotViewedMessages\"");
+
+            migrationBuilder.Sql("DROP FUNCTION \"GetUserLastActivity\"");
+
+            migrationBuilder.Sql("DELETE FROM \"Roles\"");
         }
     }
 }

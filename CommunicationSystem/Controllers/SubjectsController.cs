@@ -3,6 +3,7 @@ using CommunicationSystem.Domain.Entities;
 using CommunicationSystem.Services.Commands;
 using CommunicationSystem.Services.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace CommunicationSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SubjectsController : ControllerBase
     {
         private readonly IMediator mediator;

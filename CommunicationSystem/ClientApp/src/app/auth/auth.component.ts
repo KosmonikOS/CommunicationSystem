@@ -26,7 +26,7 @@ export class AuthComponent implements OnInit {
       } else {
         this.dataService.deleteUserData();
       }
-      this.videochatDataService.checkConnection();
+      //this.videochatDataService.checkConnection();
       this.router.navigate(["/messenger"]);
       this.dataService.logIn(this.login.email);
     },

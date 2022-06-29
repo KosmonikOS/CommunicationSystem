@@ -3,6 +3,7 @@ using CommunicationSystem.Domain.Enums;
 using CommunicationSystem.Services.Commands;
 using CommunicationSystem.Services.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace CommunicationSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CreateTestsController : ControllerBase
     {
         private readonly IMediator mediator;

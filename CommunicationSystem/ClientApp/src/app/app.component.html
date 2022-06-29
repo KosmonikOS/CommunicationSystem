@@ -60,7 +60,7 @@
           <i class="bi bi-chat-dots"></i>
           <span class="nav_name">Чат</span>
         </a>
-        <a routerLink="/videochat" routerLinkActive="active" class="nav_link nav_button">
+        <a routerLink="/createvideochat" routerLinkActive="active" class="nav_link nav_button">
           <i class="bi bi-camera-video"></i>
           <span class="nav_name">Видео звонки</span>
         </a>
@@ -85,15 +85,3 @@
 <div class="main-body" [ngClass]="{'login-form':!checkAuth()}">
   <router-outlet></router-outlet>
 </div>
-
-
-<ng-template #callModal let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Принять вызов от {{videochatDataService.caller.name}} ?</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-  </div>
-  <div class="modal-footer justify-content-center">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close();acceptCall()">Принять</button>
-    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">Отклонить</button>
-  </div>
-</ng-template>

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CommunicationSystem.Data.Migrations
 {
     [DbContext(typeof(CommunicationContext))]
-    [Migration("20220610131636_ContactUdfs")]
-    partial class ContactUdfs
+    [Migration("20220629082103_ReInit")]
+    partial class ReInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,6 +25,93 @@ namespace CommunicationSystem.Data.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "pg_trgm");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("CommunicationSystem.Domain.Dtos.ContactDto", b =>
+                {
+                    b.Property<string>("AccountImage")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsGroup")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LastActivity")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastMessage")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastMessageDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("LastMessageType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("NotViewedMessages")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("ToGroup")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("ToId")
+                        .HasColumnType("integer");
+
+                    b.ToView(null);
+                });
+
+            modelBuilder.Entity("CommunicationSystem.Domain.Dtos.ContactMessageDto", b =>
+                {
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsMine")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.ToView(null);
+                });
+
+            modelBuilder.Entity("CommunicationSystem.Domain.Dtos.GroupMessageDto", b =>
+                {
+                    b.Property<string>("AccountImage")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsMine")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.ToView(null);
+                });
+
             modelBuilder.Entity("CommunicationSystem.Domain.Entities.Group", b =>
                 {
                     b.Property<Guid>("Id")
@@ -32,9 +119,7 @@ namespace CommunicationSystem.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("GroupImage")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("/assets/group.png");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -79,10 +164,13 @@ namespace CommunicationSystem.Data.Migrations
                     b.Property<int>("FromId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("ToGroup")
+                    b.Property<bool>("IsGroup")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("ToId")
+                    b.Property<Guid?>("ToGroup")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("ToId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Type")
@@ -94,6 +182,8 @@ namespace CommunicationSystem.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FromId");
+
+                    b.HasIndex("ToGroup");
 
                     b.HasIndex("ToId");
 
@@ -310,9 +400,7 @@ namespace CommunicationSystem.Data.Migrations
 
                     b.Property<string>("AccountImage")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("/assets/user.png");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -433,13 +521,17 @@ namespace CommunicationSystem.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CommunicationSystem.Domain.Entities.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("ToGroup");
+
                     b.HasOne("CommunicationSystem.Domain.Entities.User", "To")
                         .WithMany("ToMessages")
-                        .HasForeignKey("ToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ToId");
 
                     b.Navigation("From");
+
+                    b.Navigation("Group");
 
                     b.Navigation("To");
                 });

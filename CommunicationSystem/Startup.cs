@@ -16,8 +16,6 @@ using CommunicationSystem.Middlewares;
 using Microsoft.AspNetCore.SignalR;
 using CommunicationSystem.Services.Hubs.Infrastructure;
 using CommunicationSystem.Services.Hubs;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace CommunicationSystem
 {
@@ -38,20 +36,7 @@ namespace CommunicationSystem
             var connection = Configuration.GetConnectionString("PostgreSQL");
 
             //Configuring options
-            services.Configure<AuthOptions>(Configuration.GetSection("Auth"));
-            services.Configure<PathOptions>(Configuration.GetSection("Path"));
-            services.Configure<SmtpOptions>(Configuration.GetSection("SmtpClient"));
-            services.Configure<SpaOptions>(Configuration.GetSection("Spa"));
-            services.Configure<MailOptions>(Configuration.GetSection("Mail"));
-            services.Configure<KestrelServerOptions>(options =>
-            {
-                options.Limits.MaxRequestBodySize = 209715200;
-            });
-            services.Configure<FormOptions>(x =>
-            {
-                x.ValueLengthLimit = 209715200;
-                x.MultipartBodyLengthLimit = 209715200;
-            });
+            services.AddConfiguration(Configuration);
 
             //Authentication 
             services.AddCustomJwt(Configuration);
@@ -89,20 +74,19 @@ namespace CommunicationSystem
 
             if (!env.IsDevelopment())
             {
+                app.UseForwardedHeaders();
                 app.UseHsts();
                 app.UseSpaStaticFiles();
             }
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapHub<VideoChatHub>("/videochathub");
+                endpoints.MapHub<VideoChatHub>("/videochathub");
                 endpoints.MapHub<MessengerHub>("/messengerhub");
                 endpoints.MapControllers();
             });

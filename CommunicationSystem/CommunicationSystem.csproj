@@ -56,15 +56,19 @@
     <None Remove="ClientApp\src\app\messenger\member.ts" />
     <None Remove="ClientApp\src\app\messenger\message.ts" />
     <None Remove="ClientApp\src\app\messenger\sendmessage.ts" />
+    <None Remove="ClientApp\src\app\videochat\state.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Remove="ClientApp\src\app\confirmation\confirmation.component.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\confirmation\confirmation.data.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\confirmation\confirmation.module.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\createvideochat\createvideochat.component.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\createvideochat\createvideochat.module.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\recovery\recovery.component.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\recovery\recovery.data.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\recovery\recovery.module.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\videochat\memberV2.ts" />
   </ItemGroup>
 
   <ItemGroup>

@@ -43,7 +43,7 @@ namespace CommunicationSystem.Tests.UnitTests
             SubjectRepositoryDataInitializer.InitializePostgreSql(context);
             var sut = new SubjectRepository(context);
             //Act
-            var actual = sut.GetSubjectsPage(0, "test").ToList();
+            var actual = sut.GetSubjectsPage(0, "te").ToList();
             //Assert
             Assert.Single(actual);
         }

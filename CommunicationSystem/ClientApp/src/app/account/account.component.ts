@@ -30,13 +30,20 @@ export class AccountComponent {
   }
   FileSelected(event: any) {
     var file = <File>event.target.files[0];
-    this.utilitesService.postImage(file).subscribe(
-      (result: any) => {
-        this.toastService.showSuccess("Файл загружен");
-        this.dataService.currentAccount.accountImage = result;
-      }, error => {
-        this.errorHandler.Handle(error);
-      });
+    if (file !== undefined) {
+      if (file.type.includes('image')) {
+        this.utilitesService.postImage(file).subscribe(
+          (result: any) => {
+            console.log(result);
+            this.toastService.showSuccess("Файл загружен");
+            this.dataService.currentAccount.accountImage = result;
+          }, error => {
+            this.errorHandler.Handle(error);
+          });
+      } else {
+        this.toastService.showAlert("Пожалуйста загрузите изображение");
+      }
+    }
   }
   SaveAccount() {
     this.dataService.putAccount().subscribe(

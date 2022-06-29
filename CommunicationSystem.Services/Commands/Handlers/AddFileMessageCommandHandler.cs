@@ -40,7 +40,8 @@ namespace CommunicationSystem.Services.Commands.Handlers
             messageRepository.AddMessage(message);
             await messageRepository.SaveChangesAsync();
             var responseDto = mapper.Map<SendMessageDto>(message);
-            await messageService.SendMessageAsync(responseDto);
+            if (message.ToId != message.FromId)
+                await messageService.SendMessageAsync(responseDto);
             return new ContentResponse<FileMessageResponseDto>(ResponseStatus.Ok)
             {
                 Content = new FileMessageResponseDto()

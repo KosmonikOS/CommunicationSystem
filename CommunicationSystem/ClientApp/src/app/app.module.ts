@@ -11,6 +11,7 @@ import { AuthComponent } from "./auth/auth.component";
 import { AppComponent } from './app.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { CreateVideochatComponent } from './createvideochat/createvideochat.component';
 import { RecoveryComponent } from './recovery/recovery.component';
 import { AccountComponent } from './account/account.component';
 import { MessengerComponent } from './messenger/messenger.component'
@@ -30,6 +31,7 @@ import { AuthModule } from "./auth/auth.module";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegistrationModule } from "./registration/registration.module";
 import { ConfirmationModule } from "./confirmation/confirmation.module";
+import { CreateVideochatModule } from "./createvideochat/createvideochat.module";
 import { RecoveryModule } from './recovery/recovery.module';
 import { AccountModule } from "./account/account.module";
 import { MessengerModule } from './messenger/messenger.module';
@@ -46,9 +48,10 @@ const routes = [
   { path: "registration", component: RegistrationComponent },
   { path: "recovery", component: RecoveryComponent },
   { path: "confirmation/:token", component: ConfirmationComponent },
+  { path: "createvideochat", component: CreateVideochatComponent, canActivate: [AuthGuard] },
   { path: "account", component: AccountComponent, canActivate: [AuthGuard] },
   { path: "messenger", component: MessengerComponent, canActivate: [AuthGuard] },
-  { path: "videochat", component: VideochatComponent, canActivate: [AuthGuard] },
+  { path: "videochat/:roomId", component: VideochatComponent, canActivate: [AuthGuard] },
   { path: "users", component: UsereditComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: "subjects", component: SubjectsComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: "createtests", component: CreatetestsComponent, canActivate: [AuthGuard, TeacherGuard] },
@@ -68,6 +71,7 @@ export function tokenGetter() {
     AuthModule,
     RegistrationModule,
     ConfirmationModule,
+    CreateVideochatModule,
     RecoveryModule,
     AccountModule,
     SubjectsModule,

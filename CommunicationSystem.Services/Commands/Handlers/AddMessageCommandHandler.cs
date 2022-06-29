@@ -32,7 +32,8 @@ namespace CommunicationSystem.Services.Commands.Handlers
             messageRepository.AddMessage(message);
             await messageRepository.SaveChangesAsync();
             var dto = mapper.Map<SendMessageDto>(message);
-            await messageService.SendMessageAsync(dto);
+            if(message.ToId != message.FromId)
+                await messageService.SendMessageAsync(dto);
             return new ContentResponse<int>(ResponseStatus.Ok) { Content = message.Id };
         }
     }

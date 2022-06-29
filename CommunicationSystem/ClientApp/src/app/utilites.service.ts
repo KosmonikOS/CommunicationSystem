@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core"
 
 @Injectable({ "providedIn": "root" })
@@ -9,6 +9,6 @@ export class UtilitesService {
   postImage(image: File) {
     var formData = new FormData();
     formData.append("File", image);
-    return this.http.post(this.url + "image", formData);
+    return this.http.post(this.url + "image", formData, { responseType: 'text' });
   }
 }

@@ -10,18 +10,16 @@
 .text-small {
   font-size: 0.9rem;
 }
-.btn-circle {
-  width: 40px;
-  height: 40px;
-  padding: 6px 0px;
-  border-radius: 20px;
-  text-align: center;
-  font-size: 18px;
-  line-height: 1.37857;
-}
-.messages-box,
-.chat-box {
+.messages-box {
   height: 80%;
+}
+.chat-box {
+  overflow-y: auto;
+  position: absolute;
+  top: 40px;
+  bottom: 80px;
+  left: 0px;
+  right: 0px;
 }
 .rounded-lg {
   border-radius: 0.5rem;
@@ -72,7 +70,6 @@ input::placeholder {
   left: 3px;
   right: 3px
 }
-
 @media screen and (min-width: 768px) {
   .active-user {
     background-color: #E7F3FF;
