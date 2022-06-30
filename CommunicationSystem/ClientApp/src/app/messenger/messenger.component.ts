@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessengerDataService } from "./messenge.data.service"
 import { AccountDataService } from "../account/account.data.service"
 import { ToastService } from "../toast.service"

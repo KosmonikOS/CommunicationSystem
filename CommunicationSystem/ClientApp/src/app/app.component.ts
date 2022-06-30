@@ -4,7 +4,6 @@ import { ToastService } from "./toast.service"
 import { AccountDataService } from "./account/account.data.service"
 import { Router } from '@angular/router';
 import { VideochatDataService } from './videochat/videochat.data.service';
-import { AudioService } from "./audio.service"
 import { DevicesService } from "./devices.service"
 import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
@@ -14,14 +13,16 @@ import { UtilitesService } from "./utilites.service"
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [AuthDataService, ToastService, VideochatDataService, AudioService, UtilitesService, DevicesService]
+  providers: [AuthDataService, ToastService, VideochatDataService, UtilitesService, DevicesService]
 })
 export class AppComponent {
   title = 'ClientApp';
   isNavOpen: boolean = false;
   dismissType: boolean = true;
   @ViewChild("callModal") callModal: ElementRef = new ElementRef("");
-  constructor(private authDataService: AuthDataService, public toastService: ToastService, public accountDataService: AccountDataService, private router: Router, public videochatDataService: VideochatDataService, private audioService: AudioService, private modalService: NgbModal, private utilitesService: UtilitesService, private devicesService: DevicesService) { }
+  constructor(private authDataService: AuthDataService, public toastService: ToastService,
+    public accountDataService: AccountDataService, private router: Router,
+    public videochatDataService: VideochatDataService) { }
 
   openNav() {
     this.isNavOpen = !this.isNavOpen;

@@ -128,9 +128,15 @@ export class CreatetestsComponent implements OnInit {
   }
   FileSelected(event: any) {
     var file = <File>event.target.files[0];
-    this.utilitesService.postImage(file).subscribe((response: any) => {
-      this.currentQuestion.image = response;
-    }, error => this.errorHandler.Handle(error));
+    if (file !== undefined) {
+      if (file.type.includes('image')) {
+        this.utilitesService.postImage(file).subscribe((response: any) => {
+          this.currentQuestion.image = response;
+        }, error => this.errorHandler.Handle(error));
+      } else {
+        this.toastService.showAlert("Пожалуйста загрузите изображение");
+      }
+    }
   }
   OpenModal(modal: any, initial: boolean = true) {
     if (this.tempModals.length > 0) {
@@ -163,7 +169,7 @@ export class CreatetestsComponent implements OnInit {
         result => {
           this.modalService.dismissAll();
           this.currentStudent = new TestMember();
-        }, error => { this.errors = this.errorHandler.Handle(error); console.log(this.errors); })
+        }, error => { this.errors = this.errorHandler.Handle(error);})
   }
   CreateTest() {
     this.search = "";
@@ -194,7 +200,6 @@ export class CreatetestsComponent implements OnInit {
     this.OpenModal(this.questionModal);
   }
   EditQuestion() {
-    console.log(this.currentQuestionRow);
     this.questionAdding = false;
     if (this.currentQuestionRow != -1) {
       this.OpenModal(this.questionModal);
@@ -230,12 +235,10 @@ export class CreatetestsComponent implements OnInit {
     this.currentQuestion.questionType = Number(this.currentQuestion.questionType);
     if (this.currentQuestion.questionType != 3) {
       if (this.currentQuestion.options.length == 0) {
-        console.log("0");
         this.toastService.showError("Добавьте вариант ответа");
         return;
       }
       if (this.FindRightAnswer(this.currentQuestion) == "") {
-        console.log("-1");
         this.toastService.showError("Добавьте верный вариант ответа");
         return;
       }

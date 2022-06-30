@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { environment } from '../../environments/environment.prod';
 import { ActivatedRoute, Router } from '@angular/router';
 import Peer, { DataConnection, MediaConnection } from 'peerjs';
 import { DevicesService } from '../devices.service';
@@ -22,8 +23,8 @@ export class VideochatComponent implements OnInit, OnDestroy {
   myVideo = document.createElement("video");
   peers: { [key: string]: Member } = {};
   myPeer: Peer = new Peer({
-    host: "peerjs-server.herokuapp.com",
-    port: 443,
+    host: environment.peerServer,
+    port: environment.peerServerPort,
     secure: true
   });
   currentSize: any = {

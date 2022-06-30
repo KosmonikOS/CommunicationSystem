@@ -76,7 +76,6 @@ export class TestsComponent implements OnInit {
     }
   }
   SubmitTest() {
-    console.log(this.currentTest);
     this.dataService.postTest(this.currentTest.questions, this.accountDataService.currentAccount.id, this.currentTest.id).subscribe(() => {
       this.modalService.dismissAll();
       this.GetTests(this.page, this.search);

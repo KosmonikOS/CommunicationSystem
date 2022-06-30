@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Registration } from './registration';
 import { RegistrationDataService } from "./registration.data.service"
 import { Router } from '@angular/router';
