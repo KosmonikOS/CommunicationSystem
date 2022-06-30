@@ -229,12 +229,6 @@ export class VideochatComponent implements OnInit, OnDestroy {
       }
     })
   }
-  TurnOnScreen() {
-
-  }
-  TurnOffScreen() {
-
-  }
   ngOnInit(): void {
     this.dataService.startConnection().then(async () => {
       await this.GetUserVideo();

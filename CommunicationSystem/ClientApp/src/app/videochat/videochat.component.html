@@ -7,7 +7,7 @@
 <div class="container-fluide pt-3 px-4" style="position:relative;height:100%">
   <div class="vh-80 row" style="position:relative;">
     <div [ngClass]="{'col-sm-11 col-12 order-2 order-sm-1':screenState}" [style.display]="screenState ? 'block':'none'" class="screenShare">
-      <video autoplay #screenVideo class="screenVideo"></video>
+      <video playsinline autoplay #screenVideo class="screenVideo"></video>
     </div>
     <div [ngClass]="{'col-12':!screenState,'col-sm-1 col-12 order-1 order-sm-2 videoPanel-sm':screenState}" style="overflow:auto;height:81vh">
       <div class="row">

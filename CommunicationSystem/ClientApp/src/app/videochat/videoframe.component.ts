@@ -26,12 +26,14 @@ export class VideoFrameComponent implements OnInit, OnChanges {
   LoadVideo() {
     var video = this.video?.nativeElement;
     if (video != null && this.member.stream != null) {
+      //video.setAttribute('autoplay', '');
+      //video.setAttribute('playsinline', '');
       if (this.member.myself)
         video.muted = true;
       video.srcObject = this.member.stream;
-      video.addEventListener("loadedmetadata", () => {
-        video.play()
-      })
+      //video.addEventListener("loadedmetadata", () => {
+      //  video.play()
+      //})
     }
   }
   UpdateVideo() {
