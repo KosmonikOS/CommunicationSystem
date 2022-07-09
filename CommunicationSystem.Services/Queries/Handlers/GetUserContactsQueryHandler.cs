@@ -17,7 +17,8 @@ namespace CommunicationSystem.Services.Queries.Handlers
         }
         public async Task<IContentResponse<List<ContactDto>>> Handle(GetUserContactsQuery request, CancellationToken cancellationToken)
         {
-            var dtos = await contactRepository.GetUserContacts(request.UserId).ToListAsync();
+            var dtos = await contactRepository.GetUserContacts(request.UserId)
+                .ToListAsync(cancellationToken);
             return new ContentResponse<List<ContactDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }

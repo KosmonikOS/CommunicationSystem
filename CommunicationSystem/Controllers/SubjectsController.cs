@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -22,17 +23,17 @@ namespace CommunicationSystem.Controllers
             this.mediator = mediator;
         }
         [HttpGet]
-        public async Task<ActionResult<List<Subject>>> GetSubjects()
+        public async Task<ActionResult<List<Subject>>> GetSubjects(CancellationToken cancellationToken)
         {
             var query = new GetSubjectsForTestQuery();
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("{page}/{search?}")]
-        public async Task<ActionResult<List<Subject>>> GetSubjectsPage(int page, string search)
+        public async Task<ActionResult<List<Subject>>> GetSubjectsPage(int page, string search, CancellationToken cancellationToken)
         {
             var query = new GetSubjectsQuery() { Search = search, Page = page };
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpPost]

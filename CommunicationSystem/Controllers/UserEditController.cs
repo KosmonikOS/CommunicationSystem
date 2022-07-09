@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -23,7 +24,8 @@ namespace CommunicationSystem.Controllers
             this.mediator = mediator;
         }
         [HttpGet("{page}/{searchOption}/{search?}")]
-        public async Task<ActionResult<List<UserAccountAdminDto>>> GetUsersPage(int page, UserPageSearchOption searchOption, string search)
+        public async Task<ActionResult<List<UserAccountAdminDto>>> GetUsersPage(int page,
+            UserPageSearchOption searchOption, string search, CancellationToken cancellationToken)
         {
             var query = new GetUsersQuery()
             {
@@ -31,7 +33,7 @@ namespace CommunicationSystem.Controllers
                 Search = search,
                 SearchOption = searchOption,
             };
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("getroles")]

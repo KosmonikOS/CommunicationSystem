@@ -18,7 +18,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
         public async Task<IContentResponse<List<ContactMessageDto>>> Handle(GetMessagesBetweenContactsQuery request, CancellationToken cancellationToken)
         {
             var dtos = await messageRepository.GetMessagesBetweenContacts(request.UserId
-                , request.ContactId,request.Page).ToListAsync();
+                , request.ContactId,request.Page).ToListAsync(cancellationToken);
             return new ContentResponse<List<ContactMessageDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }

@@ -17,7 +17,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
         }
         public async Task<IContentResponse<List<Subject>>> Handle(GetSubjectsForTestQuery request, CancellationToken cancellationToken)
         {
-            var subjects = await subjectRepository.GetSubjects().ToListAsync();
+            var subjects = await subjectRepository.GetSubjects().ToListAsync(cancellationToken);
             return new ContentResponse<List<Subject>>(ResponseStatus.Ok) { Content = subjects };
         }
     }

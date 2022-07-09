@@ -22,7 +22,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
         public async Task<IContentResponse<List<GroupSearchMemberDto>>> Handle(GetGroupMemberWithSearchQuery request, CancellationToken cancellationToken)
         {
             var dtos = await mapper.ProjectTo<GroupSearchMemberDto>(userRepository
-                .GetUsersWithSearch(request.Search, UserSearchOption.NickName)).ToListAsync();
+                .GetUsersWithSearch(request.Search, UserSearchOption.NickName)).ToListAsync(cancellationToken);
             return new ContentResponse<List<GroupSearchMemberDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }

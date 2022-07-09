@@ -22,7 +22,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
         public async Task<IContentResponse<List<QuestionShowDto>>> Handle(GetQuestionsWithOptionsQuery request, CancellationToken cancellationToken)
         {
             var dtos = await mapper.ProjectTo<QuestionShowDto>(questionRepository
-                .GetQuestions(request.TestId)).ToListAsync();
+                .GetQuestions(request.TestId)).ToListAsync(cancellationToken);
             return new ContentResponse<List<QuestionShowDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }

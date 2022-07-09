@@ -23,7 +23,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
         {
             var dtos = await mapper.ProjectTo<TestShowDto>(testRepository
                 .GetUserTestsPage(request.UserId, request.Page, request.Searh
-                , request.SearchOption)).ToListAsync();
+                , request.SearchOption)).ToListAsync(cancellationToken);
             return new ContentResponse<List<TestShowDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }

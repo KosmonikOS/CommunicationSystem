@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -23,7 +24,8 @@ namespace CommunicationSystem.Controllers
             this.mediator = mediator;
         }
         [HttpGet("tests/{userId}/{role}/{page}/{searchOption}/{search?}")]
-        public async Task<ActionResult<List<CreateTestShowDto>>> GetTestsPage(int userId, int role, int page, TestPageSearchOption searchOption, string search)
+        public async Task<ActionResult<List<CreateTestShowDto>>> GetTestsPage(int userId, int role, int page,
+            TestPageSearchOption searchOption, string search, CancellationToken cancellationToken)
         {
             var query = new GetCreateTestsQuery()
             {
@@ -33,35 +35,36 @@ namespace CommunicationSystem.Controllers
                 Search = search,
                 SearchOption = searchOption
             };
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("questions/{testId}")]
-        public async Task<ActionResult<List<CreateQuestionDto>>> GetQuestionsWithOptions(Guid testId)
+        public async Task<ActionResult<List<CreateQuestionDto>>> GetQuestionsWithOptions(Guid testId, CancellationToken cancellationToken)
         {
             var query = new GetCreateQuestionsWithOptionsQuery() { TestId = testId };
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("students/{searchOption}/{search?}")]
-        public async Task<ActionResult<List<SearchStudentDto>>> GetStudents(UserSearchOption searchOption,string search)
+        public async Task<ActionResult<List<SearchStudentDto>>> GetStudents(UserSearchOption searchOption,string search
+            , CancellationToken cancellationToken)
         {
             var query = new GetStudentsWithSearchQuery() { Search = search,SearchOption = searchOption }; ;
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("students/{testId}")]
-        public async Task<ActionResult<List<TestStudentDto>>> GetStudents(Guid testId)
+        public async Task<ActionResult<List<TestStudentDto>>> GetStudents(Guid testId, CancellationToken cancellationToken)
         {
             var query = new GetTestStudentsQuery() { TestId = testId };
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("answers/{userId}/{testId}")]
-        public async Task<ActionResult<List<StudentAnswerShowDto>>> GetStudentAnswers(int userid, Guid testId)
+        public async Task<ActionResult<List<StudentAnswerShowDto>>> GetStudentAnswers(int userid, Guid testId, CancellationToken cancellationToken)
         {
             var query = new GetStudentAnswersQuery() { UserId = userid,TestId = testId };
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpPost]

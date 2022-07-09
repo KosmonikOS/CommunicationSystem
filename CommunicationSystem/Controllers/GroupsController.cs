@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -29,10 +30,10 @@ namespace CommunicationSystem.Controllers
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("members/{search}")]
-        public async Task<ActionResult<List<GroupSearchMemberDto>>> GetUsers(string search)
+        public async Task<ActionResult<List<GroupSearchMemberDto>>> GetUsers(string search, CancellationToken cancellationToken)
         {
             var query = new GetGroupMemberWithSearchQuery() { Search = search };
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpPost]

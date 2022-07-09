@@ -18,7 +18,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
         public async Task<IContentResponse<List<GroupMessageDto>>> Handle(GetGroupMessagesQuery request, CancellationToken cancellationToken)
         {
             var dtos = await messageRepository.GetGroupMessages(request.UserId,
-                request.GroupId, request.Page).ToListAsync();
+                request.GroupId, request.Page).ToListAsync(cancellationToken);
             return new ContentResponse<List<GroupMessageDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }

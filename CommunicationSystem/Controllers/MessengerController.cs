@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -27,17 +28,19 @@ namespace CommunicationSystem.Controllers
             this.logger = logger;
         }
         [HttpGet("contact/messages/{userId}/{contactId}/{page}")]
-        public async Task<ActionResult<List<ContactMessageDto>>> GetContactMessages(int userId, int contactId, int page)
+        public async Task<ActionResult<List<ContactMessageDto>>> GetContactMessages(int userId, int contactId
+            , int page, CancellationToken cancellationToken)
         {
             var query = new GetMessagesBetweenContactsQuery() { UserId = userId, ContactId = contactId, Page = page };
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("group/messages/{userId}/{groupId}/{page}")]
-        public async Task<ActionResult<List<GroupMessageDto>>> GetGroupMessages(int userId, Guid groupId, int page)
+        public async Task<ActionResult<List<GroupMessageDto>>> GetGroupMessages(int userId, Guid groupId
+            , int page, CancellationToken cancellationToken)
         {
             var query = new GetGroupMessagesQuery { UserId = userId, GroupId = groupId, Page = page };
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query,cancellationToken);
             return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpPost]

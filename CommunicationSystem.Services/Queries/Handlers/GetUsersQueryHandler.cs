@@ -22,7 +22,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
         {
             var dtos = await mapper.ProjectTo<UserAccountAdminDto>(userRepository
                 .GetUsersPage(request.Page, request.Search, request.SearchOption))
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
             return new ContentResponse<List<UserAccountAdminDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }

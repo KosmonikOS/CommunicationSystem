@@ -21,7 +21,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
         public async Task<IContentResponse<List<SearchStudentDto>>> Handle(GetStudentsWithSearchQuery request, CancellationToken cancellationToken)
         {
             var dtos = await mapper.ProjectTo<SearchStudentDto>(userRepository
-                .GetUsersWithSearch(request.Search, request.SearchOption)).ToListAsync();
+                .GetUsersWithSearch(request.Search, request.SearchOption)).ToListAsync(cancellationToken);
             return new ContentResponse<List<SearchStudentDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }

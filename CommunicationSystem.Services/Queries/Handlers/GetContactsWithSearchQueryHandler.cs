@@ -26,7 +26,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
                     AccountImage = x.AccountImage,
                     NickName = x.NickName,
                     LastActivity = Data.UserFunctions.GetUserLastActivity(x.Id)
-                }).ToListAsync();
+                }).ToListAsync(cancellationToken);
             return new ContentResponse<List<ContactSearchDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }

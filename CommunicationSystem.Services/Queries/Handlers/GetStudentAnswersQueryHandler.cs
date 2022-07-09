@@ -18,7 +18,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
         public async Task<IContentResponse<List<StudentAnswerShowDto>>> Handle(GetStudentAnswersQuery request, CancellationToken cancellationToken)
         {
             var dtos = await studentRepository
-                .GetStudentAnswers(request.UserId, request.TestId).ToListAsync();
+                .GetStudentAnswers(request.UserId, request.TestId).ToListAsync(cancellationToken);
             return new ContentResponse<List<StudentAnswerShowDto>>(ResponseStatus.Ok) { Content = dtos };
         }
     }

@@ -21,6 +21,12 @@ namespace CommunicationSystem.Middlewares
             {
                 await next(context);
             }
+            catch(OperationCanceledException ex)
+            {
+                logger.LogInformation($"Request to {context.Request.Path} was cancelled");
+                context.Response.StatusCode = 499;
+                await context.Response.CompleteAsync();
+            }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);

@@ -19,7 +19,7 @@ namespace CommunicationSystem.Services.Queries.Handlers
         public async Task<IContentResponse<List<Subject>>> Handle(GetSubjectsQuery request, CancellationToken cancellationToken)
         {
             var subjects = await subjectRepository
-                .GetSubjectsPage(request.Page, request.Search).ToListAsync();
+                .GetSubjectsPage(request.Page, request.Search).ToListAsync(cancellationToken);
             return new ContentResponse<List<Subject>>(ResponseStatus.Ok) { Content = subjects };
         }
     }
