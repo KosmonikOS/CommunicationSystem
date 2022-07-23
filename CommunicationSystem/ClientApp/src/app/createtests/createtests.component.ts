@@ -169,7 +169,7 @@ export class CreatetestsComponent implements OnInit {
         result => {
           this.modalService.dismissAll();
           this.currentStudent = new TestMember();
-        }, error => { this.errors = this.errorHandler.Handle(error);})
+        }, error => { this.errors = this.errorHandler.Handle(error); })
   }
   CreateTest() {
     this.search = "";
@@ -326,41 +326,41 @@ export class CreatetestsComponent implements OnInit {
       [item.userId, item])).values()];
   }
   ChangeStudentState(student: TestMember) {
-    var index = this.currentTest.students.findIndex(s => s.userId == student.userId);
-    if (student.testId !== undefined) {
-      if (index != -1) {
+    var index = this.currentTest.students.findIndex(s => s.userId == student.userId); // Поиск пользователя в действия текущей сессии
+    if (student.testId !== undefined) { // Пользователь прикреплен к тесту
+      if (index != -1) { // Пользователь находится в действиях текущей сессии
         if (!student.isSelected) {
-          this.currentTest.students[index].state = 3;
+          this.currentTest.students[index].state = 3; // Пользователь откреплен от теста => удалить из базы
         } else {
-          this.currentTest.students?.splice(index, 1);
+          this.currentTest.students?.splice(index, 1); // Пользователь заново прикрплен в тесту в рамках текущей сессии => удалить из действий
         }
-      } else {
+      } else { // Пользователь отсутствует в действиях текущей сессии
         if (!student.isSelected) {
-          student.state = 3;
-          this.currentTest.students.push(student); //Проверить
+          student.state = 3; // Пользователь откреплен от теста => удалить из базы
+          this.currentTest.students.push(student); // Добавить в список действий сессии
         }
       }
-    } else {
+    } else { // Пользователь не прикреплен к тесту
       if (student.isSelected) {
-        student.state = 1;
-        this.testStudents.unshift(student);
-        this.currentTest.students.push(student);
+        student.state = 1; // Пользователь прикреплен к тесту => Добавить в базу
+        this.testStudents.unshift(student); // Добавленить пользователя в список учеников теста
+        this.currentTest.students.push(student); // Добавить в список действий сессии
       } else {
-        var subindex = this.testStudents.findIndex(s => s.userId == student.userId);
-        this.testStudents.splice(subindex, 1);
-        this.currentTest.students?.splice(index, 1);
+        var subindex = this.testStudents.findIndex(s => s.userId == student.userId); // Поиск пользователя в списке учеников теста
+        this.testStudents.splice(subindex, 1); // Удалить пользователя из списка учеников теста
+        this.currentTest.students?.splice(index, 1); // Удалить пользователя из списка действий сессии
       }
-      this.GetStudentsList();
+      this.GetStudentsList(); // Обновить список отображения учеников
     }
   }
   ChangeStudent(student: TestMember) {
-    if (student.testId !== undefined && student.isSelected) {
-      var entity = this.currentTest.students.find(s => s.userId == student.userId);
-      if (entity !== undefined) {
-        if (entity.state != 3) {
-          entity.state = 2;
+    if (student.testId !== undefined && student.isSelected) { // Пользователь прикреплен к тесту и выбран
+      var entity = this.currentTest.students.find(s => s.userId == student.userId); // Найти действие в списке действий сессии
+      if (entity !== undefined) { // Действие найдено
+        if (entity.state != 3) { // Если пользователь не открепляется
+          entity.state = 2; // Данные пользователя изменены => обновить запись в базе
         }
-      } else {
+      } else { // Действие не найдено => добавить в список действий сессии и обновить запись в базе
         student.state = 2;
         this.currentTest.students.push(student);
       }

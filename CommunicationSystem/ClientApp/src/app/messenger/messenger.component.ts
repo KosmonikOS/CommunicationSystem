@@ -284,29 +284,29 @@ export class MessengerComponent implements OnInit {
       [item.userId, item])).values()];
   }
   ChangeMemberState(member: Member) {
-    var index = this.currentGroup.members.findIndex(m => m.userId == member.userId);
-    if (member.isLinked !== undefined && member.isLinked) {
-      if (index != -1) {
-        if (member.isSelected) {
-          this.currentGroup.members.splice(index, 1);
-        }
+    console.log(member);
+    var index = this.currentGroup.members.findIndex(m => m.userId == member.userId); // Поиск пользователя в действия текущей сессии
+    if (member.isLinked !== undefined && member.isLinked) { // Пользователь прикреплен к группе
+      if (index != -1) { // Пользователь находится в действиях текущей сессии
+        if (member.isSelected)
+          this.currentGroup.members.splice(index, 1); // Пользователь заново прикрплен к группе в рамках текущей сессии => удалить из действий
       } else {
-        if (!member.isSelected) {
-          member.state = 3;
-          this.currentGroup.members.push(member);
+        if (!member.isSelected) { // Пользователь отсутствует в действиях текущей сессии
+          member.state = 3; // Пользователь откреплен от группы => удалить из базы
+          this.currentGroup.members.push(member); // Добавить в список действий сессии
         }
       }
-    } else {
+    } else { // Пользователь не прикреплен к группе
       if (member.isSelected) {
-        member.state = 1;
-        this.groupMembers.unshift(member);
-        this.currentGroup.members.push(member);
+        member.state = 1; // Пользователь прикреплен к группе => Добавить в базу
+        this.groupMembers.unshift(member); // Добавленить пользователя в список членов группы
+        this.currentGroup.members.push(member); // Добавить в список действий сессии
       } else {
-        var subindex = this.groupMembers.findIndex(s => s.userId == member.userId);
-        this.groupMembers.splice(subindex, 1);
-        this.currentGroup.members.splice(index, 1);
+        var subindex = this.groupMembers.findIndex(s => s.userId == member.userId); // Поиск пользователя в списке членов группы
+        this.groupMembers.splice(subindex, 1); // Удалить пользователя из списка членов группы
+        this.currentGroup.members.splice(index, 1); // Удалить пользователя из списка действий сессии
       }
-      this.GetFullMemberList();
+      this.GetFullMemberList(); // Обновить список отображения членов группы
     }
   }
   SearchMembers() {
@@ -400,7 +400,7 @@ export class MessengerComponent implements OnInit {
             result.lastMessageType = message.type;
           }, error => this.errorHandler.Handle(error))
         else
-          this.dataService.getGroupContact(message.toGroup).subscribe((result: any) => {            
+          this.dataService.getGroupContact(message.toGroup).subscribe((result: any) => {
             if (this.currentContactRow != -1)
               this.currentContactRow++;
             this.contacts.unshift(result);
