@@ -1,22 +1,21 @@
-using CommunicationSystem.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using CommunicationSystem.Data;
-using CommunicationSystem.Services.Services.Interfaces;
-using CommunicationSystem.Services.Services;
-using CommunicationSystem.Services.Repositories.Interfaces;
-using CommunicationSystem.Services.Repositories;
-using CommunicationSystem.Services.Hubs;
 using CommunicationSystem.Domain.Options;
+using CommunicationSystem.Extentions;
+using Microsoft.Extensions.Options;
+using MediatR;
+using System.Reflection;
+using CommunicationSystem.Middlewares;
+using Microsoft.AspNetCore.SignalR;
+using CommunicationSystem.Services.Hubs.Infrastructure;
+using CommunicationSystem.Services.Hubs;
 
 namespace CommunicationSystem
 {
@@ -32,79 +31,30 @@ namespace CommunicationSystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var authOptions = Configuration.GetSection("Auth").Get<AuthOptions>();
+            //Variables
+            var spaOptions = Configuration.GetSection("Spa").Get<SpaOptions>();
             var connection = Configuration.GetConnectionString("PostgreSQL");
 
             //Configuring options
-            services.Configure<AuthOptions>(Configuration.GetSection("Auth"));
-            services.Configure<PathOptions>(Configuration.GetSection("Path"));
-            services.Configure<SmtpOptions>(Configuration.GetSection("SmtpClient"));
+            services.AddConfiguration(Configuration);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
-                options =>
-                {
-                    options.RequireHttpsMetadata = true;
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = authOptions.Issuer,
-                        ValidateAudience = true,
-                        ValidAudience = authOptions.Audience,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-                    };
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnMessageReceived = context =>
-                        {
-                            var accessToken = context.Request.Query["access_token"];
-                            // if hub is requested
-                            var path = context.HttpContext.Request.Path;
-                            if (!string.IsNullOrEmpty(accessToken) &&
-                                ((path.StartsWithSegments("/messengerhub")) || (path.StartsWithSegments("/videochathub"))))
-                            {
-                                // getting token from request
-                                context.Token = accessToken;
-                            }
-                            return Task.CompletedTask;
-                        }
-                    };
+            //Authentication 
+            services.AddCustomJwt(Configuration);
 
-                });
+            //CustomServices
+            services.AddServices();
+            services.AddRepositories();
 
             services.AddSignalR();
+            services.AddSingleton<IUserIdProvider, UserIdProvider>();
 
-            //services.AddCors(); // Узнать где используется
+            services.AddAutoMapper(Assembly.Load("CommunicationSystem.Domain"));
 
-            //Adding custom services
-
-            services.AddSingleton<IUserIdProvider, EmailUserIdProvider>();
-            services.AddScoped<IMailSender, MailService>();
-            services.AddScoped<IFileSaver, FileService>();
-            services.AddScoped<IJwtService, JwtService>();
-            services.AddScoped<IConfirmationToken, ConfirmationTokenService>();
-            services.AddScoped<IRegistration, RegistrationService>();
-            services.AddScoped<IUserActivity, UserActivityService>();
-            services.AddScoped<IMessage, MessageService>();
-            services.AddScoped<ITest, TestService>();
-            services.AddScoped<IClientsOfHub, HubClientsService>();
-
-            //Adding repositories
-
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<IAuthRepository, AuthRepository>();
-            services.AddScoped<ICreateTestRepository, CreateTestRepository>();
-            services.AddScoped<IMessengerRepository, MessengerRepository>();
-            services.AddScoped<IGroupRepository, GroupRepository>();
-            services.AddScoped<ITestRepository, TestRepository>();
-            services.AddScoped<ISubjectRepository, SubjectRepository>();
-            services.AddScoped<IUserEditRepository, UserEditRepository>();
+            services.AddMediatR(Assembly.Load("CommunicationSystem.Services"));
 
             services.AddDbContext<CommunicationContext>(options => options.UseNpgsql(connection));
-            //AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-            services.AddControllersWithViews()
+            services.AddControllers()
                 .AddNewtonsoftJson(
                     options =>
                     {
@@ -113,31 +63,25 @@ namespace CommunicationSystem
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                configuration.RootPath = spaOptions.RootPath;
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<SpaOptions> spaOptions)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
+            if (!env.IsDevelopment())
+            {
+                app.UseForwardedHeaders();
+                app.UseHsts();
                 app.UseSpaStaticFiles();
             }
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
-            //app.UseCors(builder => builder.AllowAnyOrigin());
-
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -149,7 +93,7 @@ namespace CommunicationSystem
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = spaOptions.Value.SourcePath;
 
                 if (env.IsDevelopment())
                 {

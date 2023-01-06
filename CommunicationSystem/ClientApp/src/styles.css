@@ -11,6 +11,30 @@
   --z-fixed: 100
 }
 
+.btn-circle {
+  width: 40px;
+  height: 40px;
+  padding: 6px 0px;
+  border-radius: 20px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.37857;
+}
+
+.btn-circle-sm {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 5px 0;
+  font-size: 18px;
+  line-height: 1;
+  border-radius: 15px;
+}
+
+.screen-area {
+  height: calc(100vh - 70px);
+}
+
 *,
 ::before,
 ::after {
@@ -34,19 +58,20 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 }
+
   .scrollable::-webkit-scrollbar {
     display: none;
   }
 
-  .icon-mask {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -8px;
-    margin-left: -8px;
-    opacity: 1;
-    z-index: 9999;
-  }
+.icon-mask {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -8px;
+  margin-left: -8px;
+  opacity: 1;
+  z-index: 9999;
+}
 
 .darker:after {
   content: '';
@@ -73,8 +98,8 @@ a {
   position: fixed;
   top: var(--header-height);
   left: 0px;
-  right:0px;
-  bottom:0px;
+  right: 0px;
+  bottom: 0px;
 }
 
 .header {
@@ -92,10 +117,9 @@ a {
   transition: .5s
 }
 
-.header_toggle {
-  color: var(--first-color);
-  font-size: 1.5rem;
-  cursor: pointer
+.header-toggle {
+  cursor: pointer;
+  /*margin-left: var(--nav-width);*/
 }
 
 .header_img {
@@ -193,6 +217,7 @@ a {
     height: 32px;
     background-color: var(--white-color)
   }
+
 .full-screen {
   height: calc(100vh - 5rem);
 }
@@ -202,27 +227,20 @@ a {
     margin: calc(var(--header-height) + 1rem) 0 0 0;
     padding-left: var(--nav-width)
   }
+
   .main-body {
-    top: calc(var(--header-height) + 1rem);
+    /*top: calc(var(--header-height) + 1rem);*/
     left: var(--nav-width);
   }
+
   .login-form {
     margin-left: calc(var(--nav-width) * -1 + 1rem);
   }
 
-  .header {
+  /*.header {
     height: calc(var(--header-height) + 1rem);
     padding: 0 2rem 0 calc(var(--nav-width) + 2rem)
-  }
-
-  .header_img {
-    width: 40px;
-    height: 40px
-  }
-
-    .header_img img {
-      width: 45px
-    }
+  }*/
 
   .l-navbar {
     left: 0;
@@ -238,6 +256,10 @@ a {
   }
 
   .head-pb {
-    padding-left: calc(var(--nav-width) + 188px);
+    padding-left: calc(var(--nav-width) + 99px);
+  }
+
+  .header-toggle {
+    margin-left: var(--nav-width);
   }
 }

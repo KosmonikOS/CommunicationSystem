@@ -1,8 +1,7 @@
-﻿using CommunicationSystem.Domain.Entities;
-using CommunicationSystem.Services.Repositories.Interfaces;
-using CommunicationSystem.Services.Services.Interfaces;
+﻿using CommunicationSystem.Domain.Dtos;
+using CommunicationSystem.Services.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -11,75 +10,42 @@ namespace CommunicationSystem.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthRepository repository;
-        private readonly IJwtService jwt;
+        private readonly IMediator mediator;
 
-        public AuthController(IAuthRepository repository, IJwtService jwt)
+        public AuthController(IMediator mediator)
         {
-            this.repository = repository;
-            this.jwt = jwt;
+            this.mediator = mediator;
         }
-        [HttpGet("settime/{id}/{act?}")]
-        public async Task<IActionResult> SetTime(int id, string act)
+        [HttpPut("settime")]
+        public async Task<IActionResult> SetTime(UserActivityDto dto)
         {
-            if (id != 0)
+            var command = new SetUserActivityTimeCommand()
             {
-                try
-                {
-                    await repository.SetTimeAsync(id, act);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e);
-                }
-            }
-            return BadRequest();
+                Dto = dto
+            };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
         [HttpPost]
-        public async Task<IActionResult> Enter(Login login)
+        public async Task<ActionResult<TokenPairDto>> Enter(LoginDto dto)
         {
-            try
-            {
-                var user = repository.GetConfirmedUser(login);
-                if (user != null)
-                {
-                    var claims = jwt.GenerateClaims(user);
-                    var token = jwt.GenerateJWT(claims);
-                    var rt = await jwt.GenerateRTAsync(login.Email);
-                    return Ok(
-                        new
-                        {
-                            access_token = token,
-                            refresh_token = rt,
-                            current_account_id = user.Id
-                        });
-                }
-                return Unauthorized();
-            }
-            catch(Exception e)
-            {
-                return Unauthorized(e);
-            }
+            var command = new GenerateEnterTokenCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh(TokenPair pair)
+        public async Task<ActionResult<RefreshTokenDto>> Refresh(RefreshTokenDto dto)
         {
-            try
-            {
-                var result = await jwt.RefreshAsync(pair);
-                if (result != null)
-                {
-                    return Ok(result);
-                }
-            }
-            catch(Exception e) 
-            {
-                return BadRequest(e);
-            }
-            return BadRequest();
-
+            var command = new RefreshTokenCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
+        }
+        [HttpPut("recover")]
+        public async Task<IActionResult> RecoverPassword(RecoverPasswordDto dto)
+        {
+            var command = new RecoverPasswordCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
     }
 }
-

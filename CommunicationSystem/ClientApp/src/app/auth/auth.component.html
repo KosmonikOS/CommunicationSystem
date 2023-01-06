@@ -7,15 +7,12 @@
           <div class="card-body p-5 text-center">
 
             <h3 class="mb-5">Авторизация</h3>
-
-
-
             <div class="form-outline mb-4">
-              <input type="email" id="typeEmailX" class="form-control form-control-lg rounded" [error]="{Error:errors.Email,PlaceHolder:'Почта'}" [(ngModel)]="login.email" />
+              <input type="email" id="typeEmailX" class="form-control form-control-lg rounded" [error]="{Error:errors?.Email,PlaceHolder:'Почта'}" [(ngModel)]="login.email" />
             </div>
 
             <div class="form-outline mb-4">
-              <input type="password" id="typePasswordX" class="form-control form-control-lg rounded" [error]="{Error:errors.Password,PlaceHolder:'Пароль'}" [(ngModel)]="login.password" />
+              <input type="password" id="typePasswordX" class="form-control form-control-lg rounded" [error]="{Error:errors?.Password,PlaceHolder:'Пароль'}" [(ngModel)]="login.password" />
             </div>
 
             <!-- Checkbox -->
@@ -27,11 +24,16 @@
               <label class="form-check-label" style="padding-left:5px" for="form1Example3">Сохранить данные</label>
             </div>
 
-            <button class="btn btn-primary btn-lg btn-block" type="submit" (click)="enter()">Войти</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" (click)="Enter()">Войти</button>
 
-            <div class="pt-5">
-              <a class="btn text-primary" (click)="redirectToRegistration()">
+            <div class="pt-3">
+              <a class="btn text-primary" (click)="RedirectToRegistration()">
                 Создать аккаунт
+              </a>
+            </div>
+            <div class="pt-3">
+              <a class="btn text-primary" (click)="RedirectToRecovery()">
+                Восстановить пароль
               </a>
             </div>
           </div>

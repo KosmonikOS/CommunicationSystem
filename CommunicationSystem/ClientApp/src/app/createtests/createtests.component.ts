@@ -6,16 +6,18 @@ import { Subject } from '../subjects/subject';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Question } from '../tests/question';
 import { Option } from '../tests/option';
-import { ToastService } from '../toast.service';
 import { TestMember } from './testmember';
 import { QuestionType } from "../tests/question"
 import { UtilitesService } from '../utilites.service';
+import { ErrorHandler } from '../infrastructure/error.handler';
+import { Guid } from '../infrastructure/guid';
+import { ToastService } from '../toast.service';
 
 @Component({
   selector: 'app-createtests',
   templateUrl: './createtests.component.html',
   styleUrls: ['./createtests.component.css', '../app.component.css'],
-  providers: [CreatetestsDataService, ToastService]
+  providers: [CreatetestsDataService, ErrorHandler]
 })
 export class CreatetestsComponent implements OnInit {
   tests: Test[] = [];
@@ -25,73 +27,126 @@ export class CreatetestsComponent implements OnInit {
   currentOptionRow: number = -1;
   currentQuestion: Question = new Question();
   currentOption: Option = new Option();
-  currentStudent: { answers: Question[], user: TestMember } = { "answers": [], "user": new TestMember() };
+  currentStudent: TestMember = new TestMember();
   currentStudentRow: number = -1;
-  userList: TestMember[] = [];
+  testStudents: TestMember[] = [];
+  searchStudents: TestMember[] = [];
+  fullStudentList: TestMember[] = [];
   subjects: Subject[] = [];
   errors: any = {};
   search: string = "";
-  searchUsers: string = "";
+  page: number = 0;
+  questionAdding: boolean = true;
+  optionAdding: boolean = true;
   @ViewChild("testModal") testModal: ElementRef = new ElementRef("");
   @ViewChild("questionModal") questionModal: ElementRef = new ElementRef("");
   @ViewChild("optionModal") optionModal: ElementRef = new ElementRef("");
   @ViewChild("studentModal") studentModal: ElementRef = new ElementRef("");
+  @ViewChild("testsList") testsList: ElementRef = new ElementRef("")
   tempModals: ElementRef[] = [];
   questionTypes = QuestionType
-  constructor(private dataService: CreatetestsDataService, public accountDataService: AccountDataService, private modalService: NgbModal, private toastService: ToastService, private utilitesService: UtilitesService) { }
+  searchOptions = [
+    { "id": 0, "name": "Название", "searchOn": "Поиск по названию" },
+    { "id": 1, "name": "Предмет", "searchOn": "Поиск по предмету" },
+    { "id": 2, "name": "Класс", "searchOn": "Поиск по классу" }
+  ];
+  currentSearchOption: number = 0;
+  searchStudent: string = "";
+  studentSearchOptions = [
+    { "id": 0, "name": "ФИО", "searchOn": "Поиск по ФИО" },
+    { "id": 1, "name": "Класс", "searchOn": "Поиск по классу" },
+  ];
+  currentStudentSearchOption: number = 0;
 
-  public dblSet(objectToSet: any, object: any, i: number) {
-    this.set(objectToSet, object, i, true);
+  constructor(private dataService: CreatetestsDataService, public accountDataService: AccountDataService,
+    private modalService: NgbModal, private utilitesService: UtilitesService
+    , private errorHandler: ErrorHandler, private toastService: ToastService) { }
+
+  NextPage() {
+    this.page++;
+    this.GetTests(this.page, this.search);
+    this.ScrollUp();
+  }
+  PreviousPage() {
+    this.page--;
+    this.GetTests(this.page, this.search);
+    this.ScrollUp();
+  }
+  Search() {
+    this.page = 0;
+    this.GetTests(-1, this.search);
+    this.ScrollUp();
+  }
+  Reload() {
+    this.page = 0;
+    this.search = "";
+    this.GetTests(this.page)
+    this.testStudents = [];
+    this.searchStudents = [];
+    this.ScrollUp();
+  }
+  ScrollUp() {
+    this.testsList.nativeElement.scroll(0, 0);
+  }
+
+  DblSet(objectToSet: any, object: any, i: number) {
+    this.Set(objectToSet, object, i, true);
     switch (objectToSet) {
       case "test":
-        this.editTest();
+        this.EditTest();
         break;
       case "question":
-        this.editQuestion();
+        this.EditQuestion();
         break;
       case "option":
-        this.editOption();
+        this.EditOption();
         break;
       case "student":
-        this.openStudentAnswers()
+        this.OpenStudentAnswers()
         break;
     }
   }
-  public set(objectToSet: string, object: any, i: number, dbl: boolean = false) {
+  Set(objectToSet: string, object: any, i: number, dbl: boolean = false) {
     switch (objectToSet) {
       case "test":
-        this.currentTest = this.currentTest == object && !dbl ? new Test() : object;
+        this.currentTest = this.currentRow == i && !dbl ? new Test() : object;
         this.currentRow = this.currentRow == i ? -1 : i;
         break;
       case "question":
-        this.currentQuestion = this.currentQuestion == object && !dbl ? new Question() : object;
+        this.currentQuestion = this.currentQuestionRow == i && !dbl ? new Question() : object;
         this.currentQuestionRow = this.currentQuestionRow == i ? -1 : i;
         break;
       case "option":
-        this.currentOption = this.currentOption == object && !dbl ? new Option() : object;
+        this.currentOption = this.currentOptionRow == i && !dbl ? new Option() : object;
         this.currentOptionRow = this.currentOptionRow == i ? -1 : i;
         break;
       case "student":
-        this.currentStudent = this.currentStudent == object && !dbl ? { "user": new TestMember(), "answers":[] } : { "user": object, "answers": [] };
+        this.currentStudent = this.currentStudentRow == i && !dbl ? new TestMember() : object;
         this.currentStudentRow = this.currentStudentRow == i ? -1 : i;
         break;
     }
   }
-  fileSelected(event: any) {
+  FileSelected(event: any) {
     var file = <File>event.target.files[0];
-    this.utilitesService.putImage(file).subscribe((response: any) => {
-      this.currentQuestion.image = response.path;
-    })
+    if (file !== undefined) {
+      if (file.type.includes('image')) {
+        this.utilitesService.postImage(file).subscribe((response: any) => {
+          this.currentQuestion.image = response;
+        }, error => this.errorHandler.Handle(error));
+      } else {
+        this.toastService.showAlert("Пожалуйста загрузите изображение");
+      }
+    }
   }
-  openModal(modal: any, initial: boolean = true) {
+  OpenModal(modal: any, initial: boolean = true) {
     if (this.tempModals.length > 0) {
       this.modalService.dismissAll("background");
     }
-    this.modalService.open(modal, { size: "xl","scrollable": true }).result.then(() => { }, (reason) => {
+    this.modalService.open(modal, { size: "xl", "scrollable": true }).result.then(() => { }, (reason) => {
       if (reason != "background") {
         let length = this.tempModals.length;
         if (length > 1) {
-          this.openModal(this.tempModals[length - 2], false);
+          this.OpenModal(this.tempModals[length - 2], false);
         }
         this.tempModals.splice(length - 1, 1);
       }
@@ -100,102 +155,130 @@ export class CreatetestsComponent implements OnInit {
       this.tempModals.push(modal);
     }
   }
-  openStudentAnswers() {
-    this.dataService.getAnswers(this.currentStudent.user.userId, this.currentTest.id).subscribe((data: any) => {
-      this.currentStudent.answers = data;
-      console.log(data);
-      this.openModal(this.studentModal);
-    })
+  OpenStudentAnswers() {
+    if (this.currentStudent.testId !== undefined) {
+      this.dataService.getAnswers(this.currentStudent.userId, this.currentTest.id).subscribe((data: any) => {
+        this.currentStudent.answers = data;
+        this.OpenModal(this.studentModal);
+      })
+    }
   }
-  saveStudent() {
-    this.dataService.putMark(this.currentStudent.user.userId, this.currentTest.id, this.currentStudent.user.mark).subscribe(() => {
-      this.modalService.dismissAll();
-    })
+  SaveStudent() {
+    this.dataService.putMark(this.currentStudent)
+      .subscribe(
+        result => {
+          this.modalService.dismissAll();
+          this.currentStudent = new TestMember();
+        }, error => { this.errors = this.errorHandler.Handle(error); })
   }
-  createTest() {
+  CreateTest() {
     this.search = "";
-    this.currentTest = new Test(-1);
-    this.userList = [];
-    this.openModal(this.testModal);
+    this.currentTest = new Test();
+    this.testStudents = [];
+    this.searchStudents = [];
+    this.fullStudentList = [];
+    this.OpenModal(this.testModal);
   }
-  editTest() {
+  EditTest() {
     if (this.currentRow != -1) {
-      this.openModal(this.testModal);
-      this.userList = this.currentTest.students;
+      this.GetQuestions();
+      this.GetStudents();
+      this.currentTest.students = [];
+      this.OpenModal(this.testModal);
     }
   }
-  deleteTest() {
-    if (this.currentTest.id > 0) {
-      this.dataService.delete(this.currentTest.id, "test").subscribe(() => {
-        this.getTests();
-      });
+  DeleteTest() {
+    if (!Guid.IsEmpty(this.currentTest.id)) {
+      this.dataService.delete(this.currentTest.id, "test").subscribe(result => {
+        this.GetTests(this.page, this.search);
+      }, error => this.errorHandler.Handle(error));
     }
   }
-  createQuestion() {
-    this.search = "";
-    this.currentQuestion = new Question(-1);
-    this.openModal(this.questionModal);
+  CreateQuestion() {
+    this.questionAdding = true;
+    this.currentQuestion = new Question();
+    this.OpenModal(this.questionModal);
   }
-  editQuestion() {
+  EditQuestion() {
+    this.questionAdding = false;
     if (this.currentQuestionRow != -1) {
-      this.openModal(this.questionModal);
+      this.OpenModal(this.questionModal);
     }
   }
-  deleteQuestion() {
-    if (this.currentQuestion.id > 0) {
-      this.dataService.delete(this.currentQuestion.id, "question").subscribe(() => { });
+  DeleteQuestion() {
+    if (!Guid.IsEmpty(this.currentQuestion.id)) {
+      this.dataService.delete(this.currentQuestion.id, "question")
+        .subscribe(result => { },
+          error => this.errorHandler.Handle(error));
     }
-    var index = this.currentTest.questionsList.findIndex(q => q.id == this.currentQuestion.id)
-    this.currentTest.questionsList.splice(index, 1);
+    this.currentTest.questions.splice(this.currentQuestionRow, 1);
   }
-  createOption() {
-    this.currentOption = new Option(-1);
-    this.openModal(this.optionModal);
+  CreateOption() {
+    this.optionAdding = true;
+    this.currentOption = new Option();
+    this.OpenModal(this.optionModal);
   }
-  editOption() {
+  EditOption() {
+    this.optionAdding = false;
     if (this.currentOptionRow != -1) {
-      this.openModal(this.optionModal);
+      this.OpenModal(this.optionModal);
     }
   }
-  deleteOption() {
-    if (this.currentOption.id > 0) {
-      this.dataService.delete(this.currentOption.id, "option").subscribe(() => { });
+  DeleteOption() {
+    if (!Guid.IsEmpty(this.currentOption.id)) {
+      this.dataService.delete(this.currentOption.id, "option").subscribe(result => { },
+        error => this.errorHandler.Handle(error));
     }
-    var index = this.currentQuestion.options.findIndex(o => o.id == this.currentOption.id)
-    this.currentQuestion.options.splice(index, 1);
+    this.currentQuestion.options.splice(this.currentOptionRow, 1);
   }
-  saveQuestion() {
+  SaveQuestion() {
     this.currentQuestion.questionType = Number(this.currentQuestion.questionType);
-    if (this.currentQuestion.id != -1) {
-      this.currentTest.questionsList[this.currentTest.questionsList.findIndex(q => q.id == this.currentQuestion.id)] = this.currentQuestion;
-    } else {
-      this.currentQuestion.id = Math.round((Math.random() * -1000));
-      this.currentTest.questionsList.push(this.currentQuestion);
-      this.currentTest.questions = this.currentTest.questionsList.length;
+    if (this.currentQuestion.questionType != 3) {
+      if (this.currentQuestion.options.length == 0) {
+        this.toastService.showError("Добавьте вариант ответа");
+        return;
+      }
+      if (this.FindRightAnswer(this.currentQuestion) == "") {
+        this.toastService.showError("Добавьте верный вариант ответа");
+        return;
+      }
     }
+    if (!this.questionAdding) {
+      this.currentTest.questions[this.currentQuestionRow] = this.currentQuestion;
+    } else {
+      this.currentTest.questions.push(this.currentQuestion);
+    }
+    this.currentQuestion = new Question();
+    this.currentQuestionRow = -1;
     this.modalService.dismissAll();
   }
-  saveOption() {
-    if (this.currentOption.id != -1) {
-      this.currentQuestion.options[this.currentQuestion.options.findIndex(o => o.id == this.currentOption.id)] = this.currentOption;
+  SaveOption() {
+    if (!this.optionAdding) {
+      this.currentQuestion.options[this.currentOptionRow] = this.currentOption;
     } else {
-      this.currentOption.id = Math.round((Math.random() * -1000));
       this.currentQuestion.options.push(this.currentOption);
     }
+    this.currentOption = new Option();
+    this.currentOptionRow = -1;
     this.modalService.dismissAll();
   }
-  saveTest() {
+  SaveTest() {
     this.currentTest.creator = this.accountDataService.currentAccount.id;
-    this.currentTest.questions = this.currentTest.questionsList.length;
     this.currentTest.subject = Number(this.currentTest.subject);
-    this.dataService.postTest(this.currentTest).subscribe(() => {
-      this.modalService.dismissAll();
-      this.getTests();
-    }, () => {
-      this.toastService.showError("Ошибка сохранения");
-    })
+    if (Guid.IsEmpty(this.currentTest.id)) {
+      this.dataService.postTest(this.currentTest).subscribe(result => {
+        this.modalService.dismissAll();
+        this.GetTests(this.page, this.search);
+      }, error => this.errors = this.errorHandler.HandleWitoutValidation(error));
+    } else {
+      this.dataService.putTest(this.currentTest).subscribe(result => {
+        this.modalService.dismissAll();
+        this.GetTests(this.page, this.search);
+      }, error => this.errors = this.errorHandler.HandleWitoutValidation(error));
+    }
+    this.searchStudent = "";
   }
-  findRightAnswer(question: Question) {
+  FindRightAnswer(question: Question) {
     let answer = "";
     question.options.forEach((option, index) => {
       if (option.isRightOption) {
@@ -204,33 +287,90 @@ export class CreatetestsComponent implements OnInit {
     });
     return answer;
   }
-  getTests() {
-    this.dataService.getTests(this.accountDataService.currentAccount.id).subscribe((data: any) => {
-      this.tests = data;
-    });
+  GetTests(page: number, search: string = "") {
+    this.dataService.getTests(this.accountDataService.currentAccount.id,
+      this.accountDataService.currentAccount.role, page,
+      this.currentSearchOption, search).subscribe(
+        (data: any) => {
+          this.tests = data;
+          this.currentTest = new Test();
+          this.currentRow = -1;
+        }, error => this.errorHandler.Handle(error));
+    this.errors = [];
   }
-  getUsers() {
-    if (this.searchUsers != "") {
-      this.dataService.getUsers(this.searchUsers).subscribe((data: any) => {
-        this.userList = this.currentTest.students.concat(data);
-      })
+  GetQuestions() {
+    this.dataService.getQuestions(this.currentTest.id).subscribe(
+      (data: any) => {
+        this.currentTest.questions = data;
+      }, error => this.errorHandler.Handle(error));
+  }
+  GetStudents() {
+    this.dataService.getStudents(this.currentTest.id).subscribe((data: any) => {
+      this.testStudents = data;
+      this.GetStudentsList();
+    }, error => this.errorHandler.Handle(error));
+  }
+  SearchStudents() {
+    if (this.searchStudent != "") {
+      this.dataService.getSearchStudents(this.currentStudentSearchOption, this.searchStudent).subscribe((data: any) => {
+        this.searchStudents = data;
+        this.GetStudentsList();
+      }, error => this.errorHandler.Handle(error));
     } else {
-      this.userList = this.currentTest.students;
+      this.searchStudents = [];
+      this.GetStudentsList();
     }
   }
-  addTestMember(user: TestMember) {
-    if (!user.isSelected) {
-      var index = this.currentTest.students.findIndex(s => s.userId == user.id);
-      this.currentTest.students?.splice(index, 1);
-    } else {
-      this.currentTest.students?.push(new TestMember(this.currentTest.id, user.userId, user.name, user.grade, user.isSelected));
+  GetStudentsList() {
+    this.fullStudentList = [...new Map(this.searchStudents.concat(this.testStudents).map(item =>
+      [item.userId, item])).values()];
+  }
+  ChangeStudentState(student: TestMember) {
+    var index = this.currentTest.students.findIndex(s => s.userId == student.userId); // Поиск пользователя в действия текущей сессии
+    if (student.testId !== undefined) { // Пользователь прикреплен к тесту
+      if (index != -1) { // Пользователь находится в действиях текущей сессии
+        if (!student.isSelected) {
+          this.currentTest.students[index].state = 3; // Пользователь откреплен от теста => удалить из базы
+        } else {
+          this.currentTest.students?.splice(index, 1); // Пользователь заново прикрплен в тесту в рамках текущей сессии => удалить из действий
+        }
+      } else { // Пользователь отсутствует в действиях текущей сессии
+        if (!student.isSelected) {
+          student.state = 3; // Пользователь откреплен от теста => удалить из базы
+          this.currentTest.students.push(student); // Добавить в список действий сессии
+        }
+      }
+    } else { // Пользователь не прикреплен к тесту
+      if (student.isSelected) {
+        student.state = 1; // Пользователь прикреплен к тесту => Добавить в базу
+        this.testStudents.unshift(student); // Добавленить пользователя в список учеников теста
+        this.currentTest.students.push(student); // Добавить в список действий сессии
+      } else {
+        var subindex = this.testStudents.findIndex(s => s.userId == student.userId); // Поиск пользователя в списке учеников теста
+        this.testStudents.splice(subindex, 1); // Удалить пользователя из списка учеников теста
+        this.currentTest.students?.splice(index, 1); // Удалить пользователя из списка действий сессии
+      }
+      this.GetStudentsList(); // Обновить список отображения учеников
+    }
+  }
+  ChangeStudent(student: TestMember) {
+    if (student.testId !== undefined && student.isSelected) { // Пользователь прикреплен к тесту и выбран
+      var entity = this.currentTest.students.find(s => s.userId == student.userId); // Найти действие в списке действий сессии
+      if (entity !== undefined) { // Действие найдено
+        if (entity.state != 3) { // Если пользователь не открепляется
+          entity.state = 2; // Данные пользователя изменены => обновить запись в базе
+        }
+      } else { // Действие не найдено => добавить в список действий сессии и обновить запись в базе
+        student.state = 2;
+        this.currentTest.students.push(student);
+      }
     }
   }
   ngOnInit(): void {
     this.dataService.getSubjects().subscribe((data: any) => {
       this.subjects = data;
-    })
-    this.getTests();
+    }, error => this.errorHandler.Handle(error));
+    this.GetTests(this.page);
   }
 
 }

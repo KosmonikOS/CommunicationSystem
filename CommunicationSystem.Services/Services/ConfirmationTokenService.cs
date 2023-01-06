@@ -1,39 +1,50 @@
 ﻿using CommunicationSystem.Data;
+using CommunicationSystem.Services.Infrastructure.Enums;
+using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Text;
 
 namespace CommunicationSystem.Services.Services
 {
-    public class ConfirmationTokenService : IConfirmationToken
+    public class ConfirmationTokenService : IConfirmationTokenService
     {
-        private readonly CommunicationContext db;
+        private readonly CommunicationContext context;
+        private readonly ILogger<ConfirmationTokenService> logger;
 
-        public ConfirmationTokenService(CommunicationContext db)
+        public ConfirmationTokenService(CommunicationContext context, ILogger<ConfirmationTokenService> logger)
         {
-            this.db = db;
+            this.context = context;
+            this.logger = logger;
         }
-        public async Task ConfirmTokenAsync(string token)
+
+        public async Task<IResponse> ConfirmTokenAsync(string token)
         {
-            var user = db.Users.SingleOrDefault(u => u.IsConfirmed == token);
-            if (user != null)
+            var user = context.Users.AsNoTracking().FirstOrDefault(u => u.IsConfirmed == token);
+            if (user == null)
             {
-                var timeStamp = Convert.ToDateTime(Encoding.UTF8.GetString(Convert.FromBase64String(token.Split("@d@")[1]))).AddSeconds(3600);
-                if (timeStamp >= DateTime.Now)
-                {
-                    user.IsConfirmed = "true";
-                    db.Users.Update(user);
-                }
-                else
-                {
-                    db.Users.Remove(user);
-                }
-                await db.SaveChangesAsync();
+                logger.LogWarning($"User with {token} token not found");
+                return new BaseResponse(ResponseStatus.NotFound) { Message = "Пользователь не найден" };
             }
+            var timeStamp = Convert.ToDateTime(Encoding.UTF8.GetString(Convert.FromHexString(token.Split("@d@")[1]))).AddSeconds(3600);
+            if (timeStamp < DateTime.Now)
+            {
+                context.Remove(user);
+                await context.SaveChangesAsync();
+                logger.LogWarning($"Confirmation time of {token} token is up");
+                return new BaseResponse(ResponseStatus.BadRequest) { Message = "Время подтверждения истекло" };
+            }
+            user.IsConfirmed = "true";
+            context.Update(user);
+            await context.SaveChangesAsync();
+            return new BaseResponse(ResponseStatus.Ok);
         }
 
         public string GenerateToken(string email)
         {
-            var token = Convert.ToBase64String(Encoding.ASCII.GetBytes(email)) + "@d@" + Convert.ToBase64String(Encoding.ASCII.GetBytes(DateTime.Now.ToString()));
+            var token = Convert.ToHexString(Encoding.ASCII.GetBytes(email)) + "@d@" +
+                Convert.ToHexString(Encoding.ASCII.GetBytes(DateTime.Now.ToString()));
             return token;
         }
     }

@@ -1,28 +1,38 @@
 import { Injectable } from "@angular/core"
 import { HttpClient } from "@angular/common/http"
+import { TestMember } from "./testmember";
 @Injectable()
 export class CreatetestsDataService {
   url = "/api/createtests/"
   constructor(private http: HttpClient) { }
-  getTests(id: number) {
-    return this.http.get(this.url  + id);
+  getTests(userId: number, roleId: number, page: number, searchOption: number, search: string) {
+    return this.http.get(this.url + "tests/" + userId + "/" + roleId + "/" + page + "/" + searchOption + "/" + search);
+  }
+  getQuestions(testId: string) {
+    return this.http.get(this.url + "questions/" + testId);
   }
   getSubjects() {
     return this.http.get("/api/subjects");
   }
-  getUsers(param: string) {
-    return this.http.get(this.url + "getusers/" + param);
+  getSearchStudents(searchOption: number, search: string) {
+    return this.http.get(this.url + "students/" + searchOption + "/" + search);
   }
-  getAnswers(id: number, testId: number) {
-    return this.http.get(this.url + "getanswers/" + id + "/" + testId);
+  getStudents(testId: string) {
+    return this.http.get(this.url + "students/" + testId);
   }
-  delete(id: number, type: string) {
-    return this.http.delete(this.url + type + "/" + id);
+  getAnswers(userId: number, testId: string) {
+    return this.http.get(this.url + "answers/" + userId + "/" + testId);
+  }
+  delete(id: string, type: string) {
+    return this.http.delete(this.url + type + "/" + id.toString());
   }
   postTest(test: any) {
     return this.http.post(this.url, test);
   }
-  putMark(id: number, testid: number, mark: number) {
-    return this.http.put(this.url + id + "/" + testid + "/" + mark, {});
+  putTest(test: any) {
+    return this.http.put(this.url, test);
+  }
+  putMark(student: TestMember) {
+    return this.http.put(this.url + "mark", student);
   }
 }

@@ -1,12 +1,15 @@
 ﻿using CommunicationSystem.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using CommunicationSystem.Domain.Enums;
+using CommunicationSystem.Services.Infrastructure.Responses;
 
 namespace CommunicationSystem.Services.Repositories.Interfaces
 {
-    public interface ITestRepository
+    public interface ITestRepository : IBaseRepository
     {
-        public Task<List<Test>> GetUserTestsAsync(int id);
-        public Task SaveTestAnswerAsync(TestAnswer testAnswer);
+        public IQueryable<Test> GetUserCreateTestsPage(int userId, int role, int page, string search, TestPageSearchOption searchOption);
+        public IQueryable<TestUser> GetUserTestsPage(int userId,int page, string search, TestPageSearchOption searchOption);
+        public void AddTest(Test test);
+        public void UpdateTest(Test test);
+        public Task<IResponse> DeleteTestAsync(Guid id);
     }
 }

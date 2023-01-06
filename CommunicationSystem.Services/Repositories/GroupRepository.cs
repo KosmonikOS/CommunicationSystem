@@ -1,64 +1,68 @@
 ﻿using CommunicationSystem.Data;
+using CommunicationSystem.Domain.Dtos;
 using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Domain.Enums;
 using CommunicationSystem.Services.Repositories.Interfaces;
-using CommunicationSystem.Services.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CommunicationSystem.Services.Repositories
 {
     public class GroupRepository : IGroupRepository
     {
-        private readonly CommunicationContext db;
-        private readonly IMessage messageService;
+        private readonly CommunicationContext context;
 
-        public GroupRepository(CommunicationContext db, IMessage messageService)
+        public GroupRepository(CommunicationContext context)
         {
-            this.db = db;
-            this.messageService = messageService;
+            this.context = context;
         }
-        public Group GetGroup(int id)
+        public IQueryable<Group> GetGroups(Expression<Func<Group, bool>> expression = null)
         {
-            Group group = db.Groups.SingleOrDefault(g => g.Id == id);
-            if (group != null)
+            var query = context.Groups.AsNoTracking();
+            if (expression != null)
             {
-                var users = (from utg in db.UsersToGroups
-                             join u in db.Users on utg.UserId equals u.Id
-                             where utg.GroupId == id
-                             select new GroupUser()
-                             {
-                                 Id = u.Id,
-                                 itemName = u.NickName,
-                                 AccountImage = u.accountImage
-                             }
-                             ).ToArray();
-                group.Users = users;
+                query = query.Where(expression);
             }
-            return group;
+            return query;
+        }
+        public IQueryable<GroupUser> GetGroupMembers(Guid groupId)
+        {
+            return context.GroupUser.Where(x => x.GroupId == groupId)
+                .AsNoTracking();
+        }
+        public void UpdateGroupMembers(IEnumerable<GroupMemberStateDto> members, Guid groupId)
+        {
+            context.GroupUser.AddRange(members
+                .Where(x => x.State == DbEntityState.Added)
+                .Select(x => new GroupUser()
+                {
+                    GroupId = groupId,
+                    UserId = x.UserId
+                }));
+            context.GroupUser.RemoveRange(members
+                .Where(x => x.State == DbEntityState.Deleted)
+                .Select(x => new GroupUser()
+                {
+                    GroupId = groupId,
+                    UserId = x.UserId
+                }));
+        }
+        public void AddGroup(Group group)
+        {
+            context.Add(group);
+        }
+        public void UpdateGroup(Group group)
+        {
+            context.Update(group);
+        }
+        public int SaveChanges()
+        {
+            return context.SaveChanges();
+        }
+        public Task<int> SaveChangesAsync()
+        {
+            return context.SaveChangesAsync();
         }
 
-        public async Task SaveGroupAsync(Group group)
-        {
-            if (group != null)
-            {
-                if (group.Id == 0)
-                {
-                    await db.Groups.AddAsync(group);
-                    await db.SaveChangesAsync();
-                    var createMessage = new Message() { To = 0, From = 0, Content = $"Группа {group.Name} создана", Date = DateTime.Now, ToGroup = group.Id };
-                    db.Messages.Add(createMessage);
-                    await db.UsersToGroups.AddRangeAsync(group.Users.Select(u => new UsersToGroups() { UserId = u.Id, GroupId = group.Id }));
-                    await db.SaveChangesAsync();
-                    await messageService.SendMessage(createMessage);
-                }
-                else
-                {
-                    db.Groups.Update(group);
-                    db.UsersToGroups.RemoveRange(db.UsersToGroups.AsNoTracking().Where(utg => utg.GroupId == group.Id));
-                    //await db.SaveChangesAsync();
-                    await db.UsersToGroups.AddRangeAsync(group.Users.Select(u => new UsersToGroups() { UserId = u.Id, GroupId = group.Id }));
-                    await db.SaveChangesAsync();
-                }
-            }
-        }
     }
 }

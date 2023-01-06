@@ -1,25 +1,31 @@
-<div class="container-fluide pt-3 px-md-4 px-1 h-100" style="position:relative;">
+<div class="container-fluide pt-2 px-1 h-100" style="position:relative;">
   <div class="btn-group toolbar w-100">
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="createUser()">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="Reload()">
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="CreateUser()">
       <i class="bi bi-plus-lg"></i>
       <span class="d-none d-md-block" style="padding-left:5px">Добавить</span>
     </button>
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="editUser()">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="EditUser()">
       <i class="bi bi-pencil"></i>
       <span class="d-none d-md-block" style="padding-left:5px">Изменить</span>
     </button>
-    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="deleteUser()">
+    <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="DeleteUser()">
       <i class="bi bi-trash"></i>
       <span class="d-none d-md-block" style="padding-left:5px">Удалить</span>
     </button>
+    <select class="form-select w-25 d-none d-sm-block" [(ngModel)]="currentSearchOption">
+      <option *ngFor="let option of searchOptions" value="{{option.id}}">{{option.name}}</option>
+    </select>
     <div class="input-group w-100">
-        <input placeholder="Поиск" type="search" class="form-control" [(ngModel)] ="search"/>
-      <button class="btn btn-outline-primary">
+      <input placeholder="{{searchOptions[currentSearchOption].searchOn}}" type="search" class="form-control" [(ngModel)]="search" (keyup.enter)="Search()" />
+      <button class="btn btn-outline-primary d-none d-md-block" (click)="Search()">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </div>
-  <div class="scrollable w-100" style="height:90%">
+  <div class="scrollable w-100" style="height:90%" #usersList>
     <table class="table">
       <thead style="border-bottom: solid 2px #DEE2E6">
         <tr>
@@ -31,7 +37,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users | filter:search;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="setUser(user,i)" (dblclick)="dblSetUser(user,i)">
+        <tr *ngFor="let user of users ;let i = index " [ngClass]="{'bg-primary text-white':currentRow == i}" class="table-row" (click)="SetUser(user,i)" (dblclick)="DblSetUser(user,i)">
           <th scope="row">{{user.lastName}} {{user.firstName}} {{user.middleName}}</th>
           <td>{{user.nickName}}</td>
           <td><span *ngIf="user.role == 1">{{user.grade}} {{user.gradeLetter}}</span></td>
@@ -40,6 +46,18 @@
         </tr>
       </tbody>
     </table>
+    <div class="text-center">
+      <div class="btn-group toolbar">
+        <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="PreviousPage()" *ngIf="page > 0">
+          <i class="bi bi-chevron-left"></i>
+          <span class="d-none d-md-block" style="padding-left:5px">Назад</span>
+        </button>
+        <button type="button" class="btn btn-outline-primary btn-rounded d-flex" (click)="NextPage()" *ngIf="users.length == 50">
+          <span class="d-none d-md-block" style="padding-left:5px">Вперед</span>
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -52,7 +70,7 @@
     <div class="row d-flex justify-content-center align-items-center h-100 w-100">
       <div class="col-md-4" *ngIf="currentUser.id">
         <div class="d-flex flex-column align-items-center text-center p-3 pb-5">
-          <div (mouseenter)="enterImage()" (mouseleave)="leaveImage()" [ngClass]="{'darker':isOnImage}" (click)="openFileInput()">
+          <div (mouseenter)="EnterImage()" (mouseleave)="LeaveImage()" [ngClass]="{'darker':isOnImage}" (click)="OpenFileInput()">
             <img class="rounded-circle" src="{{currentUser.accountImage}}" style="width:150px;max-height:150px">
             <i class="bi bi-pencil text-white" [ngClass]="{'icon-mask':isOnImage}" style="font-size:20px;position:absolute"></i>
           </div>
@@ -72,28 +90,28 @@
             <div *ngIf="currentUser.role == 1" class="col-md-6">
               <label class="labels">Класс</label>
               <div class="d-flex">
-                <input type="number" class="form-control" [error]="{Error:errors?.Grade,PlaceHolder:''}" [(ngModel)]="currentUser.grade">
+                <input type="number" class="form-control" [error]="{Error:errors?.Grade,PlaceHolder:'Класс'}" [(ngModel)]="currentUser.grade">
                 <input style="width:40px" type="text" class="form-control" [(ngModel)]="currentUser.gradeLetter" />
               </div>
 
             </div>
             <div class="col-md-6"><label class="labels">Никнейм</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'Никнейм'}" [(ngModel)]="currentUser.nickName"></div>
-            <div class="col-md-6"><label class="labels">Роль</label>
-                                  <select class="form-select" [(ngModel)]="currentUser.role">
-                                    <option *ngFor="let role of roles" value="{{role.id}}">{{role.name}}</option>
-                                    
-                                  </select>
+            <div class="col-md-6">
+              <label class="labels">Роль</label>
+              <select class="form-select" [(ngModel)]="currentUser.role">
+                <option *ngFor="let role of roles" value="{{role.roleId}}">{{role.name}}</option>
+              </select>
             </div>
             <div class="col-md-12"><label class="labels">Почта</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'Почта'}" [(ngModel)]="currentUser.email"></div>
             <div class="col-md-12"><label class="labels">Номер телефона</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'Номер телефона'}" [(ngModel)]="currentUser.phone"></div>
-            <div class="col-md-12"><label class="labels">Пароль</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'Пароль'}" [(ngModel)]="currentUser.password"></div>
+            <div class="col-md-12"><label class="labels">{{currentUser.id ? 'Сменить пароль' : 'Пароль'}}</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:currentUser.id ? 'Сменить пароль' : 'Пароль'}" [(ngModel)]="currentUser.password"></div>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer justify-content-center">
-    <div class="text-center"><button class="btn btn-primary" type="button" (click)="saveUser()">Сохранить</button></div>
+    <div class="text-center"><button class="btn btn-primary" type="button" (click)="SaveUser()">Сохранить</button></div>
   </div>
 </ng-template>
-<input type="file" style="display:none" (change)="fileSelected($event)" #fileInput />
+<input type="file" style="display:none" (change)="FileSelected($event)" #fileInput />

@@ -1,22 +1,26 @@
-import { Component, ElementRef, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { UserLastMessage } from "./userlastmessage"
-import { MessageBetweenUsers } from "./messagebetweenusers"
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessengerDataService } from "./messenge.data.service"
 import { AccountDataService } from "../account/account.data.service"
 import { ToastService } from "../toast.service"
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Group } from './group';
+import { UtilitesService } from '../utilites.service';
 import { VideochatDataService } from '../videochat/videochat.data.service';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import { group } from 'console';
+import { Member } from './member';
+import { ErrorHandler } from '../infrastructure/error.handler';
+import { Guid } from '../infrastructure/guid';
+import { Contact } from './contact';
+import { Message } from './message';
+import { SendMessage } from './sendmessage';
 
 @Component({
   selector: 'app-messenger',
   templateUrl: './messenger.component.html',
-  styleUrls: ['./messenger.component.css'],
+  styleUrls: ['./messenger.component.css', '../app.component.css'],
   providers: [
     MessengerDataService,
     AccountDataService,
+    ErrorHandler
   ]
 })
 export class MessengerComponent implements OnInit {
@@ -24,206 +28,393 @@ export class MessengerComponent implements OnInit {
   @ViewChild("fileInput") fileInput: ElementRef = new ElementRef("");
   @ViewChild("fileGroupInput") fileGroupInput: ElementRef = new ElementRef("");
   @ViewChild("messagesArea") messagesArea: ElementRef = new ElementRef("");
-  usersList: UserLastMessage[] = [];
-  messagesList: MessageBetweenUsers[] = [];
-  currentMessage: MessageBetweenUsers = new MessageBetweenUsers(Number(window.localStorage.getItem("CURRENT_COMMUNICATION_ID")), 0, 0, "", "");
-  currentUser: UserLastMessage = new UserLastMessage(0, "", "", "", 0, 0, 0, "", 0);
-  currentImage: number = 0;
-  ImagesList: string[] = [];
-  selectedUser = 0;
-  currentFiles: File[] = [];
-  currentFilesLength: number = 0;
+  currentImage: string = "";
   isOnGroupImage: boolean = false;
-  newGroup: Group = new Group([]);
+  errors: any = {};
+  currentGroup: Group = new Group([]);
+  searchMembers: Member[] = [];
+  groupMembers: Member[] = [];
+  fullMemberList: Member[] = [];
+  membersSearch: string = "";
+  contacts: Contact[] = [];
+  currentContact: Contact = new Contact();
+  currentContactRow: number = -1;
+  messages: Message[] = [];
+  page: number = 0;
+  isEdit: boolean = false;
+  currentMessage: SendMessage = new SendMessage(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")));
   userGroupList: any[] = [];
   isOpen: boolean = true;
+  canScrollDown: boolean = false;
+  uploadingFiles: boolean[] = [];
 
-  constructor(private dataService: MessengerDataService, private toastService: ToastService, private modalService: NgbModal, public videochatDataService: VideochatDataService) { }
+  constructor(private dataService: MessengerDataService, private toastService: ToastService
+    , private modalService: NgbModal, public videochatDataService: VideochatDataService
+    , private utilitesService: UtilitesService, private errorHandler: ErrorHandler) { }
   ///////////////////////////////////////////////////////////////USERS///////////////////////////////////////////////////////////////////////////////////////////////////////
-  openUserList() {
-    this.currentMessage = new MessageBetweenUsers(Number(window.localStorage.getItem("CURRENT_COMMUNICATION_ID")));
-    this.isOpen = true;
-  }
-  searchUsers(withSearch: boolean) {
-    this.dataService.getUsers(withSearch ? this.search : "").subscribe((data: any) => {
-      this.usersList = data;
-      this.toGroupUsersList(data);
-    });
-  }
-  selectUser(index: number, user: UserLastMessage) {
-    this.isOpen = false;
-    this.selectedUser = index;
-    this.currentUser = user
-    this.currentMessage.auto = false;
-    if (user.email == "Group") {
-      this.currentMessage.togroup = user.id;
-      this.currentMessage.to = 0;
-      this.currentMessage.toEmail = "Group"
-    } else {
-      this.currentMessage.togroup = 0;
-      this.currentMessage.to = user.id;
-      this.currentMessage.toEmail = user.email;
-    }
-    this.getMessages(user.id, this.currentMessage.togroup);
-    user.notViewed = 0;
-  }
-  sendMessage() {
-    this.dataService.postMessage(this.currentMessage, this.currentFiles).subscribe(result => {
-      this.getMessages(this.currentMessage.to, this.currentMessage.togroup);
-      this.updateUserLastMessage(this.currentMessage, "to");
-      //this.searchUsers();
-      this.currentMessage.content = "";
-      this.currentFiles = [];
-      this.currentFilesLength = 0;
-    }, error => {
-      this.toastService.showError("Ошибка отправки")
-    });
-  }
-  getMessages(userid: number, togroup: number) {
-    this.dataService.getMessages(userid, togroup).subscribe((data: any) => {
-      this.messagesList = data;
-      setTimeout(this.scrollMessages, 10, this.messagesArea.nativeElement);
-      this.loadImagesList(data);
-    });
-  }
-  scrollMessages(element: any) {
-    element.scrollTop = element.scrollHeight;
-  }
-  updateUserLastMessage(message: any, type: string) {
-    for (var i in this.usersList) {
-      var val = this.usersList[i];
-      if (type == "to" && val.id == (message.to == 0 ? message.toGroup : message.to)) {
-        val.content = message.content;
-        val.date = message.date;
-      }
-      if (type == "from" && (val.id == (message.to == 0 ? message.toGroup : message.from))) {
-        if (message.toGroup != 0 && val.email != message.toEmail) {
-          continue;
-        }
-        val.notViewed += (this.currentMessage.to != message.from && message.toEmail != "Group") || (this.currentMessage.togroup != message.toGroup) || this.currentMessage.auto ? 1 : 0;
-        val.content = message.content;
-        val.date = message.date;
-      }
-    }
-  }
-  openFileInput() {
-    this.fileInput.nativeElement.click();
-  }
-  fileSelected(event: any) {
-    var files = <FileList>event.target.files
-    for (var i = 0; i <= files.length; i++) {
-      this.currentFiles.push(files[i]);
-      this.currentFilesLength++
-    }
-  }
-  openImage(image: string, modal: any) {
-    this.currentImage = this.ImagesList.indexOf(image);
+  OpenImage(path: string, modal: any) {
+    this.currentImage = path;
     this.modalService.open(modal, { size: 'xl' });
   }
-  toggleImage(step: string) {
-    var length = this.ImagesList.length;
-    if (step == "next" && this.currentImage + 1 < length) {
-      this.currentImage++;
-    }
-    if (step == "previous" && this.currentImage - 1 >= 0) {
-      this.currentImage--;
-    }
-  }
-  loadImagesList(messages: any) {
-    for (var i in messages) {
-      var message = messages[i];
-      if (message.type == 1) {
-        this.ImagesList.push(message.content);
+  FilesSelected(event: any) {
+    var files = <FileList>event.target.files;
+    if (File.length > 0) {
+      for (var i = 0; i < files.length; i++)
+        if (files[i].size >= 209715201) {
+          this.toastService.showAlert("Файл превышает лимит в 200 мб");
+          return;
+        }
+      for (var i = 0; i < files.length; i++) {
+        this.uploadingFiles.push(true);
+        this.dataService.sendFileMessages(this.currentMessage, files[i])
+          .subscribe((result: any) => {
+            this.messages.push(new Message(result.id, true, this.currentMessage.isGroup,
+              new Date(), result.path, result.type, '', ''));
+            setTimeout(this.ScrollMessages, 10, this.messagesArea.nativeElement);
+            this.currentContact.lastMessageDate = new Date();
+            this.currentContact.lastMessageType = result.type;
+            this.currentMessage.content = "";
+            this.uploadingFiles.pop();
+          }, error => this.errorHandler.Handle(error))
       }
     }
   }
-  deleteMessage(id?: number) {
-    if (confirm("Вы уверены , что хотите удалить сообщение?")) {
-      this.dataService.deleteMessage(id || 0, this.currentMessage.toEmail).subscribe((result: any) => {
-        this.getMessages(this.currentMessage.to, this.currentMessage.togroup);
-        if (result.message.id >= (this.messagesList[this.messagesList.length - 1].id || 0)) {
-          this.updateUserLastMessage(result.message, "to");
-        }
-      });
+  OpenFileInput() {
+    this.fileInput.nativeElement.click();
+  }
+  GetFileName(path: string) {
+    return path.split("/").pop();
+  }
+  OpenUserList() {
+    this.isOpen = true;
+    this.currentContact = new Contact();
+    this.currentContactRow = -1;
+  }
+  SendMessage() {
+    if (this.currentMessage.content != "") {
+      if (this.isEdit) {
+        this.UpdateMessage();
+      } else {
+        this.AddMessage();
+      }
+    }
+  }
+  AddMessage() {
+    this.dataService.sendMessage(this.currentMessage).subscribe((result: any) => {
+      this.messages.push(new Message(result, true, this.currentMessage.isGroup,
+        new Date(), this.currentMessage.content, 0, '', ''));
+      setTimeout(this.ScrollMessages, 10, this.messagesArea.nativeElement);
+      this.currentContact.lastMessage = this.currentMessage.content;
+      this.currentContact.lastMessageDate = new Date();
+      this.currentContact.lastMessageType = 0;
+      this.currentMessage.content = "";
+    }, error => this.errorHandler.Handle(error));
+  }
+  UpdateMessage() {
+    this.dataService.updateMessage(this.currentMessage.id, this.currentMessage.content).subscribe(result => {
+      var index = this.messages.findIndex(x => x.id == this.currentMessage.id);
+      if (index != -1) {
+        this.messages[index].content = this.currentMessage.content;
+      }
+      var dto = {
+        "id": this.currentMessage.id,
+        "isGroup": this.currentContact.isGroup,
+        "from": Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")),
+        "to": this.currentContact.toId,
+        "toGroup": this.currentContact.toGroup,
+        "content": this.currentMessage.content,
+        "previousMessage": this.messages[this.messages.length - 1]?.content ?? "",
+        "previousDate": this.messages[this.messages.length - 1]?.date ?? null,
+        "previousType": this.messages[this.messages.length - 1]?.type ?? 0
+      };
+      this.dataService.hubConnection.invoke("UpdateMessage", dto);
+      this.UpdateContactInfo(this.currentContact, dto);
+      this.currentMessage.content = "";
+      this.currentMessage.id = 0;
+      this.isEdit = false;
+    }
+      , error => this.errorHandler.Handle(error));
+  }
+  EditMessage(id: number, content: string) {
+    this.isEdit = true;
+    this.currentMessage.id = id;
+    this.currentMessage.content = content;
+  }
+  CancelEditMessage() {
+    this.isEdit = false;
+    this.currentMessage.id = 0;
+    this.currentMessage.content = "";
+  }
+  DeleteMessage(id: number) {
+    this.dataService.deleteMessage(id).subscribe(result => {
+      var index = this.messages.findIndex(x => x.id == id);
+      if (index != -1) {
+        this.messages.splice(index, 1);
+      }
+      var dto = {
+        "id": id,
+        "isGroup": this.currentContact.isGroup,
+        "from": Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")),
+        "to": this.currentContact.toId,
+        "toGroup": this.currentContact.toGroup,
+        "previousMessage": this.messages[this.messages.length - 1]?.content ?? "",
+        "previousDate": this.messages[this.messages.length - 1]?.date ?? null,
+        "previousType": this.messages[this.messages.length - 1]?.type ?? 0
+      };
+      this.dataService.hubConnection.invoke("DeleteMessage", dto);
+      this.UpdateContactInfo(this.currentContact, dto);
+    }, error => this.errorHandler.Handle(error));
+  }
+  ScrollMessages(element: any, scrollTo?: number) {
+    if (scrollTo !== undefined) {
+      element.scrollTop = element.scrollHeight - scrollTo;
+    }
+    else
+      element.scrollTop = element.scrollHeight;
+  }
+  GetContacts() {
+    this.dataService.getContacts().subscribe((result: any) => {
+      this.page = 0;
+      this.contacts = result;
+    }, error => this.errorHandler.Handle(error))
+  }
+  GetMessages(contact: Contact, scrollTo?: number) {
+    if (!contact.isGroup && contact.toId !== undefined) {
+      this.dataService.getContactMessages(contact.toId, this.page).subscribe((result: any) => {
+        this.messages.unshift(...result);
+        setTimeout(this.ScrollMessages, 10, this.messagesArea.nativeElement, scrollTo);
+      }, error => this.errorHandler.Handle(error));
+    } else {
+      this.dataService.getGroupMessages(contact.toGroup, this.page).subscribe((result: any) => {
+        this.messages.unshift(...result);
+        setTimeout(this.ScrollMessages, 10, this.messagesArea.nativeElement, scrollTo);
+      }, error => this.errorHandler.Handle(error));
+    }
+  }
+  SearchContacts() {
+    if (this.search != "") {
+      this.dataService.searchContacts(this.search).subscribe((result: any) => {
+        this.contacts = result;
+        this.currentContact = new Contact();
+        this.currentContactRow = -1;
+      }, error => this.errorHandler.Handle(error));
+    } else {
+      this.GetContacts();
+    }
+  }
+  SetContact(contact: Contact, index: number) {
+    this.isOpen = false;
+    this.canScrollDown = false;
+    this.messages = [];
+    this.page = 0;
+    this.currentContact = contact;
+    this.currentContact.notViewedMessages = 0;
+    this.currentContact.newMessages = 0;
+    this.currentMessage.to = contact.toId;
+    this.currentMessage.isGroup = contact.isGroup;
+    this.currentMessage.toGroup = contact.toGroup;
+    this.currentContactRow = index;
+    this.GetMessages(contact);
+  }
+  ScrollDown() {
+    this.ScrollMessages(this.messagesArea.nativeElement);
+    this.currentContact.newMessages = 0;
+  }
+  UpdateContactInfo(contact: any, dto: any) {
+    contact.lastMessage = dto.previousMessage;
+    contact.lastMessageDate = dto.previousDate;
+    contact.lastMessageType = dto.previousType;
+  }
+  onMessageScroll(event: any) {
+    if (this.messagesArea.nativeElement.scrollTop == 0 && this.canScrollDown) {
+      this.page++;
+      var currentScroll = this.messagesArea.nativeElement.scrollHeight;
+      this.GetMessages(this.currentContact, currentScroll);
+    }
+    if (Math.abs(this.messagesArea.nativeElement.scrollHeight -
+      this.messagesArea.nativeElement.scrollTop - this.messagesArea.nativeElement.offsetHeight) < 1) {
+      this.canScrollDown = false;
+      if (this.currentContact.newMessages > 0)
+        this.currentContact.newMessages = 0;
+    } else {
+      this.canScrollDown = true;
     }
   }
   ///////////////////////////////////////////////////////////////USERS///////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////GROUPS///////////////////////////////////////////////////////////////////////////////////////////////////////
-  openGroupModal(modal: any) {
-    this.newGroup = new Group([]);
+  AddGroup(modal: any) {
+    this.currentGroup = new Group([]);
+    this.membersSearch = "";
+    this.searchMembers = [];
+    this.groupMembers = [];
+    this.fullMemberList = [];
     this.modalService.open(modal);
   }
-  enterImage() {
+  EditGroup(id: string, modal: any) {
+    this.dataService.getGroup(id).subscribe((data: any) => {
+      this.groupMembers = data["members"].map((x: Member) => {
+        x.isLinked = true;
+        x.isSelected = true;
+        return x;
+      });
+      data["members"] = [];
+      this.currentGroup = data;
+      this.GetFullMemberList();
+      this.modalService.open(modal);
+    }, error => this.errorHandler.Handle(error))
+  }
+  EnterImage() {
     this.isOnGroupImage = true;
   }
-  leaveImage() {
+  LeaveImage() {
     this.isOnGroupImage = false;
   }
-  openGroupFileInput() {
+  OpenGroupFileInput() {
     this.fileGroupInput.nativeElement.click();
   }
-  groupFileSelected(event: any) {
+  GroupFileSelected(event: any) {
     var file = <File>event.target.files[0];
-    this.dataService.putGroupImage(file).subscribe((result: any) => this.newGroup.groupImage = result.path);
+    this.utilitesService.postImage(file).subscribe((response: any) => {
+      this.currentGroup.groupImage = response;
+    }, error => this.errors = this.errorHandler.Handle(error));
   }
-  toGroupUsersList(list: UserLastMessage[]) {
-    var temp = [];
-    for (var i in list) {
-      if (list[i].email != "Group") {
-        temp.push({ "id": list[i].id, "itemName": list[i].nickName, "accountImage": list[i].accountImage });
+  GetFullMemberList() {
+    this.fullMemberList = [...new Map(this.searchMembers.concat(this.groupMembers).map(item =>
+      [item.userId, item])).values()];
+  }
+  ChangeMemberState(member: Member) {
+    console.log(member);
+    var index = this.currentGroup.members.findIndex(m => m.userId == member.userId); // Поиск пользователя в действия текущей сессии
+    if (member.isLinked !== undefined && member.isLinked) { // Пользователь прикреплен к группе
+      if (index != -1) { // Пользователь находится в действиях текущей сессии
+        if (member.isSelected)
+          this.currentGroup.members.splice(index, 1); // Пользователь заново прикрплен к группе в рамках текущей сессии => удалить из действий
+      } else {
+        if (!member.isSelected) { // Пользователь отсутствует в действиях текущей сессии
+          member.state = 3; // Пользователь откреплен от группы => удалить из базы
+          this.currentGroup.members.push(member); // Добавить в список действий сессии
+        }
       }
-    }
-    this.userGroupList = temp;
-  }
-  saveGroup() {
-    if (this.newGroup.id == null) {
-      this.newGroup.users.push({ "id": Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), "itemName": "Me" });
-    }
-    this.dataService.postGroup(this.newGroup).subscribe(result => {
-      if (window.innerWidth >= 678) {
-        this.selectUser(this.selectedUser + 1, this.currentUser);
+    } else { // Пользователь не прикреплен к группе
+      if (member.isSelected) {
+        member.state = 1; // Пользователь прикреплен к группе => Добавить в базу
+        this.groupMembers.unshift(member); // Добавленить пользователя в список членов группы
+        this.currentGroup.members.push(member); // Добавить в список действий сессии
+      } else {
+        var subindex = this.groupMembers.findIndex(s => s.userId == member.userId); // Поиск пользователя в списке членов группы
+        this.groupMembers.splice(subindex, 1); // Удалить пользователя из списка членов группы
+        this.currentGroup.members.splice(index, 1); // Удалить пользователя из списка действий сессии
       }
-      this.modalService.dismissAll();
-      this.newGroup = new Group([]);
-      this.searchUsers(false);
-    });
+      this.GetFullMemberList(); // Обновить список отображения членов группы
+    }
   }
-  openGroupSettings(id: number, modal: any) {
-    this.dataService.getGroup(id).subscribe((data: any) => {
-      this.newGroup = data;
-      this.modalService.open(modal);
-    })
+  SearchMembers() {
+    if (this.membersSearch != "") {
+      this.dataService.getMembersBySearch(this.membersSearch).subscribe((result: any) => {
+        this.searchMembers = result;
+        this.GetFullMemberList();
+      }, error => this.errorHandler.Handle(error));
+    } else {
+      this.searchMembers = [];
+      this.GetFullMemberList();
+    }
+  }
+  SaveGroup() {
+    if (Guid.IsEmpty(this.currentGroup.id)) {
+      if (this.currentGroup.members.findIndex(x => x.userId == Number(localStorage.getItem("CURRENT_COMMUNICATION_ID"))) == -1) {
+        this.currentGroup.members.push(new Member(Number(localStorage.getItem("CURRENT_COMMUNICATION_ID")), 1, "Я"));
+      }
+      this.dataService.postGroup(this.currentGroup).subscribe(result => {
+        this.modalService.dismissAll();
+        this.currentGroup = new Group([]);
+        this.GetContacts();
+      }, error => this.errors = this.errorHandler.Handle(error));
+    } else {
+      this.dataService.putGroup(this.currentGroup).subscribe(result => {
+        this.modalService.dismissAll();
+        this.currentGroup = new Group([]);
+        this.GetContacts();
+      }, error => this.errors = this.errorHandler.Handle(error));
+    }
+    this.searchMembers = [];
+    this.membersSearch = "";
   }
   ///////////////////////////////////////////////////////////////GROUPS///////////////////////////////////////////////////////////////////////////////////////////////////////
-  ngOnInit(): void {
-    this.dataService.getUsers("").subscribe((data: any) => {
-      this.usersList = data;
-      if (data[0].email == "Group") {
-        this.getMessages(data[0].id, data[0].id);
+  AddHubListeners() {
+    this.dataService.addConnectionListener("UpdateMessage", (dto: any) => {
+      var contactIndex = this.contacts.findIndex(x => (x.toId == dto.from && !dto.isGroup)
+        || (x.toGroup == dto.toGroup && dto.isGroup));
+      if (this.currentContactRow == contactIndex) {
+        var message = this.messages.find(x => x.id == dto.id);
+        if (message !== undefined) {
+          message.content = dto.content;
+        }
+        this.UpdateContactInfo(this.contacts[contactIndex], dto);
+      }
+    });
+    this.dataService.addConnectionListener("DeleteMessage", (dto: any) => {
+      var contactIndex = this.contacts.findIndex(x => (x.toId == dto.from && !dto.isGroup)
+        || (x.toGroup == dto.toGroup && dto.isGroup));
+      if (this.currentContactRow == contactIndex) {
+        var index = this.messages.findIndex(x => x.id == dto.id);
+        if (index != -1) {
+          this.messages.splice(index, 1);
+        }
+        this.UpdateContactInfo(this.contacts[contactIndex], dto);
+      }
+    });
+    this.dataService.addConnectionListener("ReceiveMessage", (message: any, sender?: any) => {
+      var index = this.contacts.findIndex(x => (x.toId == message.from && !message.isGroup)
+        || (x.toGroup == message.toGroup && message.isGroup));
+      if (index != -1) {
+        this.contacts[index].lastMessage = message.content;
+        this.contacts[index].lastMessageDate = new Date();
+        this.contacts[index].lastMessageType = message.type;
+        if (this.currentContactRow == index) {
+          if (!this.currentContact.isGroup) {
+            this.messages.push(new Message(message.id, false, false,
+              new Date(), message.content, message.type));
+          } else {
+            this.messages.push(new Message(message.id, false, true, new Date(),
+              message.content, message.type, sender.nickName, sender.accountImage));
+          }
+          if (this.canScrollDown)
+            this.currentContact.newMessages += 1;
+          else
+            setTimeout(this.ScrollMessages, 10, this.messagesArea.nativeElement);
+          this.dataService.viewMessage(message.id).subscribe(result => { },
+            error => this.errorHandler.Handle(error));
+        } else {
+          this.contacts[index].notViewedMessages += 1;
+        }
       } else {
-        this.getMessages(data[0].id, 0);
+        if (!message.isGroup)
+          this.dataService.getContact(message.from).subscribe((result: any) => {
+            if (this.currentContactRow != -1)
+              this.currentContactRow++;
+            this.contacts.unshift(result);
+            result.notViewedMessages = 1;
+            result.lastMessage = message.content;
+            result.lastMessageDate = new Date();
+            result.lastMessageType = message.type;
+          }, error => this.errorHandler.Handle(error))
+        else
+          this.dataService.getGroupContact(message.toGroup).subscribe((result: any) => {
+            if (this.currentContactRow != -1)
+              this.currentContactRow++;
+            this.contacts.unshift(result);
+            result.notViewedMessages = 1;
+            result.lastMessage = message.content;
+            result.lastMessageDate = new Date();
+            result.lastMessageType = message.type;
+          }, error => this.errorHandler.Handle(error))
       }
-      this.currentMessage.to = data[0].id;
-      if (data[0].email == "Group") {
-        this.currentMessage.togroup = data[0].id;
-      }
-      this.currentMessage.toEmail = data[0].email;
-      if (window.innerWidth < 678) {
-        this.currentMessage.auto = true;
-      }
-      this.toGroupUsersList(data);
-      this.currentUser = data[0];
-    });
-    //this.dataService.startConnection();
-    this.dataService.checkConnection();
-    this.dataService.addConnectionListener("Recive", (message: any) => {
-      if (message.id >= (this.messagesList[this.messagesList.length - 1].id || 0)) {
-        this.updateUserLastMessage(message, "from");
-      }
-      if ((this.currentMessage.to == message.from && message.toEmail != "Group") || (this.currentMessage.togroup == message.toGroup && message.to == 0 && this.currentMessage.togroup != 0 && message.toGroup != 0)) {
-        this.getMessages(message.from, message.toGroup);
-      }
-    });
+    })
+  }
+  ngOnInit() {
+    this.dataService.startConnection();
+    this.AddHubListeners();
+    this.GetContacts();
   }
 }

@@ -2,10 +2,10 @@
   <div class="row d-flex justify-content-center align-items-center h-100">
     <div class="col-md-3 col-12">
       <div class="d-flex flex-column align-items-center text-center p-3 pb-md-5">
-        <div (mouseenter)="enterImage()" (mouseleave)="leaveImage()" [ngClass]="{'darker':isOnImage}" (click)="openFileInput()">
+        <div (mouseenter)="EnterImage()" (mouseleave)="LeaveImage()" [ngClass]="{'darker':isOnImage}" (click)="OpenFileInput()">
           <img class="rounded-circle" src="{{dataService.currentAccount.accountImage}}" style="width:150px;height:150px;">
           <i class="bi bi-pencil text-white" [ngClass]="{'icon-mask':isOnImage}" style="font-size:20px;position:absolute"></i>
-          <input type="file" style="display:none" (change)="fileSelected($event)" #fileInput />
+          <input type="file" style="display:none" (change)="FileSelected($event)" #fileInput />
         </div>
         <span class="font-weight-bold">{{dataService.currentAccount.nickName}}</span>
         <span class="text-black-50">{{dataService.currentAccount.email}}</span>
@@ -23,18 +23,18 @@
         </div>
         <div class="row mt-2">
           <div class="col-md-6"><label class="labels">Отчество</label><input type="text" class="form-control" [error]="{Error:errors?.MiddleName,PlaceHolder:'Отчество'}" [(ngModel)]="dataService.currentAccount.middleName"></div>
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="dataService.currentAccount.role == 1">
             <label class="labels">Класс</label>
             <div class="d-flex">
-              <input type="number" class="form-control" [error]="{Error:errors?.Grade,PlaceHolder:''}" [(ngModel)]="dataService.currentAccount.grade">
+              <input type="number" class="form-control" [error]="{Error:errors?.Grade,PlaceHolder:'Класс'}" [(ngModel)]="dataService.currentAccount.grade">
               <input style="width:40px" type="text" class="form-control" [(ngModel)]="dataService.currentAccount.gradeLetter" />
             </div>
           </div>
-          <div class="col-md-12"><label class="labels">Никнейм</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'Никнейм'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
+          <div [ngClass]="[dataService.currentAccount.role == 1?'col-md-12':'col-md-6']"><label class="labels">Никнейм</label><input type="text" class="form-control" [error]="{Error:errors?.NickName,PlaceHolder:'Никнейм'}" [(ngModel)]="dataService.currentAccount.nickName"></div>
           <div class="col-md-12"><label class="labels">Почта</label><input type="text" class="form-control" [error]="{Error:errors?.Email,PlaceHolder:'Почта'}" [(ngModel)]="dataService.currentAccount.email"></div>
           <div class="col-md-12"><label class="labels">Номер телефона</label><input type="text" class="form-control" [error]="{Error:errors?.Phone,PlaceHolder:'Номер телефона'}" [(ngModel)]="dataService.currentAccount.phone"></div>
-          <div class="col-md-12"><label class="labels">Пароль</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'Пароль'}" [(ngModel)]="dataService.currentAccount.password"></div>
-          <div style="height:80px" class="col-md-12 mt-md-5 mt-3 text-center"><button class="btn btn-primary" type="button" (click)="saveAccount()">Сохранить</button></div>
+          <div class="col-md-12"><label class="labels">Сменить пароль</label><input type="password" class="form-control" [error]="{Error:errors?.Password,PlaceHolder:'Сменить пароль'}" [(ngModel)]="dataService.currentAccount.password"></div>
+          <div style="height:80px" class="col-md-12 mt-md-5 mt-3 text-center"><button class="btn btn-primary" type="button" (click)="SaveAccount()">Сохранить</button></div>
         </div>
       </div>
     </div>

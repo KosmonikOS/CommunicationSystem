@@ -1,0 +1,31 @@
+<section class="vh-100">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+            <button type="button" class="btn btn-secondary btn-lg m-2" (click)="CreateConference()">
+              <i style="font-size:26px" class="bi bi-camera-video me-2"></i>
+              <span>Создать</span>
+            </button>
+            <button type="button" class="btn btn-primary btn-lg m-2" (click)="OpenConferenceModal()">
+              <i style="font-size:26px" class="bi bi-plus-circle me-2"></i>
+              <span>Войти</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #conferenceModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Введите код доступа</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-footer justify-content-center">
+      <input class="form-control" placeholder="Код доступа" [(ngModel)]="roomId"/>
+      <button class="btn btn-primary btn-lg" (click)="EnterConference()">Войти</button>
+    </div>
+  </ng-template>
+</section>

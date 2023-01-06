@@ -1,13 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace CommunicationSystem.Domain.Entities
 {
     public class Group
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        [Required(ErrorMessage = "Это поле обязательное")]
+        [StringLength(30, MinimumLength = 2, ErrorMessage = "Введите от 2 до 30 символов")]
         public string Name { get; set; }
-        public string GroupImage { get; set; } = "/assets/group.png";
-        [NotMapped]
-        public GroupUser[] Users { get; set; }
+        public string? GroupImage { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }

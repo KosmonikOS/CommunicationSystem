@@ -1,5 +1,5 @@
 <div class="h-100 w-100 text-primary" align="center" style="position:relative">
-  <video #videoFrame [class.hideVideo]="!member.videoState" autoplay class="h-100"></video>
+  <video #videoFrame [class.hideVideo]="!member.videoState" playsinline autoplay class="h-100"></video>
   <img *ngIf="!member.videoState" src="{{member.accountImage}}" class="h-100" />
   <i *ngIf="!member.audioState" [ngClass]="{'audioState':!screenState,'audioState-sm':screenState}" class="bi bi-mic-mute bg-white rounded-circle px-1 border border-primary"></i>
   <i *ngIf="!member.videoState" [ngClass]="{'videoState':!screenState,'videoState-sm':screenState}" class="bi bi-camera-video-off bg-white rounded-circle px-1 border border-primary"></i>

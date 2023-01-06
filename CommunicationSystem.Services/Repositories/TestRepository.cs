@@ -1,83 +1,108 @@
-﻿using CommunicationSystem.Services.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using CommunicationSystem.Data;
+﻿using CommunicationSystem.Data;
 using CommunicationSystem.Domain.Entities;
-using CommunicationSystem.Services.Services.Interfaces;
+using CommunicationSystem.Domain.Enums;
+using CommunicationSystem.Services.Infrastructure.Enums;
+using CommunicationSystem.Services.Infrastructure.Responses;
+using CommunicationSystem.Services.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommunicationSystem.Services.Repositories
 {
     public class TestRepository : ITestRepository
     {
-        private readonly CommunicationContext db;
-        private readonly ITest test;
+        private readonly CommunicationContext context;
 
-        public TestRepository(CommunicationContext db, ITest test)
+        public TestRepository(CommunicationContext context)
         {
-            this.db = db;
-            this.test = test;
+            this.context = context;
         }
-        public async Task<List<Test>> GetUserTestsAsync(int id)
+        public IQueryable<Test> GetUserCreateTestsPage(int userId, int role, int page, string search, TestPageSearchOption searchOption)
         {
-            var tests = await (from utt in db.UsersToTests
-                               where utt.UserId == id && utt.IsCompleted == false
-                               join t in db.Tests on utt.TestId equals t.Id
-                               join s in db.Subjects on t.Subject equals s.Id
-                               join u in db.Users on t.Creator equals u.Id
-                               select new Test()
-                               {
-                                   Id = t.Id,
-                                   Date = t.Date,
-                                   Creator = t.Creator,
-                                   CreatorName = u.NickName,
-                                   Grade = t.Grade,
-                                   Name = t.Name,
-                                   Questions = t.Questions,
-                                   Time = t.Time,
-                                   Subject = t.Subject,
-                                   SubjectName = s.Name,
-                                   QuestionsList = (from q in db.Questions
-                                                    where q.TestId == t.Id
-                                                    select new Question()
-                                                    {
-                                                        Id = q.Id,
-                                                        TestId = q.Id,
-                                                        Text = q.Text,
-                                                        Points = q.Points,
-                                                        Image = q.Image,
-                                                        QuestionType = q.QuestionType,
-                                                        Options = (from o in db.Options
-                                                                   where o.QuestionId == q.Id
-                                                                   select new Option()
-                                                                   {
-                                                                       Id = o.Id,
-                                                                       IsRightOption = o.IsRightOption,
-                                                                       QuestionId = o.QuestionId,
-                                                                       Text = o.Text
-
-                                                                   }).AsNoTracking().ToList()
-                                                    }).AsNoTracking().ToList()
-                               }).AsNoTracking().ToListAsync();
-            return tests;
-        }
-
-        public async Task SaveTestAnswerAsync(TestAnswer testAnswer)
-        {
-            if (testAnswer != null)
+            var query = (role != 3
+                ? context.Tests.Where(x => x.CreatorId == userId)
+                : context.Tests).AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                var currentAnswers = db.StudentAnswers.Where(u => u.UserId == testAnswer.UserId && u.TestId == testAnswer.TestId);
-                db.StudentAnswers.RemoveRange(currentAnswers);
-                var utt = db.UsersToTests.FirstOrDefault(u => u.UserId == testAnswer.UserId && u.TestId == testAnswer.TestId);
-                utt.Mark = test.CalculateMark(testAnswer);
-                utt.IsCompleted = true;
-                foreach (var question in testAnswer.Questions)
+                switch (searchOption)
                 {
-                    foreach (var answer in question.StudentAnswers)
-                    {
-                        db.StudentAnswers.Add(new StudentAnswer() { UserId = testAnswer.UserId, Answer = answer.ToString(), QuestionId = question.Id, TestId = testAnswer.TestId });
-                    }
+                    case TestPageSearchOption.Name:
+                        query = query.Where(x => EF.Functions.ILike(x.Name, $"%{search}%"));
+                        break;
+                    case TestPageSearchOption.Grade:
+                        query = query.Where(x => EF.Functions.ILike(x.Grade, $"%{search}%"));
+                        break;
+                    case TestPageSearchOption.Subject:
+                        query = query.Include(x => x.Subject)
+                            .Where(x => EF.Functions.ILike(x.Subject.Name, $"%{search}%"));
+                        break;
                 }
-                await db.SaveChangesAsync();
             }
+            query = query.OrderByDescending(x => x.Date);
+            if (page > 0)
+            {
+                query = query.Skip(page * 50);
+            }
+            return query.Take(50);
+        }
+
+        public IQueryable<TestUser> GetUserTestsPage(int userId, int page, string search, TestPageSearchOption searchOption)
+        {
+            var query = context.TestUser
+                .Where(x => x.UserId == userId && !x.IsCompleted);
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                switch (searchOption)
+                {
+                    case TestPageSearchOption.Name:
+                        query = query.Where(x => EF.Functions.ILike(x.Test.Name, $"%{search}%"));
+                        break;
+                    case TestPageSearchOption.Subject:
+                        query = query.Where(x => EF.Functions.ILike(x.Test.Subject.Name, $"%{search}%"));
+                        break;
+                }
+            }
+            query = query.OrderByDescending(x => x.Test.Date);
+            if (page > 0)
+            {
+                query = query.Skip(page * 50);
+            }
+            return query.Take(50);
+        }
+
+        public void AddTest(Test test)
+        {
+            context.Add(test);
+        }
+
+        public void UpdateTest(Test test)
+        {
+            var testEntry = context.Update(test);
+            testEntry.Property(x => x.Date).IsModified = false;
+        }
+
+        public async Task<IResponse> DeleteTestAsync(Guid id)
+        {
+            var test = await context.Tests
+                .Include(x => x.Questions)
+                .ThenInclude(x => x.Options)
+                .Include(x => x.Students)
+                .Include(x => x.StudentAnswers)
+                .AsSingleQuery()
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (test == null)
+                return new BaseResponse(ResponseStatus.NotFound) { Message = "Тест не найден" };
+            context.Remove(test);
+            return new BaseResponse(ResponseStatus.Ok);
+        }
+
+        public int SaveChanges()
+        {
+            return context.SaveChanges();
+        }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return context.SaveChangesAsync();
         }
     }
 }

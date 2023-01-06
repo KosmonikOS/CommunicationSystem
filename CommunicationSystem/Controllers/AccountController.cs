@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using CommunicationSystem.Domain.Dtos;
+using CommunicationSystem.Services.Commands;
+using CommunicationSystem.Services.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
-using CommunicationSystem.Domain.Entities;
-using CommunicationSystem.Services.Repositories.Interfaces;
-using CommunicationSystem.Services.Services.Interfaces;
 
 namespace CommunicationSystem.Controllers
 {
@@ -14,68 +13,25 @@ namespace CommunicationSystem.Controllers
     [Authorize]
     public class AccountController : ControllerBase
     {
-        private readonly IFileSaver file;
-        private readonly IAccountRepository repository;
+        private readonly IMediator mediator;
 
-        public AccountController(IFileSaver file, IAccountRepository repository)
+        public AccountController(IMediator mediator)
         {
-            this.file = file;
-            this.repository = repository;
+            this.mediator = mediator;
         }
         [HttpGet("{email}")]
-        public ActionResult<User> GetUser(string email)
+        public async Task<ActionResult<UserAccountDto>> GetUser(string email)
         {
-            try
-            {
-                var user = repository.GetUserByEmail(email);
-                if (user != null)
-                {
-                    return Ok(user);
-                }
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
-            return BadRequest();
+            var query = new GetUserAccountQuery() { Email = email };
+            var result = await mediator.Send(query);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUserImage(IFormFile imageToSave, int id)
+        [HttpPut]
+        public async Task<IActionResult> UpdateAccount(UserAccountUpdateDto dto)
         {
-            if (imageToSave != null)
-            {
-                try
-                {
-                    var path = await file.SaveFileAsync(imageToSave);
-                    if (path != null)
-                    {
-                        await repository.UpdateImageAsync(id, path);
-                        return Ok(new { path = path });
-                    }
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e);
-                }
-            }
-            return BadRequest();
-        }
-        [HttpPost]
-        public async Task<IActionResult> UpdateUser(User user)
-        {
-            if (user != null)
-            {
-                try
-                {
-                    await repository.UpdateUserAsync(user);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e);
-                }
-            }
-            return BadRequest();
+            var command = new UpdateAccountCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
     }
 }

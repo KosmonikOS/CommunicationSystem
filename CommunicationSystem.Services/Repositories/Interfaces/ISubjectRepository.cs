@@ -1,13 +1,15 @@
 ﻿using CommunicationSystem.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using CommunicationSystem.Services.Infrastructure.Responses;
+using System.Linq.Expressions;
 
 namespace CommunicationSystem.Services.Repositories.Interfaces
 {
-    public interface ISubjectRepository
+    public interface ISubjectRepository : IBaseRepository
     {
-        public Task<List<Subject>> GetSubjectsAsync();
-        public Task SaveSubjectAsync(Subject subject);
-        public Task DeleteSubjectAsync(int id);
+        public IQueryable<Subject> GetSubjectsPage(int page,string search);
+        public IQueryable<Subject> GetSubjects();
+        public void AddSubject(Subject subject);
+        public void UpdateSubject(Subject subject);
+        public Task<IResponse> DeleteSubjectAsync(int id);
     }
 }

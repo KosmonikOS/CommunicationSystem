@@ -5,96 +5,149 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountDataService } from "../account/account.data.service"
 import { ToastService } from "../toast.service"
 import { Role } from './role';
+import { UtilitesService } from '../utilites.service';
+import { ErrorHandler } from '../infrastructure/error.handler';
 
 @Component({
   selector: 'app-useredit',
   templateUrl: './useredit.component.html',
-  styleUrls: ['./useredit.component.css','../app.component.css'],
-  providers: [UsereditDataService, AccountDataService]
+  styleUrls: ['./useredit.component.css', '../app.component.css'],
+  providers: [UsereditDataService, AccountDataService, ErrorHandler]
 })
 export class UsereditComponent implements OnInit {
   users: Account[] = [];
   roles: Role[] = [];
-  public currentUser: Account = new Account();
-  public currentRow: number = -1;
+  currentUser: Account = new Account();
+  currentRow: number = -1;
   isOnImage: boolean = false;
   errors: any = {};
-  public search: string = "";
+  search: string = "";
+  page: number = 0;
   @ViewChild("fileInput") fileInput: ElementRef = new ElementRef("");
   @ViewChild("userModal") userModal: ElementRef = new ElementRef("");
+  @ViewChild("usersList") usersList: ElementRef = new ElementRef("");
+  searchOptions = [
+    { "id": 0, "name": "ФИО", "searchOn": "Поиск по ФИО" },
+    { "id": 1, "name": "Никнейм", "searchOn": "Поиск по никнейму" },
+    { "id": 2, "name": "Почта", "searchOn": "Поиск по почте" },
+    { "id": 3, "name": "Роль", "searchOn": "Поиск по роли" },
+  ];
+  currentSearchOption: number = 0;
 
-  constructor(private dataService: UsereditDataService, private modalService: NgbModal, private accountDataService: AccountDataService, private toastService: ToastService) { }
+  constructor(private dataService: UsereditDataService, private modalService: NgbModal
+    , private utilitesService: UtilitesService, private errorHandler: ErrorHandler
+    , private accountDataService: AccountDataService, private toastService: ToastService) { }
 
-  enterImage() {
+  NextPage() {
+    this.page++;
+    this.GetUsers(this.page, this.search);
+    this.ScrollUp();
+  }
+  PreviousPage() {
+    this.page--;
+    this.GetUsers(this.page, this.search);
+    this.ScrollUp();
+  }
+  Search() {
+    this.page = 0;
+    this.GetUsers(-1, this.search);
+    this.ScrollUp();
+  }
+  Reload() {
+    this.page = 0;
+    this.search = "";
+    this.GetUsers(this.page)
+    this.ScrollUp();
+  }
+  ScrollUp() {
+    this.usersList.nativeElement.scroll(0, 0);
+  }
+
+  EnterImage() {
     this.isOnImage = true;
   }
-  leaveImage() {
+  LeaveImage() {
     this.isOnImage = false;
   }
-  openFileInput() {
+  OpenFileInput() {
     this.fileInput.nativeElement.click();
   }
-  fileSelected(event: any) {
+  FileSelected(event: any) {
     var file = <File>event.target.files[0];
-    this.accountDataService.putImage(file, this.currentUser.id).subscribe((result:any) => {
+    this.utilitesService.postImage(file).subscribe((result: any) => {
       this.toastService.showSuccess("Файл загружен");
       this.currentUser.accountImage = result.path;
     }, error => {
-      this.toastService.showError("Ошибка загрузки")
+      this.errorHandler.Handle(error);
     });
   }
-  saveUser() {
+  SaveUser() {
     this.currentUser.role = Number(this.currentUser.role);
-    this.dataService.postUser(this.currentUser).subscribe(result => {
-      this.errors = {};
-      this.modalService.dismissAll();
-      this.getUsers()
-    }, error => {
-      this.toastService.showError("Ошибка сохранения");
-      this.errors = error.error.errors;
-    });
+    if (this.currentUser.id == 0) {
+      this.dataService.postUser(this.currentUser).subscribe(result => {
+        this.errors = {};
+        this.modalService.dismissAll();
+        this.GetUsers(this.page, this.search)
+      }, error => {
+        this.errors = this.errorHandler.Handle(error);
+      });
+    } else {
+      this.dataService.putUser(this.currentUser).subscribe(result => {
+        this.errors = {};
+        this.modalService.dismissAll();
+        this.GetUsers(this.page, this.search)
+      }, error => {
+        this.errors = this.errorHandler.Handle(error);
+      });
+    }
   }
-  public dblSetUser(user: Account, i: number) {
+  DblSetUser(user: Account, i: number) {
     this.currentUser = user;
     this.currentRow = i;
-    this.editUser();
+    this.EditUser();
   }
-  public setUser(user: Account, i: number) {
+  SetUser(user: Account, i: number) {
     this.currentUser = this.currentUser == user ? new Account() : user;
     this.currentRow = this.currentRow == i ? -1 : i;
   }
-  public openUserModal() {
-    this.modalService.open(this.userModal, { size: "xl", "scrollable": true }).result.then(() => {}, () => {
+  OpenUserModal() {
+    this.modalService.open(this.userModal, { size: "xl", "scrollable": true }).result.then(() => { }, () => {
       this.currentUser == new Account();
       this.currentRow = -1;
       this.errors = {};
     });
   }
-  public createUser() {
+  CreateUser() {
     this.currentUser = new Account();
-    this.openUserModal();
+    this.OpenUserModal();
   }
-  public editUser() {
+  EditUser() {
     if (this.currentUser.id) {
-      this.openUserModal();
+      this.OpenUserModal();
     }
   }
-  public deleteUser() {
-    this.dataService.deleteUser(this.currentUser.id).subscribe(result => {
-      this.currentUser == new Account();
-      this.currentRow = -1;
-      this.getUsers();
-    }, error => {
-      this.toastService.showError("Ошибка удаления");
-    })
+  DeleteUser() {
+    if (this.currentUser.id) {
+      this.dataService.deleteUser(this.currentUser.id).subscribe(result => {
+        this.currentUser == new Account();
+        this.currentRow = -1;
+        this.GetUsers(this.page, this.search);
+      }, error => {
+        this.errorHandler.Handle(error);
+      })
+    }
   }
-  getUsers() {
-    this.dataService.getUsers().subscribe((data: any) => {
+  GetUsers(page: number, search: string = "") {
+    this.dataService.getUsers(page, search, this.currentSearchOption).subscribe((data: any) => {
       this.users = data;
+      this.currentUser = new Account();
+      this.currentRow = -1;
+    }, error => {
+      this.errorHandler.Handle(error);
     })
   }
   ngOnInit(): void {
-    this.getUsers();
+    this.GetUsers(this.page);
     this.dataService.getRoles().subscribe((data: any) => {
       this.roles = data;
     })

@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using CommunicationSystem.Domain.Dtos;
+using CommunicationSystem.Services.Commands;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using CommunicationSystem.Domain.Entities;
-using CommunicationSystem.Services.Services.Interfaces;
-using CommunicationSystem.Services.Repositories.Interfaces;
 
 namespace CommunicationSystem.Controllers
 {
@@ -11,46 +10,32 @@ namespace CommunicationSystem.Controllers
     [ApiController]
     public class RegistrationController : ControllerBase
     {
-        private readonly IMailSender mail;
-        private readonly IConfirmationToken tokenService;
-        private readonly IRegistration registration;
-        private readonly IAccountRepository repository;
+        private readonly IMediator mediator;
 
-        public RegistrationController(IMailSender mail,IConfirmationToken tokenService,IRegistration registration,IAccountRepository repository)
+        public RegistrationController(IMediator mediator)
         {
-            this.mail = mail;
-            this.tokenService = tokenService;
-            this.registration = registration;
-            this.repository = repository;
+            this.mediator = mediator;
         }
         [HttpGet("{token}")]
         public async Task<IActionResult> ConfirmUserByToken(string token)
         {
-            await tokenService.ConfirmTokenAsync(token);
-            return Redirect($"{this.Request.Scheme}://{this.Request.Host.Value}");
+            var command = new ConfirmUserCommand { Token = token };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+        [HttpGet("resend/{email}")]
+        public async Task<IActionResult> ResendConfirmation(string email)
+        {
+            var command = new ResendConfirmationCommand() { Email = email };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
         [HttpPost]
-        public async Task<IActionResult> RegistrateUser(Registration user)
+        public async Task<IActionResult> RegistrateUser(RegistrationDto dto)
         {
-            if(user != null)
-            {
-                try
-                {
-                    var isUnique = registration.IsUniqueEmail(user.Email);
-                    if (isUnique) {
-                        var token = tokenService.GenerateToken(user.Email);
-                        await repository.AddUserAsync(user, token);
-                        await mail.SendRegistrationmailAsync(user.Email, token, $"{this.Request.Scheme}://{this.Request.Host.Value}");
-                        return Ok();
-                    }
-                    return BadRequest("Почта уже используется");
-                }
-                catch(Exception e)
-                {
-                    return BadRequest(e);
-                }
-            }
-            return BadRequest();
+            var command = new RegistrateUserCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
     }
 }

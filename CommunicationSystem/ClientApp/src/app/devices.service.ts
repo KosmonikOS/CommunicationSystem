@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core"
-import { resolve } from "dns";
 
 @Injectable({ providedIn: "root" })
 export class DevicesService {
@@ -18,17 +17,21 @@ export class DevicesService {
   }
   checkDevices() {
     return new Promise(async (resolve, reject) => {
-      var mediaConfig = await this.checkMedia();
-      //var video = await navigator.permissions.query({ name: "camera" }).then((res) => res.state == "granted");
-      //var audio = await navigator.permissions.query({ name: "microphone" }).then((res) => res.state == "granted");
-      //if ((mediaConfig.video && !video) || (mediaConfig.audio && !audio)) {
+      try {
+        var mediaConfig = await this.checkMedia();
+        //var video = await navigator.permissions.query({ name: "camera" }).then((res) => res.state == "granted");
+        //var audio = await navigator.permissions.query({ name: "microphone" }).then((res) => res.state == "granted");
+        //if ((mediaConfig.video && !video) || (mediaConfig.audio && !audio)) {
         await navigator.mediaDevices.getUserMedia({ video: mediaConfig.video, audio: mediaConfig.audio }).then((stream) => {
           stream.getTracks()?.forEach(function (track: any) {
             track?.stop();
           });
         });
-      //}
-      resolve("");
+        //}
+        resolve("");
+      } catch {
+        reject();
+      }
     });
   }
 }

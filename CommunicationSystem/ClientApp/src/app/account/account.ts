@@ -11,7 +11,7 @@ export class Account {
     public gradeLetter?:string,
     public role: number = 1,
     public roleName?: string,
-    public accountImage: string = "assets/user.png",
+    public accountImage?: string,
     public phone?: string
   ) { }
 }

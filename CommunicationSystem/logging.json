@@ -1,0 +1,77 @@
+{
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.Console", "Serilog.Sinks.File" ],
+    "WriteTo": [
+      { "Name": "Console" },
+      {
+        "Name": "Logger",
+        "Args": {
+          "configureLogger": {
+            "WriteTo": [
+              {
+                "Name": "File",
+                "Args": { "path": "Logs/info.txt" }
+              }
+            ],
+            "Filter": [
+              {
+                "Name": "ByExcluding",
+                "Args": {
+                  "expression": "StartsWith(SourceContext, 'Microsoft.')"
+                }
+              },
+              {
+                "Name": "ByIncludingOnly",
+                "Args": {
+                  "expression": "@l = 'Information'"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Name": "Logger",
+        "Args": {
+          "configureLogger": {
+            "WriteTo": [
+              {
+                "Name": "File",
+                "Args": { "path": "Logs/warning.txt" }
+              }
+            ],
+            "Filter": [
+              {
+                "Name": "ByIncludingOnly",
+                "Args": {
+                  "expression": "@l = 'Warning'"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Name": "Logger",
+        "Args": {
+          "configureLogger": {
+            "WriteTo": [
+              {
+                "Name": "File",
+                "Args": { "path": "Logs/error.txt" }
+              }
+            ],
+            "Filter": [
+              {
+                "Name": "ByIncludingOnly",
+                "Args": {
+                  "expression": "@l = 'Error'"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,24 +1,33 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CommunicationSystem.Domain.Entities
 {
     public class Test
     {
-        public int Id { get; set; }
-        public int Subject { get; set; }
-        [NotMapped]
-        public string SubjectName { get; set; }
+        public Guid Id { get; set; }
+        [Required(ErrorMessage = "Это поле обязательное")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "Введите от 2 до 50 символов")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "Это поле обязательное")]
         public string Grade { get; set; }
-        public int Questions { get; set; }
-        public long Time {get;set;}
+        public int QuestionsQuantity { get; private set; }
+        [Required(ErrorMessage = "Это поле обязательное")]
+        public int Time { get; set; }
         public DateTime Date { get; set; }
-        public int Creator { get; set; }
-        [NotMapped]
-        public string CreatorName { get; set; }
-        [NotMapped]
-        public List<UsersToTests> Students { get; set; } = new List<UsersToTests>();
-        [NotMapped]
-        public List<Question> QuestionsList { get; set; } = new List<Question>();
+
+        public int CreatorId { get; set; }
+        [ForeignKey("CreatorId")]
+        public User Creator { get; set; }
+        public int SubjectId { get; set; }
+        public Subject Subject { get; set; }
+        public ICollection<Question> Questions { get; set; }
+        public ICollection<User> Students { get; set; }
+        public ICollection<StudentAnswer> StudentAnswers { get; set; }
+
+        public void CalculateQuestionsQuantity()
+        {
+            this.QuestionsQuantity = this.Questions.Count;
+        }
     }
 }

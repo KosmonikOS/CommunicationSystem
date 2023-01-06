@@ -1,5 +1,7 @@
 ﻿using CommunicationSystem.Data;
 using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Services.Infrastructure.Enums;
+using CommunicationSystem.Services.Infrastructure.Responses;
 using CommunicationSystem.Services.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,42 +9,62 @@ namespace CommunicationSystem.Services.Repositories
 {
     public class SubjectRepository : ISubjectRepository
     {
-        private readonly CommunicationContext db;
+        private readonly CommunicationContext context;
 
-        public SubjectRepository(CommunicationContext db)
+        public SubjectRepository(CommunicationContext context)
         {
-            this.db = db;
+            this.context = context;
         }
-        public async Task DeleteSubjectAsync(int id)
+        public IQueryable<Subject> GetSubjectsPage(int page, string search)
         {
-            if (id != 0)
+            var query = context.Subject.AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                var subject = db.Subjects.SingleOrDefault(u => u.Id == id);
-                db.Subjects.Remove(subject);
-                await db.SaveChangesAsync();
+                query = query.Where(x => EF.Functions.ILike(x.Name, $"%{search}%"));
             }
-        }
-
-        public async Task<List<Subject>> GetSubjectsAsync()
-        {
-            var subjects = await db.Subjects.AsNoTracking().ToListAsync();
-            return subjects;
-        }
-
-        public async Task SaveSubjectAsync(Subject subject)
-        {
-            if (subject != null)
+            query = query.OrderBy(x => x.Id);
+            if (page > 0)
             {
-                if (subject.Id > 0)
-                {
-                    db.Subjects.Update(subject);
-                }
-                else
-                {
-                    db.Subjects.Add(subject);
-                }
-                await db.SaveChangesAsync();
+                query = query.Skip(page * 50);
             }
+            return query.Take(50);
+        }
+
+        public IQueryable<Subject> GetSubjects()
+        {
+            return context.Subject;
+        }
+
+        public void AddSubject(Subject subject)
+        {
+            context.Add(subject);
+        }
+        public void UpdateSubject(Subject subject)
+        {
+            context.Update(subject);
+        }
+
+        public async Task<IResponse> DeleteSubjectAsync(int id)
+        {
+            var subject = await context.Subject
+                .Include(x => x.Tests).ThenInclude(x => x.StudentAnswers)
+                .Include(x => x.Tests).ThenInclude(x => x.Questions)
+                .ThenInclude(x => x.Options)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (subject == null)
+                return new BaseResponse(ResponseStatus.NotFound) { Message = "Предмет не найден" };
+            context.Remove(subject);
+            return new BaseResponse(ResponseStatus.Ok);
+        }
+
+        public int SaveChanges()
+        {
+            return context.SaveChanges();
+        }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return context.SaveChangesAsync();
         }
     }
 }

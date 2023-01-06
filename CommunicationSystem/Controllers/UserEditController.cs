@@ -1,9 +1,13 @@
-﻿using CommunicationSystem.Domain.Entities;
-using CommunicationSystem.Services.Repositories.Interfaces;
+﻿using CommunicationSystem.Domain.Dtos;
+using CommunicationSystem.Domain.Entities;
+using CommunicationSystem.Domain.Enums;
+using CommunicationSystem.Services.Commands;
+using CommunicationSystem.Services.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -13,47 +17,52 @@ namespace CommunicationSystem.Controllers
     [Authorize]
     public class UserEditController : ControllerBase
     {
-        private readonly IUserEditRepository repository;
+        private readonly IMediator mediator;
 
-        public UserEditController(IUserEditRepository repository)
+        public UserEditController(IMediator mediator)
         {
-            this.repository = repository;
+            this.mediator = mediator;
         }
-        [HttpGet]
-        public async Task<List<User>> GetUsers()
+        [HttpGet("{page}/{searchOption}/{search?}")]
+        public async Task<ActionResult<List<UserAccountAdminDto>>> GetUsersPage(int page,
+            UserPageSearchOption searchOption, string search, CancellationToken cancellationToken)
         {
-            return await repository.GetUsersAsync();
+            var query = new GetUsersQuery()
+            {
+                Page = page,
+                Search = search,
+                SearchOption = searchOption,
+            };
+            var result = await mediator.Send(query,cancellationToken);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpGet("getroles")]
-        public async Task<List<Role>> GetRoles()
+        public async Task<ActionResult<List<Role>>> GetRoles()
         {
-            return await repository.GetRolesAsync();
+            var query = new GetRolesQuery();
+            var result = await mediator.Send(query);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpPost]
-        public async Task<IActionResult> SaveUser(User user)
+        public async Task<IActionResult> AddUser(UserAccountAdminAddDto dto)
         {
-            try
-            {
-                await repository.SaveUserAsync(user);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            var command = new AddUserByAdminCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(UserAccountAdminUpdateDto dto)
+        {
+            var command = new UpdateUserByAdminCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-                try
-                {
-                    await repository.DeleteUserAsync(id);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e);
-                }
+            var command = new DeleteUserByAdminCommand() { Id = id };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
     }
 }

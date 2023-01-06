@@ -1,11 +1,15 @@
-﻿using CommunicationSystem.Domain.Entities;
-using CommunicationSystem.Services.Repositories.Interfaces;
+﻿using CommunicationSystem.Domain.Dtos;
+using CommunicationSystem.Filters;
+using CommunicationSystem.Services.Commands;
+using CommunicationSystem.Services.Queries;
 using CommunicationSystem.Services.Services.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CommunicationSystem.Controllers
@@ -15,120 +19,65 @@ namespace CommunicationSystem.Controllers
     [Authorize]
     public class MessengerController : ControllerBase
     {
-        private readonly IMessengerRepository messengerRepository;
-        private readonly IGroupRepository groupRepository;
-        private readonly IFileSaver fileService;
+        private readonly IMediator mediator;
+        private readonly ILogger<MessengerController> logger;
 
-        public MessengerController(IMessengerRepository messengerRepository, IGroupRepository groupRepository,IFileSaver fileService)
+        public MessengerController(IMediator mediator,ILogger<MessengerController> logger)
         {
-            this.messengerRepository = messengerRepository;
-            this.groupRepository = groupRepository;
-            this.fileService = fileService;
+            this.mediator = mediator;
+            this.logger = logger;
         }
-        [HttpGet("{id}/{nickName?}")]
-        public async Task<ActionResult<IEnumerable<UserLastMessage>>> GetContactsList(int id, string nickName)
+        [HttpGet("contact/messages/{userId}/{contactId}/{page}")]
+        public async Task<ActionResult<List<ContactMessageDto>>> GetContactMessages(int userId, int contactId
+            , int page, CancellationToken cancellationToken)
         {
-            try
-            {
-                if (nickName != null)
-                {
-                    return Ok(await messengerRepository.GetContactsListByNickNameAsync(id, nickName));
-                }
-                return Ok(await messengerRepository.GetContactsListAsync(id));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            var query = new GetMessagesBetweenContactsQuery() { UserId = userId, ContactId = contactId, Page = page };
+            var result = await mediator.Send(query,cancellationToken);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
-        [HttpGet("getmessages/{accountid}/{userid}/{togroup}")]
-        public async Task<IEnumerable<MessageBewteenUsers>> GetContactMessages(int accountid, int userid, int togroup)
+        [HttpGet("group/messages/{userId}/{groupId}/{page}")]
+        public async Task<ActionResult<List<GroupMessageDto>>> GetGroupMessages(int userId, Guid groupId
+            , int page, CancellationToken cancellationToken)
         {
-            await messengerRepository.SetViewedStatusAsync(accountid, userid, togroup);
-            var messages = await messengerRepository.GetContactMessagesAsync(accountid, userid, togroup);
-            return messages;
+            var query = new GetGroupMessagesQuery { UserId = userId, GroupId = groupId, Page = page };
+            var result = await mediator.Send(query,cancellationToken);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
         [HttpPost]
-        public async Task<IActionResult> SaveMessage(Message message)
+        public async Task<ActionResult<int>> AddMessage(AddMessageDto dto)
         {
-            if (message != null && message.Content != "")
-            {
-                try
-                {
-                    await messengerRepository.SaveMessageAsync(message);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e);
-                }
-            }
-            return BadRequest();
+            var command = new AddMessageCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
-        [HttpPost("filemessage/{length}")]
-        public async Task<IActionResult> SaveFileMessage(IFormCollection data, int length)
+        [HttpPost("files")]
+        [DisableFormValueModelBinding]
+        public async Task<ActionResult<List<int>>> AddFileMessages()
         {
-            try
-            {
-                await messengerRepository.SaveFileMessageAsync(data, length);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            var command = new AddFileMessageCommand() { ControllerContext = this};
+            var result = await mediator.Send(command);
+            return result.IsSuccess ? Ok(result.Content) : StatusCode(result.StatusCode, result.Message);
         }
-        [HttpDelete("{id}/{email}")]
-        public async Task<IActionResult> DeleteMessage(int id, string email)
+        [HttpPut("view/{id}")]
+        public async Task<IActionResult> ViewMessage(int id)
         {
-            try
-            {
-                await messengerRepository.DeleteMessageAsync(id, email);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            var command = new ViewMessageCommand() { Id = id };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
-        [HttpGet("groups/{id}")]
-        public ActionResult<Group> GetGroup(int id)
+        [HttpPut("content")]
+        public async Task<IActionResult> UpdateMessageContent(MessageContentUpdateDto dto)
         {
-            try
-            {
-                var group = groupRepository.GetGroup(id);
-                return Ok(group);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            var command = new UpdateMessageContentCommand() { Dto = dto };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
-        [HttpPost("groups/")]
-        public async Task<IActionResult> SaveGroup(Group group)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMessage(int id)
         {
-            try
-            {
-                await groupRepository.SaveGroupAsync(group);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
-        }
-        [HttpPut]
-        public async Task<IActionResult> UpdateGroupImage(IFormFile GroupImage)
-        {
-            try
-            {
-                var path = await fileService.SaveFileAsync(GroupImage);
-                return Ok(new { path = path });
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            var command = new DeleteMessageCommand() { Id = id };
+            var result = await mediator.Send(command);
+            return StatusCode(result.StatusCode, result.Message);
         }
     }
 }
