@@ -67,8 +67,10 @@ export class VideochatComponent implements OnInit, OnDestroy {
       }
     })
     this.dataService.addConnectionListener("UserConnected", (peerId: string) => {
-      this.ConnectToNewUser(peerId, stream);
-    })
+      setTimeout(() => {
+        this.ConnectToNewUser(peerId, stream);
+      }, 1000);
+    });
   }
   SubscribeScreenStream(call: MediaConnection) {
     call.on("stream", screenStream => {
@@ -254,6 +256,7 @@ export class VideochatComponent implements OnInit, OnDestroy {
           track.stop();
         })
         this.myPeer.disconnect();
+        this.myPeer.destroy();
         this.dataService.closeConnection();
       } catch { document.location.reload(); }
     });
